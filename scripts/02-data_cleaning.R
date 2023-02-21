@@ -8,7 +8,25 @@
 
 #### Workspace setup ####
 library(tidyverse)
-# [...UPDATE THIS...]
+
+#### Download data ####
+
+unzip(
+  "inputs/data/raw_respondent_info.zip",
+  exdir = here("inputs/data/large_files")
+)
+
+raw_respondent_info =
+  read_csv(
+    file = "inputs/data/large_files/raw_respondent_info.csv",
+    show_col_types = FALSE
+  )
+
+raw_finance_surve =
+  read_csv(
+    file = "inputs/data/raw_finance_survey.csv",
+    show_col_types = FALSE
+  )
 
 #### Clean data ####
 # [...UPDATE THIS...]
