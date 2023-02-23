@@ -10,3 +10,28 @@ toc: true
 number-sections: true
 bibliography: ref.bib
 ---
+
+```{r}
+#| message: false
+#| echo: false
+
+#### Workspace set-up ####
+
+# Load packages 
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+library(here)
+
+# read in cleaned data
+
+cleaned_respondent_info = read_csv(
+  file = here("outputs/data/cleaned_respondent_info.csv"),
+  show_col_types = FALSE
+)
+
+cleaned_finance_survey = read_csv(
+  file = here("outputs/data/cleaned_finance_survey.csv"),
+  show_col_types = FALSE
+)
+```
