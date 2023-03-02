@@ -55,9 +55,29 @@ rm(cleaned_finance_survey)
 
 ```
 
+## To Do
+
+Christina
+
+-   financial satisfaction
+
+-   calculating % ... over the year for graph
+
+-   Looking into social class getting it over the years
+
+Michaela
+
+-   financial change
+
+-   financial compare
+
 ## Introduction
 
-TBD
+The rich getting richer; poor getting poorer
+
+The super upper class are in a bubble and delusional
+
+Female and male differences
 
 ## Data
 
