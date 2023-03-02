@@ -100,6 +100,10 @@ Any changes in opinions observed in 2021 relative to historical trends may be du
 survey_data_2021 =
   combined_data |>
   filter(year == 2021)
+
+survey_data_2016 =
+  combined_data |>
+  filter(year == 2016)
   
 #survey_data_2021 = merge(
 #  filter(cleaned_respondent_info, year == 2021),
@@ -163,6 +167,32 @@ survey_data_2021$social_class =
            "Upper Class"
           )
         )
+
+survey_data_2021$financial_compare =
+  factor(survey_data_2021$financial_compare,
+         levels = c(
+           "Far Below Average",
+           "Below Average",
+           "Average",
+           "Above Average",
+           "Far Above Average"
+         ))
+
+survey_data_2021$financial_change =
+  factor(survey_data_2021$financial_change,
+         levels = c(
+           "Getting Worse",
+           "Stayed the Same",
+           "Getting Better"
+         ))
+
+survey_data_2016$financial_change =
+  factor(survey_data_2016$financial_change,
+         levels = c(
+           "Getting Worse",
+           "Stayed the Same",
+           "Getting Better"
+         ))
 ```
 
 ### Financial Satisfaction
@@ -321,6 +351,64 @@ survey_data_2021 |>
   theme(axis.text.x = element_text(angle = 45, hjust=1)) +
   theme(legend.position="none") +
   facet_grid(~social_class)
+```
+
+```{r}
+
+#| message: false
+#| echo: false
+#| warning: false
+
+# Reference code from https://sebastiansauer.github.io/percentage_plot_ggplot2_V2/
+survey_data_2021 |>
+  filter(!is.na(social_class), !is.na(financial_compare)) |>
+  ggplot(aes(x = financial_compare, group = social_class)) +
+  geom_bar(aes(y = ..prop.., fill = factor(..x..)), stat="count") + 
+  scale_y_continuous(labels=scales::percent) +
+  ylab("Percentage of response") +
+  xlab("Financial Compare") +
+  theme(axis.text.x = element_text(angle = 45, hjust=1)) +
+  theme(legend.position="none") +
+  facet_grid(~social_class)
+
+
+
+```
+
+```{r}
+#| message: false
+#| echo: false
+#| warning: false
+
+# Reference code from https://sebastiansauer.github.io/percentage_plot_ggplot2_V2/
+survey_data_2021 |>
+  filter(!is.na(social_class), !is.na(financial_change)) |>
+  ggplot(aes(x = financial_change, group = social_class)) +
+  geom_bar(aes(y = ..prop.., fill = factor(..x..)), stat="count") + 
+  scale_y_continuous(labels=scales::percent) +
+  ylab("Percentage of response") +
+  xlab("Financial Change") +
+  theme(axis.text.x = element_text(angle = 45, hjust=1)) +
+  theme(legend.position="none") +
+  facet_grid(~social_class) 
+```
+
+```{r}
+#| message: false
+#| echo: false
+#| warning: false
+
+# Reference code from https://sebastiansauer.github.io/percentage_plot_ggplot2_V2/
+survey_data_2016 |>
+  filter(!is.na(social_class), !is.na(financial_change)) |>
+  ggplot(aes(x = financial_change, group = social_class)) +
+  geom_bar(aes(y = ..prop.., fill = factor(..x..)), stat="count") + 
+  scale_y_continuous(labels=scales::percent) +
+  ylab("Percentage of response") +
+  xlab("Financial Change") +
+  theme(axis.text.x = element_text(angle = 45, hjust=1)) +
+  theme(legend.position="none") +
+  facet_grid(~social_class) 
 ```
 
 ```{r}
