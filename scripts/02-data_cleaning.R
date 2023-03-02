@@ -13,7 +13,7 @@ library(tidyverse)
 
 # unzip(
 #   "inputs/data/raw_respondent_info.zip",
-#   exdir = here("inputs/data/large_files")
+#   exdir = "inputs/data/large_files"
 # )
 
 raw_respondent_info =
@@ -246,10 +246,10 @@ cleaned_finance_survey =
 
 write_csv(
   x = cleaned_respondent_info,
-  file = here("outputs/data/cleaned_respondent_info.csv")
+  file = "outputs/data/cleaned_respondent_info.csv"
 )
 
 write_csv(
   x = cleaned_finance_survey,
-  file = here("outputs/data/cleaned_finance_survey.csv")
+  file = "outputs/data/cleaned_finance_survey.csv"
 )

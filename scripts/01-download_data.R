@@ -11,18 +11,17 @@
 #### Workspace setup ####
 library(tidyverse)
 library(haven) # for reading DTA files
-library(here)
 
 #### Download data ####
 
 # Download & unzip all the GSS data across the years
-zip_file = here("inputs/data/large_files/GSS_stata.zip")
+zip_file = "inputs/data/large_files/GSS_stata.zip"
 
 download.file("https://gss.norc.org/documents/stata/GSS_stata.zip", zip_file)
-unzip(zip_file, exdir = here("inputs/data/large_files"))
+unzip(zip_file, exdir = "inputs/data/large_files")
 
 # read dta data and write to csv
-raw_gss_data = read_dta(here("inputs/data/large_files/gss7221_r3a.dta"))
+raw_gss_data = read_dta("inputs/data/large_files/gss7221_r3a.dta")
 
 
 ## Filter and save data related to respondent info and survey questions of interest
@@ -35,7 +34,7 @@ raw_respondent_info =
 
 write_csv(
   x = raw_respondent_info,
-  file = here("inputs/data/raw_respondent_info.csv")
+  file = "inputs/data/raw_respondent_info.csv"
 )
 
 # zip(
@@ -51,5 +50,5 @@ raw_finance_survey =
 
 write_csv(
   x = raw_finance_survey,
-  file = here("inputs/data/raw_finance_survey.csv")
+  file = "inputs/data/raw_finance_survey.csv"
 )
