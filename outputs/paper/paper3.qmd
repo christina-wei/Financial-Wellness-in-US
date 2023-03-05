@@ -172,7 +172,7 @@ Christina
 
 -   Social status
 
--   calculating % ... over the year for graph
+-   calculating % ... over the year for graph - DONE
 
 -   Looking into social class getting it over the years - DONE
 
