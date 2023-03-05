@@ -69,17 +69,16 @@ cleaned_respondent_info =
   select (-satjob)
 
 # [cohort] Birth cohort of respondent.
+# Defined based on generations https://caregiversofamerica.com/2022-generation-names-explained/
 cleaned_respondent_info =
   cleaned_respondent_info |>
-  mutate("cohort" = case_when(
-    cohort == 1932 ~ '1930-1939',
-    cohort == 1940 ~ '1940-1949',
-    cohort == 1950 ~ '1950-1959',
-    cohort == 1960 ~ '1960-1969',
-    cohort == 1970 ~ '1970-1979',
-    cohort == 1980 ~ '1980-1989',
-    cohort == 1990 ~ '1990-1999',
-    cohort == 2000 ~ '2000-2009',
+  mutate("cohort_band" = case_when(
+    cohort <= 1924 ~ 'Greatest',
+    cohort >= 1925 & cohort <= 1945 ~ 'Silent',
+    cohort >= 1946 & cohort <= 1964 ~ 'Boomer',
+    cohort >= 1965 & cohort <= 1979 ~ 'Gen X',
+    cohort >= 1980 & cohort <= 1994 ~ 'Millenials',
+    cohort >= 1995 & cohort <= 2012 ~ 'Gen Z'
   ))
 
 # [occupation] Respondent's occupation
@@ -118,6 +117,17 @@ cleaned_respondent_info =
 cleaned_respondent_info =
   cleaned_respondent_info |>
   mutate("social_class" = case_when(
+    class == 1 ~ 'Lower Class',
+    class == 2 ~ 'Working Class',
+    class == 3 ~ 'Middle Class',
+    class == 4 ~ 'Upper Class',
+  )) |>
+  select(-class)
+
+# [social_class] Most people see themselves as belonging to a particular class. Please tell me which social class you would say you belong to?
+cleaned_respondent_info =
+  cleaned_respondent_info |>
+  mutate("social_class1" = case_when(
     class1 == 1 ~ 'Lower Class',
     class1 == 2 ~ 'Working Class',
     class1 == 3 ~ 'Lower Middle Class',
