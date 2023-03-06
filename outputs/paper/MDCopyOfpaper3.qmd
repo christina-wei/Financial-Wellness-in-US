@@ -1,0 +1,625 @@
+---
+title: "TBD"
+title-block-banner: true
+abstract: "TBD"
+thanks: "Code and data supporting this analysis is available at: https://github.com/christina-wei/INF3104-3-US-Survey.git"
+author: 
+  - Michaela Drouillard
+  - Christina Wei
+date: today
+date-format: long
+format: pdf
+editor: visual
+toc: true
+number-sections: true
+bibliography: ref.bib
+---
+
+```{r}
+#| message: false
+#| echo: false
+
+#### Workspace set-up and read in data####
+
+# Load packages 
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+library(here)
+
+# read in cleaned data
+
+cleaned_respondent_info = read_csv(
+  file = here("outputs/data/cleaned_respondent_info.csv"),
+  show_col_types = FALSE
+)
+
+cleaned_finance_survey = read_csv(
+  file = here("outputs/data/cleaned_finance_survey.csv"),
+  show_col_types = FALSE
+)
+
+combined_data = 
+  merge(
+    cleaned_respondent_info,
+    cleaned_finance_survey,
+    by = c("year", "id")
+  )
+
+rm(cleaned_respondent_info)
+rm(cleaned_finance_survey)
+```
+
+```{r}
+#| message: false
+#| echo: false
+
+#### Add factor defintions to define orders for columns in graphs ####
+
+combined_data$financial_satisfaction =
+  factor(combined_data$financial_satisfaction,
+         levels = c(
+           "Not Satisfied At All",
+           "More or Less Satisfied",
+           "Pretty Well Satisfied"
+          )
+        )
+
+combined_data$gender =
+  factor(combined_data$gender,
+         levels = c(
+           "Male",
+           "Female"
+          )
+        )
+
+combined_data$degree =
+  factor(combined_data$degree,
+         levels = c(
+           "Less Than High School",
+           "High School",
+           "Associate/Junior College",
+           "Bachelors",
+           "Graduate"
+          )
+        )
+
+combined_data$age_band =
+  factor(combined_data$age_band,
+         levels = c(
+           "18-29",
+           "30-39",
+           "40-49",
+           "50-64",
+           "65-79",
+           ">=80"
+          )
+        )
+
+combined_data$social_class =
+  factor(combined_data$social_class,
+         levels = c(
+           "Lower Class",
+           "Working Class",
+           "Middle Class",
+           "Upper Class"
+          )
+        )
+
+combined_data$social_class1 =
+  factor(combined_data$social_class1,
+         levels = c(
+           "Lower Class",
+           "Working Class",
+           "Lower Middle Class",
+           "Middle Class",
+           "Upper Middle Class",
+           "Upper Class"
+          )
+        )
+
+combined_data$cohort_band =
+  factor(combined_data$cohort_band,
+         levels = c(
+           "Greatest",
+           "Silent",
+           "Boomer",
+           "Gen X",
+           "Millenials",
+           "Gen Z"
+           )
+         )
+
+combined_data$family_income_bands =
+  factor(combined_data$family_income_bands,
+         levels = c(
+           "<$15K",
+           "$15K-$25K",
+           "$25K-$35K",
+           "$35K-$50K",
+           "$50K-$75K",
+           "$75K-$100K",
+           ">$100K"
+           )
+         )
+
+combined_data$financial_compare =
+  factor(combined_data$financial_compare,
+         levels = c(
+           "Far Below Average",
+           "Below Average",
+           "Average",
+           "Above Average",
+           "Far Above Average"
+         ))
+
+combined_data$financial_change =
+  factor(combined_data$financial_change,
+         levels = c(
+           "Getting Worse",
+           "Stayed the Same",
+           "Getting Better"
+         ))
+```
+
+```{r}
+#| message: false
+#| echo: false
+
+## Save a slice of 2021 and 2016 data
+
+survey_data_2021 =
+  combined_data |>
+  filter(year == 2021)
+
+survey_data_2016 =
+  combined_data |>
+  filter(year == 2016)
+```
+
+# To Do
+
+Christina
+
+-   financial satisfaction
+
+-   Social status
+
+-   calculating % ... over the year for graph - DONE
+
+-   Looking into social class getting it over the years - DONE
+
+Michaela
+
+-   financial change
+
+-   financial compare
+
+Other
+
+-   Supplementary survey
+
+-   Simulated data
+
+-   Data validation tests
+
+# Introduction
+
+The rich getting richer; poor getting poorer
+
+The super upper class are in a bubble and delusional
+
+Female and male differences
+
+# Data
+
+Data was cleaned and analyzed using the open source statistically programming language R [@r], using functionalities from `tidyverse` [@rTidyverse], `ggplot2` [@rGgplot2], `dplyr` [@rDplyr], `readr` [@rReadr], `tibble` [@rTibble], `janitor` [@rJanitor], `kableExtra` [@rKableExtra] and `knitr` [@rKnitr]. Details of the data extraction and cleaning processes are discussed in the subsections below.
+
+## Data
+
+Since 1972, the General Social Survey (GSS) has been tracking trends in public opinion through in-person interviews. Due to the COVID-19 pandemic, the GSS had to change their data collection from in-person to address-based sampling and a push-to-web methodology, meaning that most of the interview was conducted with an online self-administered questionnaire. When using this primarily mail-based communication, the 2021 GSS asks for "the person with the most recent birthday, rather than a random person in the household" to respond to the survey. T
+
+## Gaps
+
+This change in data collection methodology has limitations. First, data from the year 2020 is not recorded, which is inconsistent with the yearly GSS track record. Because the GSS data collection spans 2020 and 2021, the reference year for the 2021 GSS for questions where, for instance, respondents are asked for their income "last year", is 2019. Second, in the 2021 GSS, people below the age of 30, people without high school degrees, and Black respondents completed less surveys, proportionally, than their 2018 counterparts. *"To help adjust for differential non-response, the 2021 GSS Cross-section data include weights that are post- stratified to weighted proportions to equal 2019 American Community Survey Census Bureau control totals for region of the country, marital status, race, ethnicity, education, gender, and age. We recommend using these weights for all analysis of the 2021 GSS Cross-section data."*
+
+## Translations
+
+Shifting from in-person interviewing to online data collection required the GSS to find a new approach to appropriately recording responses when respondents expressed uncertainty, indecision, or a refusal to answer. Interviewers in previous rounds of the GSS had specific training in how to record "Don't Know" responses, which occurred when respondents either refused to answer a question or did not know the answer to a question. The 2021 GSS had no interviewers in the web mode to appropriately record these responses, so, in order to mitigate this change in mode, no item on the GSS shows "No Answer", unless the module sponsor requested that it be included. The exception to this was factual questions about occupation, income, or family background, since respondents could genuinely not know the answer, rather than being indecisive on the answer. Instead of "No answer" or "Don't know", users could skip the question. "Skipped on web" indicates that users read the questions but skipped it.
+
+## Affordances: New Experiments
+
+The added element of having a user interface allowed for experiments in survey recording that, according to the GSS' initial review of the data, made a difference in the results. For instance, the 2021 GSS displayed questions that shared a theme in a grid together, so that respondents could answer three or four thematically linked questions at the same time. The GSS tested abortion items and suicide items in both the traditional and grid format, which items asked in a grid marked with a -G suffix. The 2021 GSS also conducted an experiment with volunteered responses. In the past, respondents frequently volunteered information (for instance, "just right" rather than "too harsh" or "not harsh enough"), which interviewers had training for recording appropriately. In the online format, the GSS included a volunteered response on the screen in some cases, where the variable is marked with a -V suffix, and removed the option entirely for other respondents, marking the variable with an -NV suffix.
+
+## Impact on our study
+
+Any changes in opinions observed in 2021 relative to historical trends may be due to the changes in methodology. *\[ Here is where we can add how these methodology changes may impact specific variables in our study, when we come across them \]*
+
+### Surveys Related to Financial Attitudes
+
+### Respondent Demographics
+
+### Measurement Bias
+
+# Findings
+
+## Financial Satisfaction
+
+Overall spread in 2021
+
+```{r}
+#| message: false
+#| echo: false
+#| warning: false
+
+# Reference code from https://sebastiansauer.github.io/percentage_plot_ggplot2_V2/
+survey_data_2021 |>
+  ggplot(aes(x = financial_satisfaction)) +
+  geom_bar(aes(y = (..count..) / sum(..count..))) +
+  scale_y_continuous(labels=scales::percent)
+
+```
+
+Female less satisfied
+
+```{r}
+#| message: false
+#| echo: false
+#| warning: false
+
+# Reference code from https://sebastiansauer.github.io/percentage_plot_ggplot2_V2/
+survey_data_2021 |>
+  filter(!is.na(gender), !is.na(financial_satisfaction)) |>
+  ggplot(aes(x = financial_satisfaction, group = gender)) +
+  geom_bar(aes(y = ..prop.., fill = factor(..x..)), stat="count") + 
+  scale_y_continuous(labels=scales::percent) +
+  ylab("Percentage of response") +
+  xlab("Financial Satisfaction") +
+  theme(axis.text.x = element_text(angle = 45, hjust=1)) +
+  theme(legend.position="none") +
+  facet_grid(~gender)
+```
+
+Higher degree - more financially satisfied
+
+```{r}
+#| message: false
+#| echo: false
+#| warning: false
+
+# Reference code from https://sebastiansauer.github.io/percentage_plot_ggplot2_V2/
+survey_data_2021 |>
+  filter(!is.na(degree), !is.na(financial_satisfaction)) |>
+  ggplot(aes(x = financial_satisfaction, group = degree)) +
+  geom_bar(aes(y = ..prop.., fill = factor(..x..)), stat="count") + 
+  scale_y_continuous(labels=scales::percent) +
+  ylab("Percentage of response") +
+  xlab("Financial Satisfaction") +
+  theme(axis.text.x = element_text(angle = 45, hjust=1)) +
+  theme(legend.position="none") +
+  facet_grid(~degree)
+```
+
+Those born in US are less satisfied?
+
+```{r}
+#| message: false
+#| echo: false
+#| warning: false
+
+# Reference code from https://sebastiansauer.github.io/percentage_plot_ggplot2_V2/
+survey_data_2021 |>
+  filter(!is.na(born), !is.na(financial_satisfaction)) |>
+  ggplot(aes(x = financial_satisfaction, group = born)) +
+  geom_bar(aes(y = ..prop.., fill = factor(..x..)), stat="count") + 
+  scale_y_continuous(labels=scales::percent) +
+  ylab("Percentage of response") +
+  xlab("Financial Satisfaction") +
+  theme(axis.text.x = element_text(angle = 45, hjust=1)) +
+  theme(legend.position="none") +
+  facet_grid(~born)
+```
+
+Older cohorts are more satisfied with their financial situation
+
+```{r}
+#| message: false
+#| echo: false
+#| warning: false
+
+# Reference code from https://sebastiansauer.github.io/percentage_plot_ggplot2_V2/
+survey_data_2021 |>
+  filter(!is.na(age_band), !is.na(financial_satisfaction)) |>
+  ggplot(aes(x = financial_satisfaction, group = age_band)) +
+  geom_bar(aes(y = ..prop.., fill = factor(..x..)), stat="count") + 
+  scale_y_continuous(labels=scales::percent) +
+  ylab("Percentage of response") +
+  xlab("Financial Satisfaction") +
+  theme(axis.text.x = element_text(angle = 45, hjust=1)) +
+  theme(legend.position="none") +
+  facet_grid(~age_band)
+
+```
+
+Some differences based on working status
+
+```{r}
+#| message: false
+#| echo: false
+#| warning: false
+
+# Reference code from https://sebastiansauer.github.io/percentage_plot_ggplot2_V2/
+survey_data_2021 |>
+  filter(!is.na(work_status), !is.na(financial_satisfaction)) |>
+  ggplot(aes(x = financial_satisfaction, group = work_status)) +
+  geom_bar(aes(y = ..prop.., fill = factor(..x..)), stat="count") + 
+  scale_y_continuous(labels=scales::percent) +
+  ylab("Percentage of response") +
+  xlab("Financial Satisfaction") +
+  theme(axis.text.x = element_text(angle = 45, hjust=1)) +
+  theme(legend.position="none") +
+  facet_grid(~work_status)
+```
+
+Sexual orientation - not too much of a pattern?
+
+```{r}
+#| message: false
+#| echo: false
+#| warning: false
+
+# Reference code from https://sebastiansauer.github.io/percentage_plot_ggplot2_V2/
+survey_data_2021 |>
+  filter(!is.na(sexual_orientation), !is.na(financial_satisfaction)) |>
+  ggplot(aes(x = financial_satisfaction, group = sexual_orientation)) +
+  geom_bar(aes(y = ..prop.., fill = factor(..x..)), stat="count") + 
+  scale_y_continuous(labels=scales::percent) +
+  ylab("Percentage of response") +
+  xlab("Financial Satisfaction") +
+  theme(axis.text.x = element_text(angle = 45, hjust=1)) +
+  theme(legend.position="none") +
+  facet_grid(~sexual_orientation)
+```
+
+Social status - interestingly, upper class is less satisfied than upper middle class?
+
+```{r}
+#| message: false
+#| echo: false
+#| warning: false
+
+# Reference code from https://sebastiansauer.github.io/percentage_plot_ggplot2_V2/
+survey_data_2021 |>
+  filter(!is.na(social_class1), !is.na(financial_satisfaction)) |>
+  ggplot(aes(x = financial_satisfaction, group = social_class1)) +
+  geom_bar(aes(y = ..prop.., fill = factor(..x..)), stat="count") + 
+  scale_y_continuous(labels=scales::percent) +
+  ylab("Percentage of response") +
+  xlab("Financial Satisfaction") +
+  theme(axis.text.x = element_text(angle = 45, hjust=1)) +
+  theme(legend.position="none") +
+  facet_grid(~social_class1)
+```
+
+```{r}
+#| message: false
+#| echo: false
+#| warning: false
+
+# Reference code from https://sebastiansauer.github.io/percentage_plot_ggplot2_V2/
+survey_data_2021 |>
+  filter(!is.na(social_class), !is.na(financial_satisfaction)) |>
+  ggplot(aes(x = financial_satisfaction, group = social_class)) +
+  geom_bar(aes(y = ..prop.., fill = factor(..x..)), stat="count") + 
+  scale_y_continuous(labels=scales::percent) +
+  ylab("Percentage of response") +
+  xlab("Financial Satisfaction") +
+  theme(axis.text.x = element_text(angle = 45, hjust=1)) +
+  theme(legend.position="none") +
+  facet_grid(~social_class)
+```
+
+Financial satisfaction - does money make you more financially satisfied? oh yea.
+
+```{r}
+#| message: false
+#| echo: false
+#| warning: false
+#| 
+survey_data_2021 |>
+  filter(!is.na(family_income_bands), !is.na(financial_satisfaction)) |>
+  ggplot(aes(x = financial_satisfaction, group = family_income_bands)) +
+  geom_bar(aes(y = ..prop.., fill = factor(..x..)), stat="count") + 
+  scale_y_continuous(labels=scales::percent) +
+  ylab("Percentage of response") +
+  xlab("Financial Satisfaction") +
+  theme(axis.text.x = element_text(angle = 45, hjust=1)) +
+  theme(legend.position="none") +
+  facet_grid(~family_income_bands)
+```
+
+Financial Satisfaction Over the Years
+
+```{r}
+#| message: false
+#| echo: false
+#| warning: false
+
+## Create variable to track financial satisfaction across years ##
+
+financial_satisfaction_across_years =
+  combined_data |>
+    select(year, financial_satisfaction) |>
+    group_by(year) |>
+    count(financial_satisfaction)
+```
+
+Financial satisfaction - 2002, 2004, 2006 years have a lot of NAs!
+
+```{r}
+#| message: false
+#| echo: false
+#| warning: false
+
+financial_satisfaction_across_years |>
+  filter(!is.na(financial_satisfaction)) |>
+  #filter(!(year %in% c(2002, 2004, 2006))) |>
+  mutate(percent = n / sum(n)) |>
+  ggplot(aes(x = year, y = percent, color = financial_satisfaction)) +
+  geom_smooth(method=lm, se=FALSE) + 
+  #geom_bar(stat="identity") +
+  geom_line() +
+  scale_y_continuous(labels=scales::percent)
+
+```
+
+Financial satisfaction - tracking cohort over time
+
+```{r}
+#| message: false
+#| echo: false
+#| warning: false
+
+financial_satisfaction_across_years_by_cohort =
+  combined_data |>
+    select(year, cohort_band, financial_satisfaction) |>
+    group_by(year, cohort_band) |>
+    count(financial_satisfaction)
+
+financial_satisfaction_across_years_by_cohort |>
+  filter(!is.na(financial_satisfaction)) |>
+  filter(!(is.na(cohort_band))) |>
+  mutate(percent = n / sum(n)) |>
+  ggplot(aes(x = year, y = percent, color = financial_satisfaction )) +
+  geom_line() +
+  geom_smooth(method=lm, se=FALSE) + 
+  scale_y_continuous(labels=scales::percent) +
+  facet_wrap(vars(cohort_band), nrow = 3, ncol = 3) +
+  theme(legend.position="bottom")
+```
+
+## Social Class
+
+Social class over the years
+
+```{r}
+#| message: false
+#| echo: false
+#| warning: false
+
+## Create variable to track financial satisfaction across years ##
+
+social_class_across_years =
+  combined_data |>
+  select(year, social_class) |>
+  group_by(year) |>
+  count(social_class)
+
+social_class_across_years |>
+  filter(!is.na(social_class)) |>
+  mutate(percent = n / sum(n)) |>
+  ggplot(aes(x = year, y = percent, color = social_class)) +
+  #geom_bar(stat="identity") +
+  geom_line() +
+  scale_y_continuous(labels=scales::percent) +
+  geom_smooth(method=lm, se=FALSE)
+
+```
+
+```{r}
+#| message: false
+#| echo: false
+#| warning: false
+
+survey_data_2021 |>
+  filter(!is.na(family_income_bands), !is.na(social_class)) |>
+  ggplot(aes(x = social_class, group = family_income_bands)) +
+  geom_bar(aes(y = ..prop.., fill = factor(..x..)), stat="count") + 
+  scale_y_continuous(labels=scales::percent) +
+  ylab("Percentage of response") +
+  xlab("Financial Satisfaction") +
+  theme(axis.text.x = element_text(angle = 45, hjust=1)) +
+  theme(legend.position="none") +
+  facet_grid(~family_income_bands)
+```
+
+The variable *realinc* has only \~30 values - probably something to do with bands that are in the raw survey data
+
+```{r}
+#| message: false
+#| echo: false
+#| warning: false
+
+survey_data_2021 |>
+  filter(!is.na(social_class)) |>
+  ggplot(aes(x = social_class, y = realinc)) +
+  geom_boxplot() +
+  geom_jitter(alpha = 0.3, width = 0.10, height = 0)
+  #geom_point(alpha = 0.2) +
+  #geom_violin()
+```
+
+## Financial Compare
+
+```{r}
+#| message: false
+#| echo: false
+#| warning: false
+
+# Reference code from https://sebastiansauer.github.io/percentage_plot_ggplot2_V2/
+survey_data_2021 |>
+  filter(!is.na(social_class), !is.na(financial_compare)) |>
+  ggplot(aes(x = financial_compare, group = social_class)) +
+  geom_bar(aes(y = ..prop.., fill = factor(..x..)), stat="count") + 
+  scale_y_continuous(labels=scales::percent) +
+  ylab("Percentage of response") +
+  xlab("Financial Compare") +
+  theme(axis.text.x = element_text(angle = 45, hjust=1)) +
+  theme(legend.position="none") +
+  facet_grid(~social_class)
+
+
+
+```
+
+```{r}
+#| message: false
+#| echo: false
+#| warning: false
+
+# Reference code from https://sebastiansauer.github.io/percentage_plot_ggplot2_V2/
+survey_data_2021 |>
+  filter(!is.na(social_class), !is.na(financial_change)) |>
+  ggplot(aes(x = financial_change, group = social_class)) +
+  geom_bar(aes(y = ..prop.., fill = factor(..x..)), stat="count") + 
+  scale_y_continuous(labels=scales::percent) +
+  ylab("Percentage of response") +
+  xlab("Financial Change") +
+  theme(axis.text.x = element_text(angle = 45, hjust=1)) +
+  theme(legend.position="none") +
+  facet_grid(~social_class) 
+```
+
+```{r}
+#| message: false
+#| echo: false
+#| warning: false
+
+# Reference code from https://sebastiansauer.github.io/percentage_plot_ggplot2_V2/
+# survey_data_2016 |>
+#   filter(!is.na(social_class), !is.na(financial_change)) |>
+#   ggplot(aes(x = financial_change, group = social_class)) +
+#   geom_bar(aes(y = ..prop.., fill = factor(..x..)), stat="count") + 
+#   scale_y_continuous(labels=scales::percent) +
+#   ylab("Percentage of response") +
+#   xlab("Financial Change") +
+#   theme(axis.text.x = element_text(angle = 45, hjust=1)) +
+#   theme(legend.position="none") +
+#   facet_grid(~social_class) 
+```
+
+# Discussion
+
+# Conclusion
+
+# Reference
