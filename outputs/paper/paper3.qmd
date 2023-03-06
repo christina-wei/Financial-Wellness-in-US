@@ -243,6 +243,26 @@ Any changes in opinions observed in 2021 relative to historical trends may be du
 
 # Findings
 
+## Story
+
+Introduction - news, inflation, millennials and younger not doing better than their parents
+
+\% of financial compare & % financial satisfaction - in 2021
+
+Let's dig deeper into 2021
+
+-   gender
+
+-   education
+
+-   Social class
+
+-   Age
+
+How financial compare / financial satisfaction changed over the years - follow cohort and age
+
+How does social class impact these perceptions? - link to Michaela's literature
+
 ## Financial Satisfaction
 
 Overall spread in 2021
@@ -568,15 +588,15 @@ survey_data_2021 |>
 
 # Reference code from https://sebastiansauer.github.io/percentage_plot_ggplot2_V2/
 survey_data_2021 |>
-  filter(!is.na(social_class), !is.na(financial_compare)) |>
-  ggplot(aes(x = financial_compare, group = social_class)) +
+  filter(!is.na(social_class1), !is.na(financial_compare)) |>
+  ggplot(aes(x = financial_compare, group = social_class1)) +
   geom_bar(aes(y = ..prop.., fill = factor(..x..)), stat="count") + 
   scale_y_continuous(labels=scales::percent) +
   ylab("Percentage of response") +
   xlab("Financial Compare") +
   theme(axis.text.x = element_text(angle = 45, hjust=1)) +
   theme(legend.position="none") +
-  facet_grid(~social_class)
+  facet_grid(~social_class1)
 
 
 
