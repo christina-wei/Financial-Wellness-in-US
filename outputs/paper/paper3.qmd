@@ -25,7 +25,10 @@ bibliography: ref.bib
 library(tidyverse)
 library(knitr)
 library(kableExtra)
+library(formattable)
 library(here)
+source(here("scripts/04-helper_functions.R"))
+
 
 # read in cleaned data
 
@@ -73,6 +76,17 @@ combined_data$gender =
           )
         )
 
+combined_data$marital =
+  factor(combined_data$marital,
+         levels = c(
+           "Never Married",
+           "Married",
+           "Widowed",
+           "Divorced",
+           "Separated"
+          )
+        )
+
 combined_data$degree =
   factor(combined_data$degree,
          levels = c(
@@ -104,6 +118,20 @@ combined_data$social_class =
            "Middle Class",
            "Upper Class"
           )
+        )
+
+combined_data$work_status = 
+  factor(combined_data$work_status,
+         levels = c(
+           "Full Time",
+           "Part Time",
+           "In School",
+           "Keeping House",
+           "Unemployed",
+           "Temporarily Not Working",
+           "Retired",
+           "Other"
+         )
         )
 
 combined_data$social_class1 =
@@ -143,6 +171,25 @@ combined_data$family_income_bands =
            )
          )
 
+combined_data$income =
+  factor(combined_data$income,
+         levels = c(
+           "<$10K",
+           "$10K-$20K",
+           "$20K-$30K",
+           "$30K-$40K",
+           "$40K-$50K",
+           "$50K-$60K",
+           "$60K-$75K",
+           "$75K-$90K",
+           "$90K-$110K",
+           "$110K-$130K",
+           "$130K-$150K",
+           "$150K-$17K",
+           ">$170K"
+           )
+         )
+
 combined_data$financial_compare =
   factor(combined_data$financial_compare,
          levels = c(
@@ -172,9 +219,9 @@ survey_data_2021 =
   combined_data |>
   filter(year == 2021)
 
-survey_data_2016 =
-  combined_data |>
-  filter(year == 2016)
+# survey_data_2016 =
+#   combined_data |>
+#   filter(year == 2016)
 ```
 
 # To Do
@@ -184,10 +231,6 @@ Christina
 -   financial satisfaction
 
 -   Social status
-
--   calculating % ... over the year for graph - DONE
-
--   Looking into social class getting it over the years - DONE
 
 Michaela
 
@@ -241,7 +284,113 @@ Any changes in opinions observed in 2021 relative to historical trends may be du
 
 ### Measurement Bias
 
-# Findings
+# Results
+
+## Respondent Demographics in 2021 Survey
+
+```{r}
+#| message: false
+#| echo: false
+#| warning: false
+#| label: tbl-2021-gender
+#| tbl-cap: Number of respondents by gender for 2021 survey
+
+survey_data_2021 |>
+  group_by(gender) |>
+  count() |>
+  ungroup() |>
+  mutate (pct = percent(n / sum(n), digit = 1)) |>
+  kable(
+    col.names = c("Gender", "Number of Responses", "Percentage"),
+    booktabs = TRUE
+  )
+```
+
+```{r}
+#| message: false
+#| echo: false
+#| warning: false
+#| label: fig-2021-demographics
+#| fig-cap: "Distribution of Respondents' Demgraphics"
+#| fig-subcap: ["Age","Marital Status", "Level of Education", "Family Income"]
+#| layout-ncol: 2
+#| layout-nrow: 2
+
+#Age
+# survey_data_2021 |>
+#   ggplot(mapping = aes(x = age)) +
+#   geom_histogram(bins = 20, color="black", fill="grey") + 
+#   theme_minimal() +
+#   labs(
+#     x = "Age",
+#     y = "Number of responses"
+#   )
+
+#source(here("scripts/04-helper_functions.R"))
+
+#Age
+generate_percentage_bar_graph(
+  ggplot_data = ggplot(mapping = aes(x = survey_data_2021$age_band)),
+  xlabel = "Age",
+  angle = 45,
+  hjust = 1
+)
+
+#Marital status
+generate_percentage_bar_graph(
+  ggplot_data = ggplot(mapping = aes(x = survey_data_2021$marital)),
+  xlabel = "Marital Status",
+  angle = 45,
+  hjust = 1
+)
+
+#Degree
+generate_percentage_bar_graph(
+  ggplot_data = ggplot(mapping = aes(x = survey_data_2021$degree)),
+  xlabel = "Degree of Education",
+  angle = 45,
+  hjust = 1
+)
+
+#Family Income
+generate_percentage_bar_graph(
+  ggplot_data = ggplot(mapping = aes(x = survey_data_2021$income)),
+  xlabel = "Family Income in 2016",
+  angle = 45,
+  hjust = 1
+)
+```
+
+In 2021, there are 4032 responses recorded for the US General Social Survey. Out of these responses, 1730 (42.9%) of the respondents identified as male, 2198 (54.5%) identified as female, with 104 (2.6%) of them did not identify their **gender** in the survey (@tbl-2021-gender). Other than gender, we also looked at four different dimensions of respondents' demographics: age, marital status, degree of education and family income.
+
+The average **age** of respondents who responded in 2021 is 52 years old. Looking at the age distribution in @fig-2021-demographics, we see a good spread of values across the different categories, but with noticeably smaller number of respondents less than 29 years old, and those who are over 80 years old. It would be interesting to compare this to the demographic data across United States to see if this is a representative sample of the general population. There are also a large number of `NA` records for age responses, accounting for 8.3% of our data. Based on GSS codebook, 5.6% respondents chose "Not Applicable" when asked about their age, while 2.7% of the participants did not provide any answers.
+
+Most of the respondent provided an answer to their **marital status**. About half (49.6%) of the respondents are married as of the time of completing the survey, followed by 2.41% who were never married. The rest of the respondents selected either divorced (16.2%), widowed (7.5%), or separated (2.4%).
+
+Respondents' **level of education** was also well answered by respondents, with only 23 `NA` responses (0.6%). A significant portion of the respondents reported high school as their highest level of education (39.6%), followed by those who have a junior college or bachelors degree (34.9% combined). There are 18.8% of the respondents with a graduate degree, and 6.1% of them reported having less than high school education.
+
+Looking at the respondents' **family income** as of 2016, the first thing that jumps out is the number of `NA` values, accounting for 12.9% of the data. Based on GSS codebook, 8.3% respondents chose "Don't Know" for their income, 2.0% refused to answer the question, and 2.7% skipped the question all together. Otherwise, there seems to be a good spread of the number of respondents in each of the income bands, with half of the respondents reporting family income less than \$75,000. The last income band "\>\$170K" groups all respondents making over \$170,000 into one bucket. It reduces the insights we can glean from the data, for example, how much more than \$170,000 are there respondents making per year.
+
+## Overall Financial Satisfaction
+
+```{r}
+#| message: false
+#| echo: false
+#| warning: false
+
+# Reference code from https://sebastiansauer.github.io/percentage_plot_ggplot2_V2/
+survey_data_2021 |>
+  ggplot(aes(x = financial_satisfaction)) +
+  geom_bar(aes(y = (..count..) / sum(..count..))) +
+  scale_y_continuous(labels=scales::percent) +
+  theme_minimal()
+
+survey_data_2021 |>
+  ggplot(aes(x = financial_compare)) +
+  geom_bar(aes(y = (..count..) / sum(..count..))) +
+  scale_y_continuous(labels=scales::percent) +
+  theme_minimal()
+```
 
 ## Story
 
@@ -257,7 +406,7 @@ Let's dig deeper into 2021
 
 -   Social class
 
--   Age
+-   age
 
 How financial compare / financial satisfaction changed over the years - follow cohort and age
 
@@ -327,17 +476,17 @@ Those born in US are less satisfied?
 #| echo: false
 #| warning: false
 
-# Reference code from https://sebastiansauer.github.io/percentage_plot_ggplot2_V2/
-survey_data_2021 |>
-  filter(!is.na(born), !is.na(financial_satisfaction)) |>
-  ggplot(aes(x = financial_satisfaction, group = born)) +
-  geom_bar(aes(y = ..prop.., fill = factor(..x..)), stat="count") + 
-  scale_y_continuous(labels=scales::percent) +
-  ylab("Percentage of response") +
-  xlab("Financial Satisfaction") +
-  theme(axis.text.x = element_text(angle = 45, hjust=1)) +
-  theme(legend.position="none") +
-  facet_grid(~born)
+# # Reference code from https://sebastiansauer.github.io/percentage_plot_ggplot2_V2/
+# survey_data_2021 |>
+#   filter(!is.na(born), !is.na(financial_satisfaction)) |>
+#   ggplot(aes(x = financial_satisfaction, group = born)) +
+#   geom_bar(aes(y = ..prop.., fill = factor(..x..)), stat="count") + 
+#   scale_y_continuous(labels=scales::percent) +
+#   ylab("Percentage of response") +
+#   xlab("Financial Satisfaction") +
+#   theme(axis.text.x = element_text(angle = 45, hjust=1)) +
+#   theme(legend.position="none") +
+#   facet_grid(~born)
 ```
 
 Older cohorts are more satisfied with their financial situation
@@ -388,17 +537,17 @@ Sexual orientation - not too much of a pattern?
 #| echo: false
 #| warning: false
 
-# Reference code from https://sebastiansauer.github.io/percentage_plot_ggplot2_V2/
+# # Reference code from https://sebastiansauer.github.io/percentage_plot_ggplot2_V2/
 survey_data_2021 |>
-  filter(!is.na(sexual_orientation), !is.na(financial_satisfaction)) |>
-  ggplot(aes(x = financial_satisfaction, group = sexual_orientation)) +
-  geom_bar(aes(y = ..prop.., fill = factor(..x..)), stat="count") + 
+  filter(!is.na(marital), !is.na(financial_satisfaction)) |>
+  ggplot(aes(x = financial_satisfaction, group = marital)) +
+  geom_bar(aes(y = ..prop.., fill = factor(..x..)), stat="count") +
   scale_y_continuous(labels=scales::percent) +
   ylab("Percentage of response") +
   xlab("Financial Satisfaction") +
   theme(axis.text.x = element_text(angle = 45, hjust=1)) +
   theme(legend.position="none") +
-  facet_grid(~sexual_orientation)
+  facet_grid(~marital)
 ```
 
 Social status - interestingly, upper class is less satisfied than upper middle class?
@@ -570,12 +719,12 @@ The variable *realinc* has only \~30 values - probably something to do with band
 #| echo: false
 #| warning: false
 
-survey_data_2021 |>
-  filter(!is.na(social_class)) |>
-  ggplot(aes(x = social_class, y = realinc)) +
-  geom_boxplot() +
-  geom_jitter(alpha = 0.3, width = 0.10, height = 0)
-  #geom_point(alpha = 0.2) +
+# survey_data_2021 |>
+#   filter(!is.na(social_class)) |>
+#   ggplot(aes(x = social_class, y = realinc)) +
+#   geom_boxplot() +
+#   geom_jitter(alpha = 0.3, width = 0.10, height = 0)
+#   #geom_point(alpha = 0.2) +
   #geom_violin()
 ```
 
