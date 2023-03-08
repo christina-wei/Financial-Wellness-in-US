@@ -10,6 +10,7 @@ library(tidyverse)
 
 generate_percentage_bar_graph = function(ggplot_data, xlabel = NULL, ylabel = "Percentage of Responses", angle = NULL, hjust = NULL, vjust = NULL) {
 
+# Reference code from https://sebastiansauer.github.io/percentage_plot_ggplot2_V2/
 ggplot_data + 
 geom_bar(aes(y = (..count..) / sum(..count..))) +
 scale_y_continuous(labels=scales::percent) +

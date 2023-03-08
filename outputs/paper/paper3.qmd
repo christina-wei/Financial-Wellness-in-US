@@ -224,6 +224,26 @@ survey_data_2021 =
 #   filter(year == 2016)
 ```
 
+# Story
+
+Introduction - news, inflation, millennials and younger not doing better than their parents
+
+\% of financial compare & % financial satisfaction - in 2021
+
+Let's dig deeper into 2021
+
+-   gender
+
+-   education
+
+-   Social class
+
+-   age
+
+How financial compare / financial satisfaction changed over the years - follow cohort and age
+
+How does social class impact these perceptions? - link to Michaela's literature
+
 # To Do
 
 Christina
@@ -232,19 +252,17 @@ Christina
 
 -   Social status
 
+-   Simulated data - Christina
+
+-   Data validation tests - Christina
+
 Michaela
 
 -   financial change
 
 -   financial compare
 
-Other
-
 -   Supplementary survey
-
--   Simulated data
-
--   Data validation tests
 
 # Introduction
 
@@ -363,71 +381,93 @@ generate_percentage_bar_graph(
 
 In 2021, there are 4032 responses recorded for the US General Social Survey. Out of these responses, 1730 (42.9%) of the respondents identified as male, 2198 (54.5%) identified as female, with 104 (2.6%) of them did not identify their **gender** in the survey (@tbl-2021-gender). Other than gender, we also looked at four different dimensions of respondents' demographics: age, marital status, degree of education and family income.
 
-The average **age** of respondents who responded in 2021 is 52 years old. Looking at the age distribution in @fig-2021-demographics, we see a good spread of values across the different categories, but with noticeably smaller number of respondents less than 29 years old, and those who are over 80 years old. It would be interesting to compare this to the demographic data across United States to see if this is a representative sample of the general population. There are also a large number of `NA` records for age responses, accounting for 8.3% of our data. Based on GSS codebook, 5.6% respondents chose "Not Applicable" when asked about their age, while 2.7% of the participants did not provide any answers.
+The average **age** of respondents who responded in 2021 is 52 years old. Looking at the age distribution in @fig-2021-demographics-1, we see a good spread of values across the different categories, but with noticeably smaller number of respondents less than 29 years old, and those who are over 80 years old. It would be interesting to compare this to the demographic data across United States to see if this is a representative sample of the general population. There are also a large number of `NA` records for age responses, accounting for 8.3% of our data. Based on GSS codebook, 5.6% respondents chose "Not Applicable" when asked about their age, while 2.7% of the participants did not provide any answers.
 
-Most of the respondent provided an answer to their **marital status**. About half (49.6%) of the respondents are married as of the time of completing the survey, followed by 2.41% who were never married. The rest of the respondents selected either divorced (16.2%), widowed (7.5%), or separated (2.4%).
+Most of the respondent provided an answer to their **marital status** (@fig-2021-demographics-2). About half (49.6%) of the respondents are married as of the time of completing the survey, followed by 2.41% who were never married. The rest of the respondents selected either divorced (16.2%), widowed (7.5%), or separated (2.4%).
 
-Respondents' **level of education** was also well answered by respondents, with only 23 `NA` responses (0.6%). A significant portion of the respondents reported high school as their highest level of education (39.6%), followed by those who have a junior college or bachelors degree (34.9% combined). There are 18.8% of the respondents with a graduate degree, and 6.1% of them reported having less than high school education.
+Respondents' **level of education** was also well answered by respondents (@fig-2021-demographics-3), with only 23 `NA` responses (0.6%). A significant portion of the respondents reported high school as their highest level of education (39.6%), followed by those who have a junior college or bachelors degree (34.9% combined). There are 18.8% of the respondents with a graduate degree, and 6.1% of them reported having less than high school education.
 
-Looking at the respondents' **family income** as of 2016, the first thing that jumps out is the number of `NA` values, accounting for 12.9% of the data. Based on GSS codebook, 8.3% respondents chose "Don't Know" for their income, 2.0% refused to answer the question, and 2.7% skipped the question all together. Otherwise, there seems to be a good spread of the number of respondents in each of the income bands, with half of the respondents reporting family income less than \$75,000. The last income band "\>\$170K" groups all respondents making over \$170,000 into one bucket. It reduces the insights we can glean from the data, for example, how much more than \$170,000 are there respondents making per year.
+Looking at the respondents' **family income** as of 2016 (@fig-2021-demographics-4), the first thing that jumps out is the number of `NA` values, accounting for 12.9% of the data. Based on GSS codebook, 8.3% respondents chose "Don't Know" for their income, 2.0% refused to answer the question, and 2.7% skipped the question all together. Otherwise, there seems to be a good spread of the number of respondents in each of the income bands, with half of the respondents reporting family income less than \$75,000. The last income band "\>\$170K" groups all respondents making over \$170,000 into one bucket. It reduces the insights we can glean from the data, for example, how much more than \$170,000 are there respondents making per year.
 
-## Overall Financial Satisfaction
+## Attitudes Towards Financial Wellness
+
+As estimands to assess societal attitudes towards financial wellness in United States, we looked at the results of following survey questions:
+
+-   **Financial Satisfaction** - We are interested in how people are getting along financially these days. So far as you and your family are concerned, would you say that you are pretty well satisfied with your present financial situation, more or less satisfied, or not satisfied at all?
+-   **Comparing to Others** - Compared with American families in general, would you say your family income is far below average, below average, average, above average, or far above average?
+-   **Change in Financial Situation** - During the last few years, has your financial situation been getting better, worse, or has it stayed the same?
+-   **Self-Identified Social Class** - Most people see themselves as belonging to a particular class. Please tell me which social class you would say you belong to?
 
 ```{r}
 #| message: false
 #| echo: false
 #| warning: false
+#| label: fig-2021-financial
+#| fig-cap: "Distribution of respondents' attitudes towards their financial wellness"
+#| fig-subcap: ["Financial Satisfaction", "Change in Financial Situation", "Comparing to Others", "Self-Identified Social Class"]
+#| layout-ncol: 2
+#| layout-nrow: 2
 
-# Reference code from https://sebastiansauer.github.io/percentage_plot_ggplot2_V2/
-survey_data_2021 |>
-  ggplot(aes(x = financial_satisfaction)) +
-  geom_bar(aes(y = (..count..) / sum(..count..))) +
-  scale_y_continuous(labels=scales::percent) +
-  theme_minimal()
+generate_percentage_bar_graph(
+  ggplot_data = ggplot(mapping = aes(x = survey_data_2021$financial_satisfaction)),
+  xlabel = "Financial Satisfaction",
+  angle = 45,
+  hjust = 1
+)
 
-survey_data_2021 |>
-  ggplot(aes(x = financial_compare)) +
-  geom_bar(aes(y = (..count..) / sum(..count..))) +
-  scale_y_continuous(labels=scales::percent) +
-  theme_minimal()
+generate_percentage_bar_graph(
+  ggplot_data = ggplot(mapping = aes(x = survey_data_2021$financial_change)),
+  xlabel = "Change in Financial Situation",
+  vjust = 5
+)
+
+generate_percentage_bar_graph(
+  ggplot_data = ggplot(mapping = aes(x = survey_data_2021$financial_compare)),
+  xlabel = "Comparing Family Income with American Families in General",
+  angle = 45,
+  hjust = 1
+)
+
+generate_percentage_bar_graph(
+  ggplot_data = ggplot(mapping = aes(x = survey_data_2021$social_class)),
+  xlabel = "Self Identified Social Class",
+  vjust = 5
+)
 ```
 
-## Story
+Based on @fig-2021-financial-1, it looks like our society is not doing too badly with their current financial situation. Only 23.9% reporting "not satisfied at all" on the question asking whether they are satisfied with their financial situation. Similarly, most respondents reported that they are staying the same or getting better in their financial situation, with only 20.1% feeling they are getting worse financially (@fig-2021-financial-2).
 
-Introduction - news, inflation, millennials and younger not doing better than their parents
+To analyze how respondents compare themselves to others, we look at @fig-2021-financial-3 on how they ranked themselves against American families in general. This graphs shows that most individuals feel like they are on par with others (39.5%), with small number of respondents feeling above average (24.8%) and below average (24.3%). However, 7.1% of respondent felt that they are far below average compared to other families in general, and 3.8% felt they are far above average.
 
-\% of financial compare & % financial satisfaction - in 2021
+Looking at how respondents self identified their social classes (@fig-2021-financial-4), we noticed an interesting pattern that there are similar percentages for respondents who rated themselves as far below average (7.1%) and those who classified themselves as lower class (8.7%). Also, the percentages are similar for respondents who rated themselves as far above average (3.8%) and those who classified themselves as upper class (4.2%). Most respondents identified themselves ass middle class (49.6%) or working class (37.2%).
 
-Let's dig deeper into 2021
+Digging further into the relationship between self identified social class and how respondents compare their financial situation with others, we visualized their correlation using @fig-2021-class-compare. There is a clear trend shown in this heatmap: as individuals rank themselves higher in social class, they also perceive their financial situation to be better than the general public.
 
--   gender
+```{r}
+#| message: false
+#| echo: false
+#| warning: false
+#| label: fig-2021-class-compare
+#| fig-cap: "Correlation between social class and comparing financial situation with others "
 
--   education
-
--   Social class
-
--   age
-
-How financial compare / financial satisfaction changed over the years - follow cohort and age
-
-How does social class impact these perceptions? - link to Michaela's literature
+survey_data_2021 |>
+  filter(!is.na(financial_compare), !is.na(social_class)) |>
+  group_by(social_class, financial_compare) |>
+  count() |>
+  ungroup() |>
+  group_by(social_class) |>
+  mutate(Percentage = n / sum(n)) |>
+  ggplot(aes(x = financial_compare, y = social_class, fill = Percentage)) +
+  geom_tile() + 
+  scale_fill_gradient2(low="white", high="darkgreen", guide="colorbar") +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
+  labs (
+    x = "Comparing Financial Situation to Others",
+    y = "Self-Identified Social Class",
+  )
+```
 
 ## Financial Satisfaction
-
-Overall spread in 2021
-
-```{r}
-#| message: false
-#| echo: false
-#| warning: false
-
-# Reference code from https://sebastiansauer.github.io/percentage_plot_ggplot2_V2/
-survey_data_2021 |>
-  ggplot(aes(x = financial_satisfaction)) +
-  geom_bar(aes(y = (..count..) / sum(..count..))) +
-  scale_y_continuous(labels=scales::percent)
-
-```
 
 Female less satisfied
 
@@ -788,6 +828,8 @@ survey_data_2021 |>
 ```
 
 # Discussion
+
+# Limitations and Future Direction
 
 # Conclusion
 
