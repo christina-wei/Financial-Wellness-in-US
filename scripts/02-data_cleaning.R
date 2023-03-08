@@ -165,7 +165,8 @@ cleaned_respondent_info =
     income16 == 24 ~ '$130K-$150K',
     income16 == 25 ~ '$150K-$170K',
     income16 == 26 ~ '>$170K',
-    ))
+    )) |>
+    select(-income16)
 
 # [family_income_band]
 cleaned_respondent_info =
@@ -178,8 +179,8 @@ cleaned_respondent_info =
     realinc >= 50000 & realinc < 75000 ~ '$50K-$75K',
     realinc >= 75000 & realinc < 100000 ~ '$75K-$100K',
     realinc >= 100000 ~ '>$100K',
-  ))
-
+  )) |>
+  select(-realinc)
 
 # [age_band]
 cleaned_respondent_info = 
