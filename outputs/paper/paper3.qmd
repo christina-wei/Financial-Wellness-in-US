@@ -467,27 +467,179 @@ survey_data_2021 |>
   )
 ```
 
-## Financial Satisfaction
+## Slicing Financial Attitudes by Demographic Factors
 
-Female less satisfied
+Now that we have a general understanding of the respondent demographics and their attitudes towards financial wellness, let's take a look at the intersections between the attitudes and the demographics.
+
+### Gender
 
 ```{r}
 #| message: false
 #| echo: false
 #| warning: false
+#| label: fig-2021-gender-financial
+#| fig-cap: "Intersection of financial attitudes with gender"
+#| fig-subcap: ["Financial Satisfaction", "Change in Financial Situation", "Comparing to Others"]
+#| layout-ncol: 3
 
-# Reference code from https://sebastiansauer.github.io/percentage_plot_ggplot2_V2/
 survey_data_2021 |>
   filter(!is.na(gender), !is.na(financial_satisfaction)) |>
-  ggplot(aes(x = financial_satisfaction, group = gender)) +
-  geom_bar(aes(y = ..prop.., fill = factor(..x..)), stat="count") + 
+  group_by(gender, financial_satisfaction) |>
+  count() |>
+  ungroup() |>
+  group_by(gender) |>
+  mutate(pct = percent(n / sum(n), digit = 1)) |>
+  ggplot(aes(x = financial_satisfaction, y = pct, fill = gender)) +
+  geom_bar(stat="identity", position="dodge") +
   scale_y_continuous(labels=scales::percent) +
-  ylab("Percentage of response") +
-  xlab("Financial Satisfaction") +
-  theme(axis.text.x = element_text(angle = 45, hjust=1)) +
-  theme(legend.position="none") +
-  facet_grid(~gender)
+  theme_minimal() +
+  theme(legend.position="bottom") + 
+  labs(
+    x = "Financial Satisfaction",
+    y = "Percentage of Responses",
+    fill = "Gender"
+  )
+
+survey_data_2021 |>
+  filter(!is.na(gender), !is.na(financial_change)) |>
+  group_by(gender, financial_change) |>
+  count() |>
+  ungroup() |>
+  group_by(gender) |>
+  mutate(pct = percent(n / sum(n), digit = 1)) |>
+  ggplot(aes(x = financial_change, y = pct, fill = gender)) +
+  geom_bar(stat="identity", position="dodge") +
+  scale_y_continuous(labels=scales::percent) +
+  theme_minimal() +
+  theme(legend.position="bottom") + 
+  labs(
+    x = "Change in Financial Situation",
+    y = "Percentage of Responses",
+    fill = "Gender"
+  )
+
+survey_data_2021 |>
+  filter(!is.na(gender), !is.na(financial_compare)) |>
+  group_by(gender, financial_compare) |>
+  count() |>
+  ungroup() |>
+  group_by(gender) |>
+  mutate(pct = percent(n / sum(n), digit = 1)) |>
+  ggplot(aes(x = financial_compare, y = pct, fill = gender)) +
+  geom_bar(stat="identity", position="dodge") +
+  scale_y_continuous(labels=scales::percent) +
+  theme_minimal() +
+  theme(legend.position="bottom") + 
+  labs(
+    x = "Comparing to Others",
+    y = "Percentage of Responses",
+    fill = "Gender"
+  )
 ```
+
+Compare across different genders (defined as sex at birth), we noticed in @fig-2021-gender-financial-1 that there are more female respondents who are not satisfied with their financial situations (26.3%) as compared to male respondents (20.5%). Also, there are more female respondent reporting that their financial situation is getting worse (22.7%) compared to male respondents (16.7%) (@fig-2021-gender-financial-2). When comparing their financial situations to others, more proportion of male respondents (30.2%) rated themselves as above average as compared to female respondents (21.3%) (@fig-2021-gender-financial-3). These results triangulated together shows that women in our society may be more disadvantaged in their financial wellness as compared to men.
+
+### Age
+
+```{r}
+#| message: false
+#| echo: false
+#| warning: false
+#| label: fig-2021-age-financial
+#| fig-cap: "Intersection of financial attitudes with age"
+#| fig-subcap: ["Financial Satisfaction", "Change in Financial Situation"]
+#| layout-ncol: 2
+
+survey_data_2021 |>
+  filter(!is.na(age_band), !is.na(financial_satisfaction)) |>
+  group_by(age_band, financial_satisfaction) |>
+  count() |>
+  ungroup() |>
+  group_by(age_band) |>
+  mutate(pct = percent(n / sum(n), digit = 1)) |>
+  ggplot(aes(x = age_band, y = pct, fill = financial_satisfaction)) +
+  geom_bar(stat="identity", position="dodge") +
+  scale_y_continuous(labels=scales::percent) +
+  theme_minimal() +
+  theme(legend.position="bottom") + 
+  labs(
+    x = "Financial Satisfaction",
+    y = "Percentage of Responses",
+    fill = "Age Group"
+  )
+
+survey_data_2021 |>
+  filter(!is.na(age_band), !is.na(financial_change)) |>
+  group_by(age_band, financial_change) |>
+  count() |>
+  ungroup() |>
+  group_by(age_band) |>
+  mutate(pct = percent(n / sum(n), digit = 1)) |>
+  ggplot(aes(x = age_band, y = pct, fill = financial_change)) +
+  geom_bar(stat="identity", position="dodge") +
+  scale_y_continuous(labels=scales::percent) +
+  theme_minimal() +
+  theme(legend.position="bottom") + 
+  labs(
+    x = "Change in Financial Situation",
+    y = "Percentage of Responses",
+    fill = "Age Group"
+  )
+```
+
+Are we achieving better financial wellness as we get older? We found evidence to support this in the 2021 GSS data, as @fig-2021-age-financial-1 demonstrates that the percentage of respondents who selected "pretty well satisfied" over time increases as age increases. However, it is interesting to note that the percentage of responses with "not satisfied at all" within an age band increases in the early adulthood, then decreases starting with the 40-49 age band.
+
+Looking at how respondents assessed changes in their financial situation, we see in @fig-2021-age-financial-2 the concerning trend over the age groups that the percentage of those selecting "getting worse" as an answer stays roughly constant at around 20%, showing no reductions over the age bands. On the other hand, the responses for "getting better" starts off high at around 50% at younger ages, then drops off starting with the 40-49 age band. Staring with the 50-64 age band, most users rate their financial situation to be "staying the same".
+
+### Level of Education
+
+```{r}
+#| message: false
+#| echo: false
+#| warning: false
+#| label: fig-2021-degree-financial
+#| fig-cap: "Intersection of financial attitudes with level of education"
+#| fig-subcap: ["Financial Satisfaction", "Change in Financial Situation"]
+#| layout-ncol: 2
+
+survey_data_2021 |>
+  filter(!is.na(age_band), !is.na(financial_satisfaction)) |>
+  group_by(age_band, financial_satisfaction) |>
+  count() |>
+  ungroup() |>
+  group_by(age_band) |>
+  mutate(pct = percent(n / sum(n), digit = 1)) |>
+  ggplot(aes(x = age_band, y = pct, fill = financial_satisfaction)) +
+  geom_bar(stat="identity", position="dodge") +
+  scale_y_continuous(labels=scales::percent) +
+  theme_minimal() +
+  theme(legend.position="bottom") + 
+  labs(
+    x = "Financial Satisfaction",
+    y = "Percentage of Responses",
+    fill = "Age Group"
+  )
+
+survey_data_2021 |>
+  filter(!is.na(age_band), !is.na(financial_change)) |>
+  group_by(age_band, financial_change) |>
+  count() |>
+  ungroup() |>
+  group_by(age_band) |>
+  mutate(pct = percent(n / sum(n), digit = 1)) |>
+  ggplot(aes(x = age_band, y = pct, fill = financial_change)) +
+  geom_bar(stat="identity", position="dodge") +
+  scale_y_continuous(labels=scales::percent) +
+  theme_minimal() +
+  theme(legend.position="bottom") + 
+  labs(
+    x = "Change in Financial Situation",
+    y = "Percentage of Responses",
+    fill = "Age Group"
+  )
+```
+
+### Family Income
 
 Higher degree - more financially satisfied
 
@@ -498,15 +650,15 @@ Higher degree - more financially satisfied
 
 # Reference code from https://sebastiansauer.github.io/percentage_plot_ggplot2_V2/
 survey_data_2021 |>
-  filter(!is.na(degree), !is.na(financial_satisfaction)) |>
-  ggplot(aes(x = financial_satisfaction, group = degree)) +
+  filter(!is.na(marital), !is.na(financial_satisfaction)) |>
+  ggplot(aes(x = financial_satisfaction, group = marital)) +
   geom_bar(aes(y = ..prop.., fill = factor(..x..)), stat="count") + 
   scale_y_continuous(labels=scales::percent) +
   ylab("Percentage of response") +
   xlab("Financial Satisfaction") +
   theme(axis.text.x = element_text(angle = 45, hjust=1)) +
   theme(legend.position="none") +
-  facet_grid(~degree)
+  facet_grid(~marital)
 ```
 
 Those born in US are less satisfied?
@@ -706,6 +858,8 @@ financial_satisfaction_across_years_by_cohort |>
   facet_wrap(vars(cohort_band), nrow = 3, ncol = 3) +
   theme(legend.position="bottom")
 ```
+
+## Trend Over Time
 
 ## Social Class
 
