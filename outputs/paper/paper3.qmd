@@ -602,6 +602,32 @@ survey_data_2021 |>
 
 ```
 
+
+```{r}
+
+{r}
+#| message: false
+#| echo: false
+#| warning: false
+
+# Reference code from https://sebastiansauer.github.io/percentage_plot_ggplot2_V2/
+survey_data_2021 |>
+  filter(!is.na(family_income_bands), !is.na(financial_compare)) |>
+  ggplot(aes(x = financial_compare, group = family_income_bands)) +
+  geom_bar(aes(y = ..prop.., fill = factor(..x..)), stat="count") + 
+  scale_y_continuous(labels=scales::percent) +
+  ylab("Percentage of response") +
+  xlab("Financial Compare") +
+  theme(axis.text.x = element_text(angle = 45, hjust=1)) +
+  theme(legend.position="none") +
+  facet_grid(~family_income_bands)
+
+
+
+```
+
+
+
 ```{r}
 #| message: false
 #| echo: false
