@@ -268,10 +268,6 @@ Michaela
 
 -   Limitations & Future Work
 
-To Do
-
--   How the data affects us
-
 # Introduction
 
 Financial satisfaction and well-being are subjective self-evaluations that can be influenced by a wide variety of different factors. However, the COVID-19 pandemic and the ensuing inflation rates have shown that pressures that economic trends bring on affect different demographics disproportionately. While the pandemic was a shared global experience, individual experiences of its implications were not.
@@ -282,7 +278,7 @@ Overall, the data supports general hypotheses that over time, the rich are getti
 
 # Data
 
-Data used in this pare are retrieved from the US General Social Survey (GSS) from NORC at the University of Chicago [@gss]. We retrieved demographic data as well as survey questions related to financial wellness from 1972 to 2021.
+Data used in this paper are retrieved from the US General Social Survey (GSS) from NORC at the University of Chicago [@gss]. We retrieved demographic data as well as survey questions related to financial wellness from 1972 to 2021.
 
 ## Source Data
 
@@ -313,25 +309,19 @@ Since 1972, the General Social Survey (GSS) has been tracking trends in public o
 
 ### Gap in 2020 data
 
-This change in data collection methodology has limitations. First, data from the year 2020 is not recorded, which is inconsistent with the yearly GSS track record. Because the GSS data collection spans 2020 and 2021, the reference year for the 2021 GSS for questions where, for instance, respondents are asked for their income "last year", is 2019. Second, in the 2021 GSS, people below the age of 30, people without high school degrees, and Black respondents completed less surveys, proportionally, than their 2018 counterparts. *"To help adjust for differential non-response, the 2021 GSS Cross-section data include weights that are post- stratified to weighted proportions to equal 2019 American Community Survey Census Bureau control totals for region of the country, marital status, race, ethnicity, education, gender, and age. We recommend using these weights for all analysis of the 2021 GSS Cross-section data."*
+This change in data collection methodology has limitations. First, data from the year 2020 is not recorded, which is inconsistent with the yearly GSS track record. Because the GSS data collection spans 2020 and 2021, the reference year for the 2021 GSS for questions where, for instance, respondents are asked for their income "last year", is 2019. Second, in the 2021 GSS, people below the age of 30, people without high school degrees, and Black respondents completed less surveys, proportionally, than their 2018 counterparts.
 
 ### "Don't know" responses
 
 Shifting from in-person interviewing to online data collection required the GSS to find a new approach to appropriately recording responses when respondents expressed uncertainty, indecision, or a refusal to answer. Interviewers in previous rounds of the GSS had specific training in how to record "Don't Know" responses, which occurred when respondents either refused to answer a question or did not know the answer to a question. The 2021 GSS had no interviewers in the web mode to appropriately record these responses, so, in order to mitigate this change in mode, no item on the GSS shows "No Answer", unless the module sponsor requested that it be included. The exception to this was factual questions about occupation, income, or family background, since respondents could genuinely not know the answer, rather than being indecisive on the answer. Instead of "No answer" or "Don't know", users could skip the question. "Skipped on web" indicates that users read the questions but skipped it.
 
-### Afordances: New Experiments
+### Survey Experimentation
 
 The added element of having a user interface allowed for experiments in survey recording that, according to the GSS' initial review of the data, made a difference in the results. For instance, the 2021 GSS displayed questions that shared a theme in a grid together, so that respondents could answer three or four thematically linked questions at the same time. The GSS tested abortion items and suicide items in both the traditional and grid format, which items asked in a grid marked with a -G suffix. The 2021 GSS also conducted an experiment with volunteered responses. In the past, respondents frequently volunteered information (for instance, "just right" rather than "too harsh" or "not harsh enough"), which interviewers had training for recording appropriately. In the online format, the GSS included a volunteered response on the screen in some cases, where the variable is marked with a -V suffix, and removed the option entirely for other respondents, marking the variable with an -NV suffix.
 
 ### Impact on our study
 
-Any changes in opinions observed in 2021 relative to historical trends may be due to the changes in methodology. *\[ Here is where we can add how these methodology changes may impact specific variables in our study, when we come across them \]*
-
-Future studies - incorporate more survey responses
-
-More correlations between factors
-
-Understand whether the demographics in GSS survey is representative of US population --\> gender split, education etc.
+Any changes in opinions observed in 2021 relative to historical trends may be due to the changes in methodology. While the incomes reported are from 2019, the emotions recorded (i.e. financial satisfaction, financial comparison), are from 2021, after a year when many people lost their jobs, moved cities, or had other changes in household arrangements and income. While this has less of an impact on long-term visualizations of reported satisfaction over time, analyses of reported satisfaction based on income levels using 2021 data will be influenced by this gap.
 
 ## Data Cleaning
 
