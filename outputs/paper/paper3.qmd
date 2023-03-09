@@ -1,5 +1,5 @@
 ---
-title: "TBD"
+title: "The Decline of Financial Wellness"
 title-block-banner: true
 abstract: "TBD"
 thanks: "Code and data supporting this analysis is available at: https://github.com/christina-wei/INF3104-3-US-Survey.git"
@@ -25,7 +25,10 @@ bibliography: ref.bib
 library(tidyverse)
 library(knitr)
 library(kableExtra)
+library(formattable)
 library(here)
+source(here("scripts/04-helper_functions.R"))
+
 
 # read in cleaned data
 
@@ -73,6 +76,17 @@ combined_data$gender =
           )
         )
 
+combined_data$marital =
+  factor(combined_data$marital,
+         levels = c(
+           "Never Married",
+           "Married",
+           "Widowed",
+           "Divorced",
+           "Separated"
+          )
+        )
+
 combined_data$degree =
   factor(combined_data$degree,
          levels = c(
@@ -104,6 +118,20 @@ combined_data$social_class =
            "Middle Class",
            "Upper Class"
           )
+        )
+
+combined_data$work_status = 
+  factor(combined_data$work_status,
+         levels = c(
+           "Full Time",
+           "Part Time",
+           "In School",
+           "Keeping House",
+           "Unemployed",
+           "Temporarily Not Working",
+           "Retired",
+           "Other"
+         )
         )
 
 combined_data$social_class1 =
@@ -143,6 +171,25 @@ combined_data$family_income_bands =
            )
          )
 
+combined_data$income =
+  factor(combined_data$income,
+         levels = c(
+           "<$10K",
+           "$10K-$20K",
+           "$20K-$30K",
+           "$30K-$40K",
+           "$40K-$50K",
+           "$50K-$60K",
+           "$60K-$75K",
+           "$75K-$90K",
+           "$90K-$110K",
+           "$110K-$130K",
+           "$130K-$150K",
+           "$150K-$17K",
+           ">$170K"
+           )
+         )
+
 combined_data$financial_compare =
   factor(combined_data$financial_compare,
          levels = c(
@@ -172,78 +219,12 @@ survey_data_2021 =
   combined_data |>
   filter(year == 2021)
 
-survey_data_2016 =
-  combined_data |>
-  filter(year == 2016)
+# survey_data_2016 =
+#   combined_data |>
+#   filter(year == 2016)
 ```
 
-# To Do
-
-Christina
-
--   financial satisfaction
-
--   Social status
-
--   calculating % ... over the year for graph - DONE
-
--   Looking into social class getting it over the years - DONE
-
-Michaela
-
--   financial change
-
--   financial compare
-
-Other
-
--   Supplementary survey
-
--   Simulated data
-
--   Data validation tests
-
-# Introduction
-
-The rich getting richer; poor getting poorer
-
-The super upper class are in a bubble and delusional
-
-Female and male differences
-
-# Data
-
-Data was cleaned and analyzed using the open source statistically programming language R [@r], using functionalities from `tidyverse` [@rTidyverse], `ggplot2` [@rGgplot2], `dplyr` [@rDplyr], `readr` [@rReadr], `tibble` [@rTibble], `janitor` [@rJanitor], `kableExtra` [@rKableExtra] and `knitr` [@rKnitr]. Details of the data extraction and cleaning processes are discussed in the subsections below.
-
-## Data
-
-Since 1972, the General Social Survey (GSS) has been tracking trends in public opinion through in-person interviews. Due to the COVID-19 pandemic, the GSS had to change their data collection from in-person to address-based sampling and a push-to-web methodology, meaning that most of the interview was conducted with an online self-administered questionnaire. When using this primarily mail-based communication, the 2021 GSS asks for "the person with the most recent birthday, rather than a random person in the household" to respond to the survey. T
-
-## Gaps
-
-This change in data collection methodology has limitations. First, data from the year 2020 is not recorded, which is inconsistent with the yearly GSS track record. Because the GSS data collection spans 2020 and 2021, the reference year for the 2021 GSS for questions where, for instance, respondents are asked for their income "last year", is 2019. Second, in the 2021 GSS, people below the age of 30, people without high school degrees, and Black respondents completed less surveys, proportionally, than their 2018 counterparts. *"To help adjust for differential non-response, the 2021 GSS Cross-section data include weights that are post- stratified to weighted proportions to equal 2019 American Community Survey Census Bureau control totals for region of the country, marital status, race, ethnicity, education, gender, and age. We recommend using these weights for all analysis of the 2021 GSS Cross-section data."*
-
-## Translations
-
-Shifting from in-person interviewing to online data collection required the GSS to find a new approach to appropriately recording responses when respondents expressed uncertainty, indecision, or a refusal to answer. Interviewers in previous rounds of the GSS had specific training in how to record "Don't Know" responses, which occurred when respondents either refused to answer a question or did not know the answer to a question. The 2021 GSS had no interviewers in the web mode to appropriately record these responses, so, in order to mitigate this change in mode, no item on the GSS shows "No Answer", unless the module sponsor requested that it be included. The exception to this was factual questions about occupation, income, or family background, since respondents could genuinely not know the answer, rather than being indecisive on the answer. Instead of "No answer" or "Don't know", users could skip the question. "Skipped on web" indicates that users read the questions but skipped it.
-
-## Affordances: New Experiments
-
-The added element of having a user interface allowed for experiments in survey recording that, according to the GSS' initial review of the data, made a difference in the results. For instance, the 2021 GSS displayed questions that shared a theme in a grid together, so that respondents could answer three or four thematically linked questions at the same time. The GSS tested abortion items and suicide items in both the traditional and grid format, which items asked in a grid marked with a -G suffix. The 2021 GSS also conducted an experiment with volunteered responses. In the past, respondents frequently volunteered information (for instance, "just right" rather than "too harsh" or "not harsh enough"), which interviewers had training for recording appropriately. In the online format, the GSS included a volunteered response on the screen in some cases, where the variable is marked with a -V suffix, and removed the option entirely for other respondents, marking the variable with an -NV suffix.
-
-## Impact on our study
-
-Any changes in opinions observed in 2021 relative to historical trends may be due to the changes in methodology. *\[ Here is where we can add how these methodology changes may impact specific variables in our study, when we come across them \]*
-
-### Surveys Related to Financial Attitudes
-
-### Respondent Demographics
-
-### Measurement Bias
-
-# Findings
-
-## Story
+# Story
 
 Introduction - news, inflation, millennials and younger not doing better than their parents
 
@@ -257,151 +238,578 @@ Let's dig deeper into 2021
 
 -   Social class
 
--   Age
+-   age
 
 How financial compare / financial satisfaction changed over the years - follow cohort and age
 
 How does social class impact these perceptions? - link to Michaela's literature
 
-## Financial Satisfaction
+# To Do
 
-Overall spread in 2021
+Christina
+
+-   financial satisfaction
+
+-   Social status
+
+-   Simulated data - Christina
+
+-   Data validation tests - Christina
+
+Michaela
+
+-   financial change
+
+-   financial compare
+
+-   Supplementary survey
+
+# Introduction
+
+The rich getting richer; poor getting poorer
+
+The super upper class are in a bubble and delusional
+
+Female and male differences
+
+# Data
+
+Data was cleaned and analyzed using the open source statistically programming language R [@r], using functionalities from `tidyverse` [@rTidyverse], `ggplot2` [@rGgplot2], `dplyr` [@rDplyr], `readr` [@rReadr], `tibble` [@rTibble], `janitor` [@rJanitor], `kableExtra` [@rKableExtra] and `knitr` [@rKnitr]. Details of the data extraction and cleaning processes are discussed in the subsections below.
+
+## General Social Survey
+
+Since 1972, the General Social Survey (GSS) has been tracking trends in public opinion through in-person interviews. Due to the COVID-19 pandemic, the GSS had to change their data collection from in-person to address-based sampling and a push-to-web methodology, meaning that most of the interview was conducted with an online self-administered questionnaire. When using this primarily mail-based communication, the 2021 GSS asks for "the person with the most recent birthday, rather than a random person in the household" to respond to the survey. T
+
+### Surveys Related to Financial Attitudes
+
+### Respondent Demographics
+
+# Results
+
+## Respondent Demographics in 2021 Survey
 
 ```{r}
 #| message: false
 #| echo: false
 #| warning: false
+#| label: tbl-2021-gender
+#| tbl-cap: Number of respondents by gender for 2021 survey
 
-# Reference code from https://sebastiansauer.github.io/percentage_plot_ggplot2_V2/
 survey_data_2021 |>
-  ggplot(aes(x = financial_satisfaction)) +
-  geom_bar(aes(y = (..count..) / sum(..count..))) +
-  scale_y_continuous(labels=scales::percent)
-
+  group_by(gender) |>
+  count() |>
+  ungroup() |>
+  mutate (pct = percent(n / sum(n), digit = 1)) |>
+  kable(
+    col.names = c("Gender", "Number of Responses", "Percentage"),
+    booktabs = TRUE
+  )
 ```
 
-Female less satisfied
+```{r}
+#| message: false
+#| echo: false
+#| warning: false
+#| label: fig-2021-demographics
+#| fig-cap: "Distribution of Respondents' Demgraphics"
+#| fig-subcap: ["Age","Marital Status", "Level of Education", "Family Income"]
+#| layout-ncol: 2
+#| layout-nrow: 2
+
+#Age
+# survey_data_2021 |>
+#   ggplot(mapping = aes(x = age)) +
+#   geom_histogram(bins = 20, color="black", fill="grey") + 
+#   theme_minimal() +
+#   labs(
+#     x = "Age",
+#     y = "Number of responses"
+#   )
+
+#source(here("scripts/04-helper_functions.R"))
+
+#Age
+generate_percentage_bar_graph(
+  ggplot_data = ggplot(mapping = aes(x = survey_data_2021$age_band)),
+  xlabel = "Age",
+  angle = 45,
+  hjust = 1
+)
+
+#Marital status
+generate_percentage_bar_graph(
+  ggplot_data = ggplot(mapping = aes(x = survey_data_2021$marital)),
+  xlabel = "Marital Status",
+  angle = 45,
+  hjust = 1
+)
+
+#Degree
+generate_percentage_bar_graph(
+  ggplot_data = ggplot(mapping = aes(x = survey_data_2021$degree)),
+  xlabel = "Degree of Education",
+  angle = 45,
+  hjust = 1
+)
+
+#Family Income
+generate_percentage_bar_graph(
+  ggplot_data = ggplot(mapping = aes(x = survey_data_2021$income)),
+  xlabel = "Family Income in 2016",
+  angle = 45,
+  hjust = 1
+)
+```
+
+In 2021, there are 4032 responses recorded for the US General Social Survey. Out of these responses, 1730 (42.9%) of the respondents identified as male, 2198 (54.5%) identified as female, with 104 (2.6%) of them did not identify their **gender** in the survey (@tbl-2021-gender). Other than gender, we also looked at four different dimensions of respondents' demographics: age, marital status, degree of education and family income.
+
+The average **age** of respondents who responded in 2021 is 52 years old. Looking at the age distribution in @fig-2021-demographics-1, we see a good spread of values across the different categories, but with noticeably smaller number of respondents less than 29 years old, and those who are over 80 years old. It would be interesting to compare this to the demographic data across United States to see if this is a representative sample of the general population. There are also a large number of `NA` records for age responses, accounting for 8.3% of our data. Based on GSS codebook, 5.6% respondents chose "Not Applicable" when asked about their age, while 2.7% of the participants did not provide any answers.
+
+Most of the respondent provided an answer to their **marital status** (@fig-2021-demographics-2). About half (49.6%) of the respondents are married as of the time of completing the survey, followed by 2.41% who were never married. The rest of the respondents selected either divorced (16.2%), widowed (7.5%), or separated (2.4%).
+
+Respondents' **level of education** was also well answered by respondents (@fig-2021-demographics-3), with only 23 `NA` responses (0.6%). A significant portion of the respondents reported high school as their highest level of education (39.6%), followed by those who have a junior college or bachelors degree (34.9% combined). There are 18.8% of the respondents with a graduate degree, and 6.1% of them reported having less than high school education.
+
+Looking at the respondents' **family income** as of 2016 (@fig-2021-demographics-4), the first thing that jumps out is the number of `NA` values, accounting for 12.9% of the data. Based on GSS codebook, 8.3% respondents chose "Don't Know" for their income, 2.0% refused to answer the question, and 2.7% skipped the question all together. Otherwise, there seems to be a good spread of the number of respondents in each of the income bands, with half of the respondents reporting family income less than \$75,000. The last income band "\>\$170K" groups all respondents making over \$170,000 into one bucket. It reduces the insights we can glean from the data, for example, how much more than \$170,000 are there respondents making per year.
+
+## Attitudes Towards Financial Wellness
+
+As estimands to assess societal attitudes towards financial wellness in United States, we looked at the results of following survey questions:
+
+-   **Financial Satisfaction** - We are interested in how people are getting along financially these days. So far as you and your family are concerned, would you say that you are pretty well satisfied with your present financial situation, more or less satisfied, or not satisfied at all?
+-   **Comparing to Others** - Compared with American families in general, would you say your family income is far below average, below average, average, above average, or far above average?
+-   **Change in Financial Situation** - During the last few years, has your financial situation been getting better, worse, or has it stayed the same?
+-   **Self-Identified Social Class** - Most people see themselves as belonging to a particular class. Please tell me which social class you would say you belong to?
 
 ```{r}
 #| message: false
 #| echo: false
 #| warning: false
+#| label: fig-2021-financial
+#| fig-cap: "Distribution of respondents' attitudes towards their financial wellness"
+#| fig-subcap: ["Financial Satisfaction", "Change in Financial Situation", "Comparing to Others", "Self-Identified Social Class"]
+#| layout-ncol: 2
+#| layout-nrow: 2
 
-# Reference code from https://sebastiansauer.github.io/percentage_plot_ggplot2_V2/
+generate_percentage_bar_graph(
+  ggplot_data = ggplot(mapping = aes(x = survey_data_2021$financial_satisfaction)),
+  xlabel = "Financial Satisfaction",
+  angle = 45,
+  hjust = 1
+)
+
+generate_percentage_bar_graph(
+  ggplot_data = ggplot(mapping = aes(x = survey_data_2021$financial_change)),
+  xlabel = "Change in Financial Situation",
+  vjust = 5
+)
+
+generate_percentage_bar_graph(
+  ggplot_data = ggplot(mapping = aes(x = survey_data_2021$financial_compare)),
+  xlabel = "Comparing Family Income with American Families in General",
+  angle = 45,
+  hjust = 1
+)
+
+generate_percentage_bar_graph(
+  ggplot_data = ggplot(mapping = aes(x = survey_data_2021$social_class)),
+  xlabel = "Self Identified Social Class",
+  vjust = 5
+)
+```
+
+Based on @fig-2021-financial-1, it looks like our society is not doing too badly with their current financial situation. Only 23.9% reporting "not satisfied at all" on the question asking whether they are satisfied with their financial situation. Similarly, most respondents reported that they are staying the same or getting better in their financial situation, with only 20.1% feeling they are getting worse financially (@fig-2021-financial-2).
+
+To analyze how respondents compare themselves to others, we look at @fig-2021-financial-3 on how they ranked themselves against American families in general. This graphs shows that most individuals feel like they are on par with others (39.5%), with small number of respondents feeling above average (24.8%) and below average (24.3%). However, 7.1% of respondent felt that they are far below average compared to other families in general, and 3.8% felt they are far above average.
+
+Looking at how respondents self identified their social classes (@fig-2021-financial-4), we noticed an interesting pattern that there are similar percentages for respondents who rated themselves as far below average (7.1%) and those who classified themselves as lower class (8.7%). Also, the percentages are similar for respondents who rated themselves as far above average (3.8%) and those who classified themselves as upper class (4.2%). Most respondents identified themselves ass middle class (49.6%) or working class (37.2%).
+
+Digging further into the relationship between self identified social class and how respondents compare their financial situation with others, we visualized their correlation using @fig-2021-class-compare. There is a clear trend shown in this heatmap: as individuals rank themselves higher in social class, they also perceive their financial situation to be better than the general public.
+
+```{r}
+#| message: false
+#| echo: false
+#| warning: false
+#| label: fig-2021-class-compare
+#| fig-cap: "Correlation between social class and comparing financial situation with others "
+
+survey_data_2021 |>
+  filter(!is.na(financial_compare), !is.na(social_class)) |>
+  group_by(social_class, financial_compare) |>
+  count() |>
+  ungroup() |>
+  group_by(social_class) |>
+  mutate(Percentage = n / sum(n)) |>
+  ggplot(aes(x = financial_compare, y = social_class, fill = Percentage)) +
+  geom_tile() + 
+  scale_fill_gradient2(low="white", high="darkgreen", guide="colorbar") +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
+  labs (
+    x = "Comparing Financial Situation to Others",
+    y = "Self-Identified Social Class",
+  )
+```
+
+## Slicing Financial Attitudes by Demographic Factors
+
+Now that we have a general understanding of the respondent demographics and their attitudes towards financial wellness, let's take a look at the intersections between the attitudes and the demographics.
+
+### Gender
+
+Compare across different genders (defined as sex at birth), we noticed in @fig-2021-gender-financial-1 that there are more female respondents who are not satisfied with their financial situations (26.3%) as compared to male respondents (20.5%). Also, there are more female respondent reporting that their financial situation is getting worse (22.7%) compared to male respondents (16.7%) (@fig-2021-gender-financial-2). When comparing their financial situations to others, more proportion of male respondents (30.2%) rated themselves as above average as compared to female respondents (21.3%) (@fig-2021-gender-financial-3). These results triangulated together shows that women in our society may be more disadvantaged in their financial wellness as compared to men.
+
+```{r}
+#| message: false
+#| echo: false
+#| warning: false
+#| label: fig-2021-gender-financial
+#| fig-cap: "Intersection of financial attitudes with gender"
+#| fig-subcap: ["Financial Satisfaction", "Change in Financial Situation", "Comparing to Others"]
+#| layout-ncol: 3
+
 survey_data_2021 |>
   filter(!is.na(gender), !is.na(financial_satisfaction)) |>
-  ggplot(aes(x = financial_satisfaction, group = gender)) +
-  geom_bar(aes(y = ..prop.., fill = factor(..x..)), stat="count") + 
+  group_by(gender, financial_satisfaction) |>
+  count() |>
+  ungroup() |>
+  group_by(gender) |>
+  mutate(pct = percent(n / sum(n), digit = 1)) |>
+  ggplot(aes(x = financial_satisfaction, y = pct, fill = gender)) +
+  geom_bar(stat="identity", position="dodge") +
   scale_y_continuous(labels=scales::percent) +
-  ylab("Percentage of response") +
-  xlab("Financial Satisfaction") +
-  theme(axis.text.x = element_text(angle = 45, hjust=1)) +
-  theme(legend.position="none") +
-  facet_grid(~gender)
-```
+  theme_minimal() +
+  theme(legend.position="bottom") + 
+  labs(
+    x = "Financial Satisfaction",
+    y = "Percentage of Responses",
+    fill = "Gender"
+  )
 
-Higher degree - more financially satisfied
-
-```{r}
-#| message: false
-#| echo: false
-#| warning: false
-
-# Reference code from https://sebastiansauer.github.io/percentage_plot_ggplot2_V2/
 survey_data_2021 |>
-  filter(!is.na(degree), !is.na(financial_satisfaction)) |>
-  ggplot(aes(x = financial_satisfaction, group = degree)) +
-  geom_bar(aes(y = ..prop.., fill = factor(..x..)), stat="count") + 
+  filter(!is.na(gender), !is.na(financial_change)) |>
+  group_by(gender, financial_change) |>
+  count() |>
+  ungroup() |>
+  group_by(gender) |>
+  mutate(pct = percent(n / sum(n), digit = 1)) |>
+  ggplot(aes(x = financial_change, y = pct, fill = gender)) +
+  geom_bar(stat="identity", position="dodge") +
   scale_y_continuous(labels=scales::percent) +
-  ylab("Percentage of response") +
-  xlab("Financial Satisfaction") +
-  theme(axis.text.x = element_text(angle = 45, hjust=1)) +
-  theme(legend.position="none") +
-  facet_grid(~degree)
-```
+  theme_minimal() +
+  theme(legend.position="bottom") + 
+  labs(
+    x = "Change in Financial Situation",
+    y = "Percentage of Responses",
+    fill = "Gender"
+  )
 
-Those born in US are less satisfied?
-
-```{r}
-#| message: false
-#| echo: false
-#| warning: false
-
-# Reference code from https://sebastiansauer.github.io/percentage_plot_ggplot2_V2/
 survey_data_2021 |>
-  filter(!is.na(born), !is.na(financial_satisfaction)) |>
-  ggplot(aes(x = financial_satisfaction, group = born)) +
-  geom_bar(aes(y = ..prop.., fill = factor(..x..)), stat="count") + 
+  filter(!is.na(gender), !is.na(financial_compare)) |>
+  group_by(gender, financial_compare) |>
+  count() |>
+  ungroup() |>
+  group_by(gender) |>
+  mutate(pct = percent(n / sum(n), digit = 1)) |>
+  ggplot(aes(x = financial_compare, y = pct, fill = gender)) +
+  geom_bar(stat="identity", position="dodge") +
   scale_y_continuous(labels=scales::percent) +
-  ylab("Percentage of response") +
-  xlab("Financial Satisfaction") +
-  theme(axis.text.x = element_text(angle = 45, hjust=1)) +
-  theme(legend.position="none") +
-  facet_grid(~born)
+  theme_minimal() +
+  theme(legend.position="bottom") + 
+  labs(
+    x = "Comparing to Others",
+    y = "Percentage of Responses",
+    fill = "Gender"
+  )
 ```
 
-Older cohorts are more satisfied with their financial situation
+### Age
+
+Are we achieving better financial wellness as we get older? We found evidence to support this in the 2021 GSS data, as @fig-2021-age-financial-1 demonstrates that the percentage of respondents who selected "pretty well satisfied" over time increases as age increases. However, it is interesting to note that the percentage of responses with "not satisfied at all" within an age band increases in the early adulthood, then decreases starting with the 40-49 age band.
+
+Looking at how respondents assessed changes in their financial situation, we see in @fig-2021-age-financial-2 the concerning trend over the age groups that the percentage of those selecting "getting worse" as an answer stays roughly constant at around 20%, showing no reductions over the age bands. On the other hand, the responses for "getting better" starts off high at around 50% at younger ages, then drops off starting with the 40-49 age band. Staring with the 50-64 age band, most users rate their financial situation to be "staying the same".
 
 ```{r}
 #| message: false
 #| echo: false
 #| warning: false
+#| label: fig-2021-age-financial
+#| fig-cap: "Intersection of financial attitudes with age"
+#| fig-subcap: ["Financial Satisfaction", "Change in Financial Situation"]
+#| layout-ncol: 2
 
-# Reference code from https://sebastiansauer.github.io/percentage_plot_ggplot2_V2/
 survey_data_2021 |>
   filter(!is.na(age_band), !is.na(financial_satisfaction)) |>
-  ggplot(aes(x = financial_satisfaction, group = age_band)) +
-  geom_bar(aes(y = ..prop.., fill = factor(..x..)), stat="count") + 
+  group_by(age_band, financial_satisfaction) |>
+  count() |>
+  ungroup() |>
+  group_by(age_band) |>
+  mutate(pct = percent(n / sum(n), digit = 1)) |>
+  ggplot(aes(x = age_band, y = pct, fill = financial_satisfaction)) +
+  geom_bar(stat="identity", position="dodge") +
   scale_y_continuous(labels=scales::percent) +
-  ylab("Percentage of response") +
-  xlab("Financial Satisfaction") +
-  theme(axis.text.x = element_text(angle = 45, hjust=1)) +
-  theme(legend.position="none") +
-  facet_grid(~age_band)
+  theme_minimal() +
+  theme(legend.position="bottom") + 
+  labs(
+    x = "Financial Satisfaction",
+    y = "Percentage of Responses",
+    fill = "Age Group"
+  )
 
+survey_data_2021 |>
+  filter(!is.na(age_band), !is.na(financial_change)) |>
+  group_by(age_band, financial_change) |>
+  count() |>
+  ungroup() |>
+  group_by(age_band) |>
+  mutate(pct = percent(n / sum(n), digit = 1)) |>
+  ggplot(aes(x = age_band, y = pct, fill = financial_change)) +
+  geom_bar(stat="identity", position="dodge") +
+  scale_y_continuous(labels=scales::percent) +
+  theme_minimal() +
+  theme(legend.position="bottom") + 
+  labs(
+    x = "Change in Financial Situation",
+    y = "Percentage of Responses",
+    fill = "Age Group"
+  )
 ```
 
-Some differences based on working status
+### Level of Education
+
+The 2021 GSS data shows that having a higher level of education is correlated with higher financial satisfaction. in @fig-2021-degree-financial-1 there is a trend of decreasing percentages of answers for "not satisfied at all" as level of education increases, as well as an increasing percentages of responses for "pretty well satisfied" as the level of education increases. This finding is supported by the survey results for respondents' perceptions on the changes in the financial situation (@fig-2021-degree-financial-1). As the level of education increases, there is a noticeable increase in the percentages of answers for "getting better" in their financial situation. Stay in school kids, it will help you financially in the long run.
 
 ```{r}
 #| message: false
 #| echo: false
 #| warning: false
+#| label: fig-2021-degree-financial
+#| fig-cap: "Intersection of financial attitudes with level of education"
+#| fig-subcap: ["Financial Satisfaction", "Change in Financial Situation"]
+#| layout-ncol: 2
 
-# Reference code from https://sebastiansauer.github.io/percentage_plot_ggplot2_V2/
 survey_data_2021 |>
-  filter(!is.na(work_status), !is.na(financial_satisfaction)) |>
-  ggplot(aes(x = financial_satisfaction, group = work_status)) +
-  geom_bar(aes(y = ..prop.., fill = factor(..x..)), stat="count") + 
+  filter(!is.na(degree), !is.na(financial_satisfaction)) |>
+  group_by(degree, financial_satisfaction) |>
+  count() |>
+  ungroup() |>
+  group_by(degree) |>
+  mutate(pct = percent(n / sum(n), digit = 1)) |>
+  ggplot(aes(x = degree, y = pct, fill = financial_satisfaction)) +
+  geom_bar(stat="identity", position="dodge") +
   scale_y_continuous(labels=scales::percent) +
-  ylab("Percentage of response") +
-  xlab("Financial Satisfaction") +
-  theme(axis.text.x = element_text(angle = 45, hjust=1)) +
-  theme(legend.position="none") +
-  facet_grid(~work_status)
+  theme_minimal() +
+  theme(legend.position="bottom") + 
+  labs(
+    x = "Financial Satisfaction",
+    y = "Percentage of Responses",
+    fill = "Age Group"
+  )
+
+survey_data_2021 |>
+  filter(!is.na(degree), !is.na(financial_change)) |>
+  group_by(degree, financial_change) |>
+  count() |>
+  ungroup() |>
+  group_by(degree) |>
+  mutate(pct = percent(n / sum(n), digit = 1)) |>
+  ggplot(aes(x = degree, y = pct, fill = financial_change)) +
+  geom_bar(stat="identity", position="dodge") +
+  scale_y_continuous(labels=scales::percent) +
+  theme_minimal() +
+  theme(legend.position="bottom") + 
+  labs(
+    x = "Change in Financial Situation",
+    y = "Percentage of Responses",
+    fill = "Age Group"
+  )
 ```
 
-Sexual orientation - not too much of a pattern?
+### Family Income
+
+As a hypothesis, we would expect attitudes towards financial wellness is highly correlated with respondents' financial income. This is supported in the our data, as @fig-2021-income-financial-1 shows that there is a high percentage of respondents with family income less than \$30K reporting not being satisfied with their current financial situation. On the flip side, the majority of respondents making \$170K and above are pretty well satisfied with their current situation. There is also the general trend that as the family income increases, the percentage of being satisfied with their current situation also increases. Looking at the changes in financial situation, the data shows that those making less than \$30K are getting worse or staying the same, while the majority of respondents making more than \$110K are getting better in their financial situations (@fig-2021-income-financial-2).
 
 ```{r}
 #| message: false
 #| echo: false
 #| warning: false
+#| label: fig-2021-income-financial
+#| fig-cap: "Intersection of financial attitudes with family income (2016)"
+#| fig-subcap: ["Financial Satisfaction", "Change in Financial Situation"]
+#| layout-ncol: 2
 
-# Reference code from https://sebastiansauer.github.io/percentage_plot_ggplot2_V2/
 survey_data_2021 |>
-  filter(!is.na(sexual_orientation), !is.na(financial_satisfaction)) |>
-  ggplot(aes(x = financial_satisfaction, group = sexual_orientation)) +
-  geom_bar(aes(y = ..prop.., fill = factor(..x..)), stat="count") + 
-  scale_y_continuous(labels=scales::percent) +
-  ylab("Percentage of response") +
-  xlab("Financial Satisfaction") +
-  theme(axis.text.x = element_text(angle = 45, hjust=1)) +
-  theme(legend.position="none") +
-  facet_grid(~sexual_orientation)
+  filter(!is.na(financial_satisfaction), !is.na(income)) |>
+  group_by(financial_satisfaction, income) |>
+  count() |>
+  ungroup() |>
+  group_by(income) |>
+  mutate(Percentage = n / sum(n)) |>
+  ggplot(aes(x = financial_satisfaction, y = income, fill = Percentage)) +
+  geom_tile() + 
+  scale_fill_gradient2(low="white", high="darkgreen", guide="colorbar") +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
+  labs (
+    x = "Financial Satisfaction",
+    y = "Family Income in 2016",
+  )
+
+survey_data_2021 |>
+  filter(!is.na(financial_change), !is.na(income)) |>
+  group_by(financial_change, income) |>
+  count() |>
+  ungroup() |>
+  group_by(income) |>
+  mutate(Percentage = n / sum(n)) |>
+  ggplot(aes(x = financial_change, y = income, fill = Percentage)) +
+  geom_tile() + 
+  scale_fill_gradient2(low="white", high="darkgreen", guide="colorbar") +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
+  labs (
+    x = "Comparing Financial Situation to Others",
+    y = "Self-Identified Social Class",
+  )
+
 ```
 
-Social status - interestingly, upper class is less satisfied than upper middle class?
+## Attitude Towards Financial Wellness Over Time
+
+After investigating different demographic factors that are correlated to respondents' attitudes towards financial wellness, we want to understand how these attitudes evolve over time.
+
+### Financial Satisfaction & Comparison with Others
+
+In @fig-overtime-1, responses for financial satisfaction are graphed between 1972 to 2021. Based on this graph, we noticed that the percentage of respondents feeling "more or less satisfied" with their financial situations stays flat over time at around 44%. There is a downward trend for the percentage of responses for "pretty well satisfied", as well as an upward trend for the percentage of responses for "not satisfied at all".
+
+Looking at how respondents feel about their financial situation as compared to the general public in @fig-overtime-2, there is a noticeable decline in the percentage of responses for "average", from 57% in 1972 to 40% in 2021. The percentage of the other responses all have a similarly slightly positive upward trend. This graph shows indications that financial satisfaction has become more divided in society between the rich and the poor.
+
+```{r}
+#| message: false
+#| echo: false
+#| warning: false
+#| label: fig-overtime
+#| fig-cap: "Attitude towards financial wellness over the years"
+#| fig-subcap: ["Financial Satisfaction", "Change in Financial Situation"]
+#| layout-ncol: 2
+
+#Legend wrap line reference: https://datavizpyr.com/fold-legend-into-two-rows-in-ggplot2/
+
+combined_data |>
+  select(year, financial_satisfaction) |>
+  group_by(year) |>
+  count(financial_satisfaction) |>
+  filter(!is.na(financial_satisfaction)) |>
+  mutate(percent = n / sum(n)) |>
+  ggplot(aes(x = year, y = percent, color = financial_satisfaction)) +
+  geom_smooth(method=lm, se=FALSE) + 
+  geom_line() +
+  scale_y_continuous(labels=scales::percent) +
+  theme_minimal() + 
+  theme(legend.position="bottom") + 
+  guides(color=guide_legend(nrow=2, byrow=TRUE)) +
+  labs(
+    x = "Year",
+    y = "Percentage of Responses",
+    color = "Financial Satisfaction"
+  )
+
+combined_data |>
+  select(year, financial_compare) |>
+  group_by(year) |>
+  count(financial_compare) |>
+  filter(!is.na(financial_compare)) |>
+  mutate(percent = n / sum(n)) |>
+  ggplot(aes(x = year, y = percent, color = financial_compare)) +
+  geom_smooth(method=lm, se=FALSE) + 
+  geom_line() +
+  scale_y_continuous(labels=scales::percent) +
+  theme_minimal() + 
+  theme(legend.position="bottom") +
+  guides(color=guide_legend(nrow=2, byrow=TRUE)) +
+  labs(
+    x = "Year",
+    y = "Percentage of Responses",
+    color = "Financial Compare"
+  )
+```
+
+### Cohort
+
+Next we looked at how each generation cohort is doing over time. We defined the generations based on the commonly accepted guidelines [@generations]. Based on @fig-overtime-cohort we found the following trends:
+
+-   **The Greatest Generation (Greatest)**, defined as those born between 1910 and 1924, are between the ages 48 and 64 when the survey started to collect data in 1972. They are generally getting more satisfied with their financial situation over time, as shown by increasing "pretty well satisfied" and decreasing "not satisfied at all" response percentages.
+
+-   **The Silent Generation (Silent)**, defined as those born between 1925 and 1945, are between the ages 27 and 47 when the survey started to collect data in 1972. They were more dissatisfied with their financial situation to start with, but has increased their financial satisfaction over time, with close to 50% responded with "pretty well satisfied" as of 2021.
+
+-   **Baby Boomer Generation (Boomer),** defined as those born between 1946 and 1964, with some of them as young adults when the survey started to collect data in 1972. They were dissatisfied with their financial situation at the beginning, with more than 30% responding that they are "not satisfied at all". We have seen improvements over time, with increasing percentages of "pretty well satisified" responses and decreasing percentages of "not satisfied at all" responses.
+
+-   **Generation X (Gen X)**, defined as those born between 1965 and 1979, show up for the first time in survey data in 1983 when the eldest in this generation turned 18. This group has a high percentage of respondents dissatisfied with their financial situation (\~30%), while about 25% of them are pertty well satisfied. Their attitudes towards financial satisfaction stay pretty much the same throughout the years.
+
+-   **Millennials,** defined as those born between 1980 and 1994, show up for the first time in survey data around year 2000. This group starts with a higher satisfaction with their financial situation (\~30%), but it decreases over the years with only \~20% responding with "pretty well satisfied" in 2021.
+
+-   **Generation Z (Gen Z)**, defined as those born between 1995 and 2012, show up for the first time in survey data in year 2013 when the eldest in this generation turned 18. This group starts with the highest satisfaction with their financial situation (\~45%), but then it drastically declines to only \~20% responding with "pretty well satisfied" in 2021.
+
+```{r}
+#| message: false
+#| echo: false
+#| warning: false
+#| label: fig-overtime-cohort
+#| fig-cap: "Financial satisfaction results over the years for each generation"
+
+combined_data |>
+  select(year, cohort_band, financial_satisfaction) |>
+  group_by(year, cohort_band) |>
+  count(financial_satisfaction) |>
+  filter(!is.na(financial_satisfaction), !(is.na(cohort_band))) |>
+  mutate(percent = n / sum(n)) |>
+  ggplot(aes(x = year, y = percent, color = financial_satisfaction )) +
+  geom_line() +
+  geom_smooth(method=lm, se=FALSE) + 
+  scale_y_continuous(labels=scales::percent) +
+  theme_minimal() + 
+  theme(axis.text.x = element_text(angle = 90)) +
+  facet_wrap(vars(cohort_band), nrow = 3, ncol = 3) +
+  theme(legend.position="bottom") +
+  theme(legend.text = element_text(size = 5)) +
+  labs(
+    x = "Year",
+    y = "Percentage of Responses",
+    color = "Financial Satisfaction"
+  )
+```
+
+### Age
+
+In addition to looking at cohort over time, we also want to know how respondents at the same age groups are perceiving their financial situation over time. Looking at @fig-overtime-age, we see a discouraging picture where "not satisfied at all" with their financial situations is trending upwards for almost all age groups, while being "pretty well satisfied" is trending downwards. Out of the bands, 50-64 age group had the highest percentage increase for "not satisfied at all", and most amount of percentage decrease for "pretty well satisfied".
+
+```{r}
+#| message: false
+#| echo: false
+#| warning: false
+#| label: fig-overtime-age
+#| fig-cap: "Financial satisfaction results over the years for each age band"
+
+combined_data |>
+  select(year, age_band, financial_satisfaction) |>
+  group_by(year, age_band) |>
+  count(financial_satisfaction) |>
+  filter(!is.na(financial_satisfaction), !(is.na(age_band))) |>
+  mutate(percent = n / sum(n)) |>
+  filter(financial_satisfaction != "More or Less Satisfied") |>
+  ggplot(aes(x = year, y = percent, color = age_band )) +
+  geom_line() +
+  geom_smooth(method=lm, se=FALSE) + 
+  scale_y_continuous(labels=scales::percent) +
+  theme_minimal() + 
+  #theme(axis.text.x = element_text(angle = 90)) +
+  facet_wrap(vars(financial_satisfaction), ncol = 2) +
+  theme(legend.position="bottom") +
+  #theme(legend.text = element_text(size = 5)) +
+  labs(
+    x = "Year",
+    y = "Percentage of Responses",
+    color = "Age Band"
+  )
+```
+
+## Social Class
 
 ```{r}
 #| message: false
@@ -419,12 +827,6 @@ survey_data_2021 |>
   theme(axis.text.x = element_text(angle = 45, hjust=1)) +
   theme(legend.position="none") +
   facet_grid(~social_class1)
-```
-
-```{r}
-#| message: false
-#| echo: false
-#| warning: false
 
 # Reference code from https://sebastiansauer.github.io/percentage_plot_ggplot2_V2/
 survey_data_2021 |>
@@ -439,86 +841,27 @@ survey_data_2021 |>
   facet_grid(~social_class)
 ```
 
-Financial satisfaction - does money make you more financially satisfied? oh yea.
-
 ```{r}
 #| message: false
 #| echo: false
 #| warning: false
-#| 
+
 survey_data_2021 |>
-  filter(!is.na(family_income_bands), !is.na(financial_satisfaction)) |>
-  ggplot(aes(x = financial_satisfaction, group = family_income_bands)) +
-  geom_bar(aes(y = ..prop.., fill = factor(..x..)), stat="count") + 
-  scale_y_continuous(labels=scales::percent) +
-  ylab("Percentage of response") +
-  xlab("Financial Satisfaction") +
-  theme(axis.text.x = element_text(angle = 45, hjust=1)) +
-  theme(legend.position="none") +
-  facet_grid(~family_income_bands)
+  filter(!is.na(social_class), !is.na(income)) |>
+  group_by(social_class, income) |>
+  count() |>
+  ungroup() |>
+  group_by(income) |>
+  mutate(Percentage = n / sum(n)) |>
+  ggplot(aes(x = social_class, y = income, fill = Percentage)) +
+  geom_tile() + 
+  scale_fill_gradient2(low="white", high="darkgreen", guide="colorbar") +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
+  labs (
+    x = "Comparing Financial Situation to Others",
+    y = "Self-Identified Social Class",
+  )
 ```
-
-Financial Satisfaction Over the Years
-
-```{r}
-#| message: false
-#| echo: false
-#| warning: false
-
-## Create variable to track financial satisfaction across years ##
-
-financial_satisfaction_across_years =
-  combined_data |>
-    select(year, financial_satisfaction) |>
-    group_by(year) |>
-    count(financial_satisfaction)
-```
-
-Financial satisfaction - 2002, 2004, 2006 years have a lot of NAs!
-
-```{r}
-#| message: false
-#| echo: false
-#| warning: false
-
-financial_satisfaction_across_years |>
-  filter(!is.na(financial_satisfaction)) |>
-  #filter(!(year %in% c(2002, 2004, 2006))) |>
-  mutate(percent = n / sum(n)) |>
-  ggplot(aes(x = year, y = percent, color = financial_satisfaction)) +
-  geom_smooth(method=lm, se=FALSE) + 
-  #geom_bar(stat="identity") +
-  geom_line() +
-  scale_y_continuous(labels=scales::percent)
-
-```
-
-Financial satisfaction - tracking cohort over time
-
-```{r}
-#| message: false
-#| echo: false
-#| warning: false
-
-financial_satisfaction_across_years_by_cohort =
-  combined_data |>
-    select(year, cohort_band, financial_satisfaction) |>
-    group_by(year, cohort_band) |>
-    count(financial_satisfaction)
-
-financial_satisfaction_across_years_by_cohort |>
-  filter(!is.na(financial_satisfaction)) |>
-  filter(!(is.na(cohort_band))) |>
-  mutate(percent = n / sum(n)) |>
-  ggplot(aes(x = year, y = percent, color = financial_satisfaction )) +
-  geom_line() +
-  geom_smooth(method=lm, se=FALSE) + 
-  scale_y_continuous(labels=scales::percent) +
-  facet_wrap(vars(cohort_band), nrow = 3, ncol = 3) +
-  theme(legend.position="bottom")
-```
-
-## Social Class
 
 Social class over the years
 
@@ -527,22 +870,21 @@ Social class over the years
 #| echo: false
 #| warning: false
 
-## Create variable to track financial satisfaction across years ##
-
-social_class_across_years =
-  combined_data |>
+combined_data |>
   select(year, social_class) |>
   group_by(year) |>
-  count(social_class)
-
-social_class_across_years |>
+  count(social_class) |>
   filter(!is.na(social_class)) |>
   mutate(percent = n / sum(n)) |>
   ggplot(aes(x = year, y = percent, color = social_class)) +
-  #geom_bar(stat="identity") +
+  geom_smooth(method=lm, se=FALSE) + 
   geom_line() +
   scale_y_continuous(labels=scales::percent) +
-  geom_smooth(method=lm, se=FALSE)
+  labs(
+    xlabel = "Year",
+    ylabel = "Percentage of Responses",
+    color = "Social Class"
+  )
 
 ```
 
@@ -570,12 +912,12 @@ The variable *realinc* has only \~30 values - probably something to do with band
 #| echo: false
 #| warning: false
 
-survey_data_2021 |>
-  filter(!is.na(social_class)) |>
-  ggplot(aes(x = social_class, y = realinc)) +
-  geom_boxplot() +
-  geom_jitter(alpha = 0.3, width = 0.10, height = 0)
-  #geom_point(alpha = 0.2) +
+# survey_data_2021 |>
+#   filter(!is.na(social_class)) |>
+#   ggplot(aes(x = social_class, y = realinc)) +
+#   geom_boxplot() +
+#   geom_jitter(alpha = 0.3, width = 0.10, height = 0)
+#   #geom_point(alpha = 0.2) +
   #geom_violin()
 ```
 
@@ -665,6 +1007,44 @@ survey_data_2021 |>
 ```
 
 # Discussion
+
+## Marginalization against segments of the population
+
+Rich and richer; poor getting poorer
+
+## Getting Worse with Financial Wellness Over Time
+
+Not trending well over time @fig-overtime,
+
+## 
+
+## Fleishman Effect
+
+Upper class in their own bubble
+
+# Limitations and Future Direction
+
+## Gaps
+
+This change in data collection methodology has limitations. First, data from the year 2020 is not recorded, which is inconsistent with the yearly GSS track record. Because the GSS data collection spans 2020 and 2021, the reference year for the 2021 GSS for questions where, for instance, respondents are asked for their income "last year", is 2019. Second, in the 2021 GSS, people below the age of 30, people without high school degrees, and Black respondents completed less surveys, proportionally, than their 2018 counterparts. *"To help adjust for differential non-response, the 2021 GSS Cross-section data include weights that are post- stratified to weighted proportions to equal 2019 American Community Survey Census Bureau control totals for region of the country, marital status, race, ethnicity, education, gender, and age. We recommend using these weights for all analysis of the 2021 GSS Cross-section data."*
+
+## Translations
+
+Shifting from in-person interviewing to online data collection required the GSS to find a new approach to appropriately recording responses when respondents expressed uncertainty, indecision, or a refusal to answer. Interviewers in previous rounds of the GSS had specific training in how to record "Don't Know" responses, which occurred when respondents either refused to answer a question or did not know the answer to a question. The 2021 GSS had no interviewers in the web mode to appropriately record these responses, so, in order to mitigate this change in mode, no item on the GSS shows "No Answer", unless the module sponsor requested that it be included. The exception to this was factual questions about occupation, income, or family background, since respondents could genuinely not know the answer, rather than being indecisive on the answer. Instead of "No answer" or "Don't know", users could skip the question. "Skipped on web" indicates that users read the questions but skipped it.
+
+## Affordances: New Experiments
+
+The added element of having a user interface allowed for experiments in survey recording that, according to the GSS' initial review of the data, made a difference in the results. For instance, the 2021 GSS displayed questions that shared a theme in a grid together, so that respondents could answer three or four thematically linked questions at the same time. The GSS tested abortion items and suicide items in both the traditional and grid format, which items asked in a grid marked with a -G suffix. The 2021 GSS also conducted an experiment with volunteered responses. In the past, respondents frequently volunteered information (for instance, "just right" rather than "too harsh" or "not harsh enough"), which interviewers had training for recording appropriately. In the online format, the GSS included a volunteered response on the screen in some cases, where the variable is marked with a -V suffix, and removed the option entirely for other respondents, marking the variable with an -NV suffix.
+
+## Impact on our study
+
+Any changes in opinions observed in 2021 relative to historical trends may be due to the changes in methodology. *\[ Here is where we can add how these methodology changes may impact specific variables in our study, when we come across them \]*
+
+Future studies - incorporate more survey responses
+
+More correlations between factors
+
+Understand whether the demographics in GSS survey is representative of US population --\> gender split, education etc.
 
 # Conclusion
 

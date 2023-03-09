@@ -105,14 +105,6 @@ cleaned_respondent_info =
     degree == 4 ~ 'Graduate',
   ))
 
-# [born] Were you born in this country?
-cleaned_respondent_info =
-  cleaned_respondent_info |>
-  mutate("born" = case_when(
-    born == 1 ~ 'Yes',
-    born == 2 ~ 'No',
-  ))
-
 # [social_class] Most people see themselves as belonging to a particular class. Please tell me which social class you would say you belong to?
 cleaned_respondent_info =
   cleaned_respondent_info |>
@@ -124,7 +116,7 @@ cleaned_respondent_info =
   )) |>
   select(-class)
 
-# [social_class] Most people see themselves as belonging to a particular class. Please tell me which social class you would say you belong to?
+# [social_class1] Most people see themselves as belonging to a particular class. Please tell me which social class you would say you belong to?
 cleaned_respondent_info =
   cleaned_respondent_info |>
   mutate("social_class1" = case_when(
@@ -137,15 +129,15 @@ cleaned_respondent_info =
   )) |>
   select(-class1)
 
-# [sexual_orientation] 
-cleaned_respondent_info =
-  cleaned_respondent_info |>
-  mutate("sexual_orientation" = case_when(
-    sexornt == 1 ~ 'Homosexual',
-    sexornt == 2 ~ 'Bisexual',
-    sexornt == 3 ~ 'Heterosexual',
-  )) |>
-  select(-sexornt)
+# # [sexual_orientation] 
+# cleaned_respondent_info =
+#   cleaned_respondent_info |>
+#   mutate("sexual_orientation" = case_when(
+#     sexornt == 1 ~ 'Homosexual',
+#     sexornt == 2 ~ 'Bisexual',
+#     sexornt == 3 ~ 'Heterosexual',
+#   )) |>
+#   select(-sexornt)
 
 # [gender] 
 cleaned_respondent_info =
@@ -155,6 +147,26 @@ cleaned_respondent_info =
     sexbirth1 == 2 ~ 'Female',
   )) |>
   select(-sexbirth1)
+
+# [income16]
+cleaned_respondent_info =
+  cleaned_respondent_info |>
+  mutate("income" = case_when(
+    income16 <= 8 ~ '<$10K',
+    income16 > 8 & income16 <= 12 ~ '$10K-$20K',
+    income16 > 12 & income16 <= 15 ~ '$20K-$30K',
+    income16 > 15 & income16 <= 17 ~ '$30K-$40K',
+    income16 == 18 ~ '$40K-$50K',
+    income16 == 19 ~ '$50K-$60K',
+    income16 == 20 ~ '$60K-$75K',
+    income16 == 21 ~ '$75K-$90K',
+    income16 == 22 ~ '$90K-$110K',
+    income16 == 23 ~ '$110K-$130K',
+    income16 == 24 ~ '$130K-$150K',
+    income16 == 25 ~ '$150K-$170K',
+    income16 == 26 ~ '>$170K',
+    )) |>
+    select(-income16)
 
 # [family_income_band]
 cleaned_respondent_info =
@@ -167,20 +179,8 @@ cleaned_respondent_info =
     realinc >= 50000 & realinc < 75000 ~ '$50K-$75K',
     realinc >= 75000 & realinc < 100000 ~ '$75K-$100K',
     realinc >= 100000 ~ '>$100K',
-  ))
-
-# [respondent_income_band]
-cleaned_respondent_info =
-  cleaned_respondent_info |>
-  mutate("respondent_income_bands" = case_when(
-    realrinc < 15000 ~ '<$15K',
-    realrinc >= 15000 & realrinc < 25000 ~ '$15K-$25K',
-    realrinc >= 25000 & realrinc < 35000 ~ '$25K-$35K',
-    realrinc >= 35000 & realrinc < 50000 ~ '$35K-$50K',
-    realrinc >= 50000 & realrinc < 75000 ~ '$50K-$75K',
-    realrinc >= 75000 & realrinc < 100000 ~ '$75K-$100K',
-    realrinc >= 100000 ~ '>$100K',
-  ))
+  )) |>
+  select(-realinc)
 
 # [age_band]
 cleaned_respondent_info = 
@@ -193,14 +193,6 @@ cleaned_respondent_info =
     age >= 65 & age <= 79 ~ '65-79',
     age >= 79 ~ '>=80'
   ))
-
-# cleaned_respondent_info |> select(age_band) |> distinct()
-
-# temp = cleaned_respondent_info |>
-#   select(year, realinc) |>
-#   group_by(year, realinc) |>
-#   summarize(n = n())
-
 
 ## Update finance survey values ##
 
