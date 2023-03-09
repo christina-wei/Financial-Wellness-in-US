@@ -270,11 +270,11 @@ Michaela
 
 To Do
 
--   Abstract
-
--   Conclusion
-
 -   Title
+
+-   Introduction/Conclusion/Abstract
+
+-   How the data affects us
 
 # Introduction
 
