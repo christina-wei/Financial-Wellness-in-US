@@ -290,35 +290,26 @@ Data used in this pare are retrieved from the US General Social Survey (GSS) fro
 
 ## Source Data
 
-Specifically, we retrieved the following demographic data (TODO: explain these values)
+Specifically, we retrieved the following demographic data.
 
--   cohort
+| Variable  | New Name | Description                    | Example              |
+|-----------|----------|--------------------------------|----------------------|
+| age       | age      | Respondent's age               | 56                   |
+| cohort    | cohort   | Birth cohort of respondent     | 1965                 |
+| sexbirth1 | gender   | sex recorded at birth          | Female               |
+| marital   | marital  | Respondent's martial status    | Divorced             |
+| degree    | degree   | Respondent's degree            | Bachelors            |
+| income16  | income   | family income recorded in 2016 | \$50,000 TO \$59,999 |
 
--   age
+For survey questions related to financial wellness, we retrieved the following data points:
 
--   degree
-
--   class
-
--   class1
-
--   sexbirth1
-
--   martial
-
--   realinc
-
--   income16
-
-For survey questions related to financial wellness, we retrieved the following data points (TODO: explain these values):
-
--   confinan
-
--   satfin
-
--   finalter
-
--   finrela
+| Variable | New Name               | Description                                                                             | Example               |
+|---------|-----------------|----------------------------|------------------|
+| satfin   | financial_satisfaction | Respondent's satisfaction with their current financial situation                        | Pretty Well Satisfied |
+| finalter | financial_change       | Changes in respondent's financial situation                                             | Stayed the same       |
+| finrela  | financial_compare      | Comparing respondent's family income with American families in general                  | Above Average         |
+| class    | social_class           | self identified social class the respondent belong in                                   | Middle Class          |
+| class1   | social_class1          | self identified social class the respondent belong in (more granular than social_class) | Upper Middle Class    |
 
 ## Data Limitations
 
@@ -1038,10 +1029,7 @@ survey_data_2021 |>
 
 ```
 
-
 ```{r}
-
-{r}
 #| message: false
 #| echo: false
 #| warning: false
@@ -1061,8 +1049,6 @@ survey_data_2021 |>
 
 
 ```
-
-
 
 ```{r}
 #| message: false
