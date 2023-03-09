@@ -1,7 +1,7 @@
 ---
-title: "The Decline of Financial Wellness"
+title: "Subjective Evaluations of Financial Satisfaction and Well-being: A Study of the US General Social Survey"
 title-block-banner: true
-abstract: "TBD"
+abstract: "This paper examines the subjective evaluations of financial satisfaction and well-being, and how they are influenced by various factors. Using data from the US General Social Survey, we explore how people understand their financial situations in comparison to others, subsetting by different demographic factors, against the backdrop of an increasing wealth gap between high and low earning individuals. The paper discusses the sociological dynamics and cognitive biases that affect these subjective evaluations, and highlights the importance of considering these factors in understanding financial satisfaction and well-being."
 thanks: "Code and data supporting this analysis is available at: https://github.com/christina-wei/INF3104-3-US-Survey.git"
 author: 
   - Christina Wei
@@ -270,19 +270,15 @@ Michaela
 
 To Do
 
--   Title
-
--   Introduction/Conclusion/Abstract
-
 -   How the data affects us
 
 # Introduction
 
-The rich getting richer; poor getting poorer
+Financial satisfaction and well-being are subjective self-evaluations that can be influenced by a wide variety of different factors. However, the COVID-19 pandemic and the ensuing inflation rates have shown that pressures that economic trends bring on affect different demographics disproportionately. While the pandemic was a shared global experience, individual experiences of its implications were not.
 
-The upper class are in a bubble and delusional
+In this paper, we use data from the US General Social Survey (GSS) from NORC at the University of Chicago to better understand how people understand their own financial situations in comparison to others, against the background an increasing wealth gap between higher and lower earning individuals. We subset and visualize the data by a variety of different demographic factors, such as gender, age, level of education, along with views of how different generational cohorts report their financial well-being over time.
 
-Female and male differences
+Overall, the data supports general hypotheses that over time, the rich are getting richer, the poor are getting poorer, and that Millennials and Gen Z are financial worse off than preceding generations. When faceting by social class, the data provides evidence that individuals understandings of their financial well-being and satisfaction are influenced by their reference groups. A significant number of respondents who self-reported as upper class still reported dissatisfaction, and described their financial situation as being "below average". In our discussion, we explore the different ways in which sociological dynamics and cognitive biases can affect how someone might understand their own financial situation, along with other factors specific to the survey's limitations that shape this statistic.
 
 # Data
 
@@ -1137,5 +1133,9 @@ Connect with other macroeconomic indicators - e.g. inflation, stock markets
 Collect more data to supplement our findings -\> link to survey <https://docs.google.com/forms/d/e/1FAIpQLSdqe87Bet1PyaCezPxN_t7A1smQCpSap6EYjG2LrTN0K_CX9A/viewform>
 
 # Conclusion
+
+In conclusion, financial satisfaction and well-being are subjective and influenced by various factors. This paper used data from the US General Social Survey to examine how people perceive their financial situations in comparison to others, particularly in light of the increasing wealth gap between high and low earning individuals.
+
+The results support the hypothesis that the rich are getting richer, the poor are getting poorer, and that younger generations are financially worse off than preceding cohorts. The data also suggests that people's reference groups influence their understanding of their financial well-being and satisfaction. Overall, this paper highlights the complexity of financial satisfaction and well-being, and the importance of considering sociological dynamics and cognitive biases in understanding these subjective evaluations.
 
 # Reference
