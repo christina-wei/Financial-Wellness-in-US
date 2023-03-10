@@ -53,15 +53,15 @@ generate_compare_bar_graph = function(ggplot_data, xlabel = NULL, ylabel = NULL,
 }
 
 # Generate time series graph with linear regression
-generate_time_series_graph = function(ggplot_data, xlabel = NULL, ylabel = NULL, color_label = NULL) {
+generate_time_series_graph = function(ggplot_data, xlabel = NULL, ylabel = NULL, color_label = NULL, position = "bottom", nrow = 2) {
   
   ggplot_data +
   geom_smooth(method=lm, se=FALSE) + 
   geom_line() +
   scale_y_continuous(labels=scales::percent) +
   theme_minimal() + 
-  theme(legend.position="bottom") + 
-  guides(color=guide_legend(nrow=2, byrow=TRUE)) + #reference: https://datavizpyr.com/fold-legend-into-two-rows-in-ggplot2/
+  theme(legend.position = position) + 
+  guides(color=guide_legend(nrow=nrow, byrow=TRUE)) + #reference: https://datavizpyr.com/fold-legend-into-two-rows-in-ggplot2/
   labs(
     x = xlabel,
     y = ylabel,
