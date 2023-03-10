@@ -252,7 +252,7 @@ Specifically, we retrieved the following demographic data.
 For survey questions related to financial wellness, we retrieved the following data points:
 
 | Variable | New Name               | Description                                                                             | Example               |
-|----------------|----------------|------------------------|----------------|
+|------------------|------------------|-------------------|------------------|
 | satfin   | financial_satisfaction | Respondent's satisfaction with their current financial situation                        | Pretty Well Satisfied |
 | finalter | financial_change       | Changes in respondent's financial situation                                             | Stayed the same       |
 | finrela  | financial_compare      | Comparing respondent's family income with American families in general                  | Above Average         |
@@ -459,21 +459,19 @@ Digging further into the relationship between self identified social class and h
 #| label: fig-2021-class-compare
 #| fig-cap: "Correlation between social class and comparing financial situation with others "
 
-survey_data_2021 |>
-  filter(!is.na(financial_compare), !is.na(social_class)) |>
-  group_by(social_class, financial_compare) |>
-  count() |>
-  ungroup() |>
-  group_by(social_class) |>
-  mutate(Percentage = n / sum(n)) |>
-  ggplot(aes(x = financial_compare, y = social_class, fill = Percentage)) +
-  geom_tile() + 
-  scale_fill_gradient2(low="white", high="darkgreen", guide="colorbar") +
-  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
-  labs (
-    x = "Comparing Financial Situation to Others",
-    y = "Self-Identified Social Class",
-  )
+generate_heatmap(
+  ggplot_data = 
+    survey_data_2021 |>
+    filter(!is.na(financial_compare), !is.na(social_class)) |>
+    group_by(social_class, financial_compare) |>
+    count() |>
+    ungroup() |>
+    group_by(social_class) |>
+    mutate(Percentage = n / sum(n)) |>
+    ggplot(aes(x = financial_compare, y = social_class, fill = Percentage)),
+  xlabel = "Comparing Financial Situation to Others",
+  ylabel = "Self-Identified Social Class"
+)
 ```
 
 ## Slicing Financial Attitudes by Demographic Factors
@@ -493,59 +491,51 @@ Compare across different genders (defined as sex at birth), we noticed in @fig-2
 #| fig-subcap: ["Financial Satisfaction", "Change in Financial Situation", "Comparing to Others"]
 #| layout-ncol: 3
 
-survey_data_2021 |>
-  filter(!is.na(gender), !is.na(financial_satisfaction)) |>
-  group_by(gender, financial_satisfaction) |>
-  count() |>
-  ungroup() |>
-  group_by(gender) |>
-  mutate(pct = percent(n / sum(n), digit = 1)) |>
-  ggplot(aes(x = financial_satisfaction, y = pct, fill = gender)) +
-  geom_bar(stat="identity", position="dodge") +
-  scale_y_continuous(labels=scales::percent) +
-  theme_minimal() +
-  theme(legend.position="bottom") + 
-  labs(
-    x = "Financial Satisfaction",
-    y = "Percentage of Responses",
-    fill = "Gender"
-  )
 
-survey_data_2021 |>
-  filter(!is.na(gender), !is.na(financial_change)) |>
-  group_by(gender, financial_change) |>
-  count() |>
-  ungroup() |>
-  group_by(gender) |>
-  mutate(pct = percent(n / sum(n), digit = 1)) |>
-  ggplot(aes(x = financial_change, y = pct, fill = gender)) +
-  geom_bar(stat="identity", position="dodge") +
-  scale_y_continuous(labels=scales::percent) +
-  theme_minimal() +
-  theme(legend.position="bottom") + 
-  labs(
-    x = "Change in Financial Situation",
-    y = "Percentage of Responses",
-    fill = "Gender"
-  )
+generate_compare_bar_graph(
+  ggplot_data = 
+    survey_data_2021 |>
+    filter(!is.na(gender), !is.na(financial_satisfaction)) |>
+    group_by(gender, financial_satisfaction) |>
+    count() |>
+    ungroup() |>
+    group_by(gender) |>
+    mutate(pct = percent(n / sum(n), digit = 1)) |>
+    ggplot(aes(x = financial_satisfaction, y = pct, fill = gender)),
+  xlabel = "Financial Satisfaction",
+  ylabel = "Percentage of Responses",
+  fill_label = "Gender"
+)
 
-survey_data_2021 |>
-  filter(!is.na(gender), !is.na(financial_compare)) |>
-  group_by(gender, financial_compare) |>
-  count() |>
-  ungroup() |>
-  group_by(gender) |>
-  mutate(pct = percent(n / sum(n), digit = 1)) |>
-  ggplot(aes(x = financial_compare, y = pct, fill = gender)) +
-  geom_bar(stat="identity", position="dodge") +
-  scale_y_continuous(labels=scales::percent) +
-  theme_minimal() +
-  theme(legend.position="bottom") + 
-  labs(
-    x = "Comparing to Others",
-    y = "Percentage of Responses",
-    fill = "Gender"
-  )
+generate_compare_bar_graph(
+  ggplot_data =
+    survey_data_2021 |>
+    filter(!is.na(gender), !is.na(financial_change)) |>
+    group_by(gender, financial_change) |>
+    count() |>
+    ungroup() |>
+    group_by(gender) |>
+    mutate(pct = percent(n / sum(n), digit = 1)) |>
+    ggplot(aes(x = financial_change, y = pct, fill = gender)),
+  xlabel = "Change in Financial Situation",
+  ylabel = "Percentage of Responses",
+  fill_label = "Gender"
+)
+
+generate_compare_bar_graph(
+  ggplot_data =
+    survey_data_2021 |>
+    filter(!is.na(gender), !is.na(financial_compare)) |>
+    group_by(gender, financial_compare) |>
+    count() |>
+    ungroup() |>
+    group_by(gender) |>
+    mutate(pct = percent(n / sum(n), digit = 1)) |>
+    ggplot(aes(x = financial_compare, y = pct, fill = gender)),
+  xlabel = "Comparing to Others",
+  ylabel = "Percentage of Responses",
+  fill_label = "Gender"
+)
 ```
 
 ### Age
@@ -563,41 +553,35 @@ Looking at how respondents assessed changes in their financial situation, we see
 #| fig-subcap: ["Financial Satisfaction", "Change in Financial Situation"]
 #| layout-ncol: 2
 
-survey_data_2021 |>
-  filter(!is.na(age_band), !is.na(financial_satisfaction)) |>
-  group_by(age_band, financial_satisfaction) |>
-  count() |>
-  ungroup() |>
-  group_by(age_band) |>
-  mutate(pct = percent(n / sum(n), digit = 1)) |>
-  ggplot(aes(x = age_band, y = pct, fill = financial_satisfaction)) +
-  geom_bar(stat="identity", position="dodge") +
-  scale_y_continuous(labels=scales::percent) +
-  theme_minimal() +
-  theme(legend.position="bottom") + 
-  labs(
-    x = "Financial Satisfaction",
-    y = "Percentage of Responses",
-    fill = "Age Group"
-  )
+generate_compare_bar_graph(
+  ggplot_data =
+    survey_data_2021 |>
+    filter(!is.na(age_band), !is.na(financial_satisfaction)) |>
+    group_by(age_band, financial_satisfaction) |>
+    count() |>
+    ungroup() |>
+    group_by(age_band) |>
+    mutate(pct = percent(n / sum(n), digit = 1)) |>
+    ggplot(aes(x = age_band, y = pct, fill = financial_satisfaction)),
+  xlabel = "Age Group",
+  ylabel = "Percentage of Responses",
+  fill_label = "Financial Satisfaction"  
+)
 
-survey_data_2021 |>
-  filter(!is.na(age_band), !is.na(financial_change)) |>
-  group_by(age_band, financial_change) |>
-  count() |>
-  ungroup() |>
-  group_by(age_band) |>
-  mutate(pct = percent(n / sum(n), digit = 1)) |>
-  ggplot(aes(x = age_band, y = pct, fill = financial_change)) +
-  geom_bar(stat="identity", position="dodge") +
-  scale_y_continuous(labels=scales::percent) +
-  theme_minimal() +
-  theme(legend.position="bottom") + 
-  labs(
-    x = "Change in Financial Situation",
-    y = "Percentage of Responses",
-    fill = "Age Group"
-  )
+generate_compare_bar_graph(
+  ggplot_data =
+    survey_data_2021 |>
+    filter(!is.na(age_band), !is.na(financial_change)) |>
+    group_by(age_band, financial_change) |>
+    count() |>
+    ungroup() |>
+    group_by(age_band) |>
+    mutate(pct = percent(n / sum(n), digit = 1)) |>
+    ggplot(aes(x = age_band, y = pct, fill = financial_change)),
+  xlabel = "Age Group",
+  ylabel = "Percentage of Responses",
+  fill_label = "Change in Financial Situation" 
+)
 ```
 
 ### Level of Education
@@ -613,41 +597,35 @@ The 2021 GSS data shows that having a higher level of education is correlated wi
 #| fig-subcap: ["Financial Satisfaction", "Change in Financial Situation"]
 #| layout-ncol: 2
 
-survey_data_2021 |>
-  filter(!is.na(degree), !is.na(financial_satisfaction)) |>
-  group_by(degree, financial_satisfaction) |>
-  count() |>
-  ungroup() |>
-  group_by(degree) |>
-  mutate(pct = percent(n / sum(n), digit = 1)) |>
-  ggplot(aes(x = degree, y = pct, fill = financial_satisfaction)) +
-  geom_bar(stat="identity", position="dodge") +
-  scale_y_continuous(labels=scales::percent) +
-  theme_minimal() +
-  theme(legend.position="bottom") + 
-  labs(
-    x = "Financial Satisfaction",
-    y = "Percentage of Responses",
-    fill = "Age Group"
-  )
+generate_compare_bar_graph(
+  ggplot_data =
+    survey_data_2021 |>
+    filter(!is.na(degree), !is.na(financial_satisfaction)) |>
+    group_by(degree, financial_satisfaction) |>
+    count() |>
+    ungroup() |>
+    group_by(degree) |>
+    mutate(pct = percent(n / sum(n), digit = 1)) |>
+    ggplot(aes(x = degree, y = pct, fill = financial_satisfaction)),
+  xlabel = "Level of Education",
+  ylabel = "Percentage of Responses",
+  fill_label = "Financial Satisfaction"
+)
 
-survey_data_2021 |>
-  filter(!is.na(degree), !is.na(financial_change)) |>
-  group_by(degree, financial_change) |>
-  count() |>
-  ungroup() |>
-  group_by(degree) |>
-  mutate(pct = percent(n / sum(n), digit = 1)) |>
-  ggplot(aes(x = degree, y = pct, fill = financial_change)) +
-  geom_bar(stat="identity", position="dodge") +
-  scale_y_continuous(labels=scales::percent) +
-  theme_minimal() +
-  theme(legend.position="bottom") + 
-  labs(
-    x = "Change in Financial Situation",
-    y = "Percentage of Responses",
-    fill = "Age Group"
-  )
+generate_compare_bar_graph(
+  ggplot_data =
+    survey_data_2021 |>
+    filter(!is.na(degree), !is.na(financial_change)) |>
+    group_by(degree, financial_change) |>
+    count() |>
+    ungroup() |>
+    group_by(degree) |>
+    mutate(pct = percent(n / sum(n), digit = 1)) |>
+    ggplot(aes(x = degree, y = pct, fill = financial_change)),
+  xlabel = "Level of Education",
+  ylabel = "Percentage of Responses",
+  fill_label = "Change in Financial Situation"
+)
 ```
 
 ### Family Income
@@ -663,38 +641,41 @@ As a hypothesis, we would expect attitudes towards financial wellness is highly 
 #| fig-subcap: ["Financial Satisfaction", "Change in Financial Situation"]
 #| layout-ncol: 2
 
-survey_data_2021 |>
-  filter(!is.na(financial_satisfaction), !is.na(income)) |>
-  group_by(financial_satisfaction, income) |>
-  count() |>
-  ungroup() |>
-  group_by(income) |>
-  mutate(Percentage = n / sum(n)) |>
-  ggplot(aes(x = financial_satisfaction, y = income, fill = Percentage)) +
-  geom_tile() + 
-  scale_fill_gradient2(low="white", high="darkgreen", guide="colorbar") +
-  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
-  labs (
-    x = "Financial Satisfaction",
-    y = "Family Income in 2016",
-  )
+generate_heatmap(
+  ggplot_data =
+    survey_data_2021 |>
+    filter(!is.na(financial_satisfaction), !is.na(income)) |>
+    group_by(financial_satisfaction, income) |>
+    count() |>
+    ungroup() |>
+    group_by(income) |>
+    mutate(Percentage = n / sum(n)) |>
+    ggplot(aes(x = financial_satisfaction, y = income, fill = Percentage)),
+  xlabel = "Financial Satisfaction",
+  ylabel = "Family Income in 2016",
+  position = "bottom",
+  angle = 0,
+  hjust = NULL,
+  vjust = NULL
+)
 
-survey_data_2021 |>
-  filter(!is.na(financial_change), !is.na(income)) |>
-  group_by(financial_change, income) |>
-  count() |>
-  ungroup() |>
-  group_by(income) |>
-  mutate(Percentage = n / sum(n)) |>
-  ggplot(aes(x = financial_change, y = income, fill = Percentage)) +
-  geom_tile() + 
-  scale_fill_gradient2(low="white", high="darkgreen", guide="colorbar") +
-  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
-  labs (
-    x = "Comparing Financial Situation to Others",
-    y = "Self-Identified Social Class",
-  )
-
+generate_heatmap(
+  ggplot_data =
+    survey_data_2021 |>
+    filter(!is.na(financial_change), !is.na(income)) |>
+    group_by(financial_change, income) |>
+    count() |>
+    ungroup() |>
+    group_by(income) |>
+    mutate(Percentage = n / sum(n)) |>
+    ggplot(aes(x = financial_change, y = income, fill = Percentage)),
+  xlabel = "Comparing Financial Situation to Others",
+  ylabel = "Family Income in 2016",
+  position = "bottom",
+  angle = 0,
+  hjust = NULL,
+  vjust = NULL
+)
 ```
 
 ## Attitude Towards Financial Wellness Over Time
@@ -716,44 +697,32 @@ Looking at how respondents feel about their financial situation as compared to t
 #| fig-subcap: ["Financial Satisfaction", "Change in Financial Situation"]
 #| layout-ncol: 2
 
-#Legend wrap line reference: https://datavizpyr.com/fold-legend-into-two-rows-in-ggplot2/
+generate_time_series_graph(
+  ggplot_data =
+    combined_data |>
+    select(year, financial_satisfaction) |>
+    group_by(year) |>
+    count(financial_satisfaction) |>
+    filter(!is.na(financial_satisfaction)) |>
+    mutate(percent = n / sum(n)) |>
+    ggplot(aes(x = year, y = percent, color = financial_satisfaction)),
+  xlabel = "Year",
+  ylabel = "Percentage of Responses",
+  color_label = "Financial Satisfaction"
+)
 
-combined_data |>
-  select(year, financial_satisfaction) |>
-  group_by(year) |>
-  count(financial_satisfaction) |>
-  filter(!is.na(financial_satisfaction)) |>
-  mutate(percent = n / sum(n)) |>
-  ggplot(aes(x = year, y = percent, color = financial_satisfaction)) +
-  geom_smooth(method=lm, se=FALSE) + 
-  geom_line() +
-  scale_y_continuous(labels=scales::percent) +
-  theme_minimal() + 
-  theme(legend.position="bottom") + 
-  guides(color=guide_legend(nrow=2, byrow=TRUE)) +
-  labs(
-    x = "Year",
-    y = "Percentage of Responses",
-    color = "Financial Satisfaction"
-  )
-
-combined_data |>
-  select(year, financial_compare) |>
-  group_by(year) |>
-  count(financial_compare) |>
-  filter(!is.na(financial_compare)) |>
-  mutate(percent = n / sum(n)) |>
-  ggplot(aes(x = year, y = percent, color = financial_compare)) +
-  geom_smooth(method=lm, se=FALSE) + 
-  geom_line() +
-  scale_y_continuous(labels=scales::percent) +
-  theme_minimal() + 
-  theme(legend.position="bottom") +
-  guides(color=guide_legend(nrow=2, byrow=TRUE)) +
-  labs(
-    x = "Year",
-    y = "Percentage of Responses",
-    color = "Financial Compare"
+generate_time_series_graph(
+  ggplot_data =
+    combined_data |>
+    select(year, financial_compare) |>
+    group_by(year) |>
+    count(financial_compare) |>
+    filter(!is.na(financial_compare)) |>
+    mutate(percent = n / sum(n)) |>
+    ggplot(aes(x = year, y = percent, color = financial_compare)),
+  xlabel = "Year",
+  ylabel = "Percentage of Responses",
+  color_label = "Comparing Financial Situation to Others"
   )
 ```
 
@@ -780,26 +749,22 @@ Next we looked at how each generation cohort is doing over time. We defined the 
 #| label: fig-overtime-cohort
 #| fig-cap: "Financial satisfaction results over the years for each generation"
 
-combined_data |>
-  select(year, cohort_band, financial_satisfaction) |>
-  group_by(year, cohort_band) |>
-  count(financial_satisfaction) |>
-  filter(!is.na(financial_satisfaction), !(is.na(cohort_band))) |>
-  mutate(percent = n / sum(n)) |>
-  ggplot(aes(x = year, y = percent, color = financial_satisfaction )) +
-  geom_line() +
-  geom_smooth(method=lm, se=FALSE) + 
-  scale_y_continuous(labels=scales::percent) +
-  theme_minimal() + 
-  theme(axis.text.x = element_text(angle = 90)) +
-  facet_wrap(vars(cohort_band), nrow = 3, ncol = 3) +
-  theme(legend.position="bottom") +
-  theme(legend.text = element_text(size = 5)) +
-  labs(
-    x = "Year",
-    y = "Percentage of Responses",
-    color = "Financial Satisfaction"
-  )
+generate_time_series_graph(
+  ggplot_data =
+    combined_data |>
+    select(year, cohort_band, financial_satisfaction) |>
+    group_by(year, cohort_band) |>
+    count(financial_satisfaction) |>
+    filter(!is.na(financial_satisfaction), !(is.na(cohort_band))) |>
+    mutate(percent = n / sum(n)) |>
+    ggplot(aes(x = year, y = percent, color = financial_satisfaction )),
+  ylabel = "Year",
+  xlabel = "Percentage of Responses",
+  color_label = "Financial Satisfaction"
+) +
+theme(axis.text.x = element_text(angle = 90)) +
+facet_wrap(vars(cohort_band), nrow = 3, ncol = 3)
+#theme(legend.text = element_text(size = 5))
 ```
 
 ### Age
@@ -813,82 +778,169 @@ In addition to looking at cohort over time, we also want to know how respondents
 #| label: fig-overtime-age
 #| fig-cap: "Financial satisfaction results over the years for each age band"
 
-combined_data |>
-  select(year, age_band, financial_satisfaction) |>
-  group_by(year, age_band) |>
-  count(financial_satisfaction) |>
-  filter(!is.na(financial_satisfaction), !(is.na(age_band))) |>
-  mutate(percent = n / sum(n)) |>
-  filter(financial_satisfaction != "More or Less Satisfied") |>
-  ggplot(aes(x = year, y = percent, color = age_band )) +
-  geom_line() +
-  geom_smooth(method=lm, se=FALSE) + 
-  scale_y_continuous(labels=scales::percent) +
-  theme_minimal() + 
-  #theme(axis.text.x = element_text(angle = 90)) +
-  facet_wrap(vars(financial_satisfaction), ncol = 2) +
-  theme(legend.position="bottom") +
-  #theme(legend.text = element_text(size = 5)) +
-  labs(
-    x = "Year",
-    y = "Percentage of Responses",
-    color = "Age Band"
-  )
+generate_time_series_graph(
+  ggplot_data =
+    combined_data |>
+    select(year, age_band, financial_satisfaction) |>
+    group_by(year, age_band) |>
+    count(financial_satisfaction) |>
+    filter(!is.na(financial_satisfaction), !(is.na(age_band))) |>
+    mutate(percent = n / sum(n)) |>
+    filter(financial_satisfaction != "More or Less Satisfied") |>
+    ggplot(aes(x = year, y = percent, color = age_band )),
+  xlabel = "Year",
+  ylabel = "Percentage of Responses",
+  color_label = "Age Band"
+) +
+facet_wrap(vars(financial_satisfaction), ncol = 2)
 ```
 
-## Social Class (still need to fix up)
+## Social Class
 
-Let's look specifically at social class.
+Let's look specifically at the survey results for social class and how it correlates with the other variables. There are two survey questions related to how respondents selected the social class they belonged to: one used a classification of 4 classes (lower class, working class, middle class, and upper class), and a second survey question has an expanded 6 classes, with the additional classes of `lower middle class` and `upper middle class`.
+
+First, we are interested in the correlation between family income and social class. Looking at the 4 band classification of social class, we see in @fig-socialclass-1 that less than 10% of respondents classified themselves as **lower class**. Digging deeper into the family income of this segment in @fig-income-social , the majority of respondents (\~90%) in this class are making less than \$40K annually. There are 37% of respondents who classified themselves as **working class**. There is a wide range of their family income, with the majority (\~71%) clustered between \$10K to \$75K. Almost half of the respondent have classified themselves as **middle class**, with family income clustered between \$60K to \$170K (\~57%). It is interesting to note that those making over \$170K have the highest percentage (15%) compared across income bands for those who ranked themselves in this class. Lastly, out of the 4% of the respondents who responded that they belong to the **upper class**, most of them have family income over \$170K (67%). An interesting observation in this social class is that more than 10% of respondents making less than \$40K a year also put themselves as upper class.
+
+The 6 band social class survey expands the middle class into three categories: lower middle class, middle class, and upper middle class. Comparing the distribution between the two social class variables (@fig-socialclass), there are movements across the bands.
 
 ```{r}
 #| message: false
 #| echo: false
 #| warning: false
 
-# Reference code from https://sebastiansauer.github.io/percentage_plot_ggplot2_V2/
 survey_data_2021 |>
-  filter(!is.na(social_class1), !is.na(financial_satisfaction)) |>
-  ggplot(aes(x = financial_satisfaction, group = social_class1)) +
-  geom_bar(aes(y = ..prop.., fill = factor(..x..)), stat="count") + 
-  scale_y_continuous(labels=scales::percent) +
-  ylab("Percentage of response") +
-  xlab("Financial Satisfaction") +
-  theme(axis.text.x = element_text(angle = 45, hjust=1)) +
-  theme(legend.position="none") +
-  facet_grid(~social_class1)
-
-# Reference code from https://sebastiansauer.github.io/percentage_plot_ggplot2_V2/
-survey_data_2021 |>
-  filter(!is.na(social_class), !is.na(financial_satisfaction)) |>
-  ggplot(aes(x = financial_satisfaction, group = social_class)) +
-  geom_bar(aes(y = ..prop.., fill = factor(..x..)), stat="count") + 
-  scale_y_continuous(labels=scales::percent) +
-  ylab("Percentage of response") +
-  xlab("Financial Satisfaction") +
-  theme(axis.text.x = element_text(angle = 45, hjust=1)) +
-  theme(legend.position="none") +
-  facet_grid(~social_class)
-```
-
-```{r}
-#| message: false
-#| echo: false
-#| warning: false
+  filter(is.na(social_class1)) |>
+  group_by(social_class) |>
+  count() |>
+  ungroup() |>
+  mutate(Percentage = n / sum(n))  
 
 survey_data_2021 |>
   filter(!is.na(social_class), !is.na(income)) |>
   group_by(social_class, income) |>
   count() |>
   ungroup() |>
-  group_by(income) |>
+  group_by(social_class) |>
   mutate(Percentage = n / sum(n)) |>
-  ggplot(aes(x = social_class, y = income, fill = Percentage)) +
-  geom_tile() + 
-  scale_fill_gradient2(low="white", high="darkgreen", guide="colorbar") +
-  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
-  labs (
-    x = "Comparing Financial Situation to Others",
-    y = "Self-Identified Social Class",
+  mutate(Cum = cumsum(Percentage)) |>
+  filter (social_class == "Upper Class")
+```
+
+```{r}
+#| message: false
+#| echo: false
+#| warning: false
+#| label: fig-socialclass
+#| fig-cap: "Distribution of survey results for social class"
+#| fig-subcap: ["Social Class (4-Bands)", "Social Class (6-Bands)"]
+#| layout-ncol: 2
+
+generate_percentage_bar_graph(
+  ggplot_data = 
+    survey_data_2021 |>
+    filter(!is.na(social_class)) |>
+    ggplot(mapping = aes(x = social_class)),
+  xlabel = "Social Class (4-Bands)",
+  angle = 45,
+  vjust = 1.1,
+  hjust = 1
+)
+
+generate_percentage_bar_graph(
+  ggplot_data = 
+    survey_data_2021 |>
+    filter(!is.na(social_class1)) |>
+    ggplot(mapping = aes(x = social_class1)),
+  xlabel = "Social Class (6-Bands)",
+  angle = 45,
+  vjust = 1.1,
+  hjust = 1
+)
+```
+
+```{r}
+#| message: false
+#| echo: false
+#| warning: false
+#| label: fig-income-social
+#| fig-cap: "How respondents in each family income range responded for social class"
+#| fig-subcap: ["Social Class (4-Bands)", "Social Class (6-Bands)"]
+#| layout-ncol: 2
+
+generate_heatmap(
+  ggplot_data = 
+    survey_data_2021 |>
+    filter(!is.na(social_class), !is.na(income)) |>
+    group_by(social_class, income) |>
+    count() |>
+    ungroup() |>
+    group_by(social_class) |>
+    mutate(Percentage = n / sum(n)) |>
+    ggplot(aes(x = social_class, y = income, fill = Percentage)),
+  position = "bottom",
+  xlabel = "Social Class (4-Bands)",
+  ylabel = "Family Income in 2016",
+)
+
+generate_heatmap(
+  ggplot_data = 
+    survey_data_2021 |>
+    filter(!is.na(social_class1), !is.na(income)) |>
+    group_by(social_class1, income) |>
+    count() |>
+    ungroup() |>
+    group_by(social_class1) |>
+    mutate(Percentage = n / sum(n)) |>
+    ggplot(aes(x = social_class1, y = income, fill = Percentage)),
+  position = "bottom",
+  xlabel = "Social Class (6-Bands)",
+  ylabel = "Family Income in 2016",
+)
+```
+
+```{r}
+#| message: false
+#| echo: false
+#| warning: false
+#| label: fig-socialclass-financial
+#| fig-cap: "Financial satisfaction responses for each social class"
+#| fig-subcap: ["Social Class (4-Bands)", "Social Class (6-Bands)"]
+#| layout-ncol: 2
+
+survey_data_2021 |>
+  filter(!is.na(social_class), !is.na(financial_satisfaction)) |>
+  group_by(social_class, financial_satisfaction) |>
+  count() |>
+  ungroup() |>
+  group_by(social_class) |>
+  mutate(pct = percent(n / sum(n), digit = 1)) |>
+  ggplot(aes(x = social_class, y = pct, fill = financial_satisfaction)) +
+  geom_bar(stat="identity", position="dodge") +
+  scale_y_continuous(labels=scales::percent) +
+  theme_minimal() +
+  theme(legend.position="bottom") + 
+  labs(
+    x = "Social Class (4-Bands)",
+    y = "Percentage of Responses",
+    fill = "Financial Satisfaction"
+  )
+
+survey_data_2021 |>
+  filter(!is.na(social_class1), !is.na(financial_satisfaction)) |>
+  group_by(social_class1, financial_satisfaction) |>
+  count() |>
+  ungroup() |>
+  group_by(social_class1) |>
+  mutate(pct = percent(n / sum(n), digit = 1)) |>
+  ggplot(aes(x = social_class1, y = pct, fill = financial_satisfaction)) +
+  geom_bar(stat="identity", position="dodge") +
+  scale_y_continuous(labels=scales::percent) +
+  theme_minimal() +
+  theme(legend.position="bottom") + 
+  labs(
+    x = "Social Class (6-Bands)",
+    y = "Percentage of Responses",
+    fill = "Financial Satisfaction"
   )
 ```
 
@@ -923,18 +975,16 @@ combined_data |>
 #| warning: false
 
 survey_data_2021 |>
-  filter(!is.na(family_income_bands), !is.na(social_class)) |>
-  ggplot(aes(x = social_class, group = family_income_bands)) +
+  filter(!is.na(income), !is.na(social_class)) |>
+  ggplot(aes(x = social_class, group = income)) +
   geom_bar(aes(y = ..prop.., fill = factor(..x..)), stat="count") + 
   scale_y_continuous(labels=scales::percent) +
   ylab("Percentage of response") +
   xlab("Financial Satisfaction") +
   theme(axis.text.x = element_text(angle = 45, hjust=1)) +
   theme(legend.position="none") +
-  facet_grid(~family_income_bands)
+  facet_grid(~income)
 ```
-
-The variable *realinc* has only \~30 values - probably something to do with bands that are in the raw survey data
 
 ```{r}
 #| message: false
