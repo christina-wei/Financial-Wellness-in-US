@@ -1018,7 +1018,7 @@ In conclusion, financial satisfaction and well-being are subjective and influenc
 
 The results support the hypothesis that the rich are getting richer, the poor are getting poorer, and that younger generations are financially worse off than preceding cohorts. The data also suggests that people's reference groups influence their understanding of their financial well-being and satisfaction. Overall, this paper highlights the complexity of financial satisfaction and well-being, and the importance of considering sociological dynamics and cognitive biases in understanding these subjective evaluations.
 
-# Appendix
+# Appendix {-}
 
 Here is a link to our supplemental survey:
 
