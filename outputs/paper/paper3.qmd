@@ -224,55 +224,11 @@ survey_data_2021 =
 #   filter(year == 2016)
 ```
 
-# Story
-
-Introduction - news, inflation, millennials and younger not doing better than their parents
-
-\% of financial compare & % financial satisfaction - in 2021
-
-Let's dig deeper into 2021
-
--   gender
-
--   education
-
--   Social class
-
--   age
-
-How financial compare / financial satisfaction changed over the years - follow cohort and age
-
-How does social class impact these perceptions? - link to Michaela's literature
-
-# To Do
-
-Christina
-
--   financial satisfaction
-
--   Social status
-
--   Simulated data
-
--   Data validation tests
-
--   README
-
-Michaela
-
--   Supplementary survey: The survey should have an introductory section and include the details of a contact person. The survey questions should be well constructed and appropriate to the task. The questions should have an appropriate ordering. A final section should thank the respondent
-
--   Introduction
-
--   Discussions
-
--   Limitations & Future Work
-
 # Introduction
 
 Financial satisfaction and well-being are subjective self-evaluations that can be influenced by a wide variety of different factors. However, the COVID-19 pandemic and the ensuing inflation rates have shown that pressures that economic trends bring on affect different demographics disproportionately. While the pandemic was a shared global experience, individual experiences of its implications were not.
 
-In this paper, we use data from the US General Social Survey (GSS) from NORC at the University of Chicago to better understand how people understand their own financial situations in comparison to others, against the background an increasing wealth gap between higher and lower earning individuals. We subset and visualize the data by a variety of different demographic factors, such as gender, age, level of education, along with views of how different generational cohorts report their financial well-being over time.
+In this paper, we use data from the US General Social Survey (GSS) from NORC [@gss] at the University of Chicago to better understand how people understand their own financial situations in comparison to others, against the background an increasing wealth gap between higher and lower earning individuals. We subset and visualize the data by a variety of different demographic factors, such as gender, age, level of education, along with views of how different generational cohorts report their financial well-being over time.
 
 Overall, the data supports general hypotheses that over time, the rich are getting richer, the poor are getting poorer, and that Millennials and Gen Z are financial worse off than preceding generations. When faceting by social class, the data provides evidence that individuals understandings of their financial well-being and satisfaction are influenced by their reference groups. A significant number of respondents who self-reported as upper class still reported dissatisfaction, and described their financial situation as being "below average". In our discussion, we explore the different ways in which sociological dynamics and cognitive biases can affect how someone might understand their own financial situation, along with other factors specific to the survey's limitations that shape this statistic.
 
@@ -296,7 +252,7 @@ Specifically, we retrieved the following demographic data.
 For survey questions related to financial wellness, we retrieved the following data points:
 
 | Variable | New Name               | Description                                                                             | Example               |
-|----------|------------------------|-----------------------------------------------------------------------------------------|-----------------------|
+|----------------|----------------|------------------------|----------------|
 | satfin   | financial_satisfaction | Respondent's satisfaction with their current financial situation                        | Pretty Well Satisfied |
 | finalter | financial_change       | Changes in respondent's financial situation                                             | Stayed the same       |
 | finrela  | financial_compare      | Comparing respondent's family income with American families in general                  | Above Average         |
@@ -882,6 +838,8 @@ combined_data |>
 
 ## Social Class (still need to fix up)
 
+Let's look specifically at social class.
+
 ```{r}
 #| message: false
 #| echo: false
@@ -992,127 +950,43 @@ The variable *realinc* has only \~30 values - probably something to do with band
   #geom_violin()
 ```
 
-## Financial Compare (old)
-
-```{r}
-#| message: false
-#| echo: false
-#| warning: false
-
-# Reference code from https://sebastiansauer.github.io/percentage_plot_ggplot2_V2/
-survey_data_2021 |>
-  filter(!is.na(social_class1), !is.na(financial_compare)) |>
-  ggplot(aes(x = financial_compare, group = social_class1)) +
-  geom_bar(aes(y = ..prop.., fill = factor(..x..)), stat="count") + 
-  scale_y_continuous(labels=scales::percent) +
-  ylab("Percentage of response") +
-  xlab("Financial Compare") +
-  theme(axis.text.x = element_text(angle = 45, hjust=1)) +
-  theme(legend.position="none") +
-  facet_grid(~social_class1)
-
-
-
-```
-
-```{r}
-#| message: false
-#| echo: false
-#| warning: false
-
-# Reference code from https://sebastiansauer.github.io/percentage_plot_ggplot2_V2/
-survey_data_2021 |>
-  filter(!is.na(family_income_bands), !is.na(financial_compare)) |>
-  ggplot(aes(x = financial_compare, group = family_income_bands)) +
-  geom_bar(aes(y = ..prop.., fill = factor(..x..)), stat="count") + 
-  scale_y_continuous(labels=scales::percent) +
-  ylab("Percentage of response") +
-  xlab("Financial Compare") +
-  theme(axis.text.x = element_text(angle = 45, hjust=1)) +
-  theme(legend.position="none") +
-  facet_grid(~family_income_bands)
-
-
-
-```
-
-```{r}
-#| message: false
-#| echo: false
-#| warning: false
-
-# Reference code from https://sebastiansauer.github.io/percentage_plot_ggplot2_V2/
-survey_data_2021 |>
-  filter(!is.na(social_class), !is.na(financial_change)) |>
-  ggplot(aes(x = financial_change, group = social_class)) +
-  geom_bar(aes(y = ..prop.., fill = factor(..x..)), stat="count") + 
-  scale_y_continuous(labels=scales::percent) +
-  ylab("Percentage of response") +
-  xlab("Financial Change") +
-  theme(axis.text.x = element_text(angle = 45, hjust=1)) +
-  theme(legend.position="none") +
-  facet_grid(~social_class) 
-```
-
-```{r}
-#| message: false
-#| echo: false
-#| warning: false
-
-# Reference code from https://sebastiansauer.github.io/percentage_plot_ggplot2_V2/
-# survey_data_2016 |>
-#   filter(!is.na(social_class), !is.na(financial_change)) |>
-#   ggplot(aes(x = financial_change, group = social_class)) +
-#   geom_bar(aes(y = ..prop.., fill = factor(..x..)), stat="count") + 
-#   scale_y_continuous(labels=scales::percent) +
-#   ylab("Percentage of response") +
-#   xlab("Financial Change") +
-#   theme(axis.text.x = element_text(angle = 45, hjust=1)) +
-#   theme(legend.position="none") +
-#   facet_grid(~social_class) 
-```
-
 # Discussion
 
 Our results point to two trends: first, evidence to support the hypothesis that the rich are getting richer, and that the poor are getting poorer. And second, evidence to support the Fleishman effect \-- the idea that upper classes have a distorted sense of their financial well-being, since they compare themselves to the upper class and opt into wealthy lifestyles, rather than comparing themselves to the general population.
 
 ### (Economic) The Rich are getting Richer, and the Poor are getting Poorer
 
-Rich and richer; poor getting poorer
+(to do) Rich and richer; poor getting poorer
 
 ### (Psychological) Fleishman Effect
 
-During World War II, sociologist Samuel Stouffer led the American Soldier study, which aimed to examine the attitudes and motivations of American soldiers during war time. The study collected data using both surveys and interviews from over 500,00 soldiers, and covered topics such as combat experiences, political beliefs, and racial attitudes. 
+During World War II, sociologist Samuel Stouffer led the American Soldier study, which aimed to examine the attitudes and motivations of American soldiers during war time [@samuelStouffer]. The study collected data using both surveys and interviews from over 500,00 soldiers, and covered topics such as combat experiences, political beliefs, and racial attitudes. One important insight from this study is the contribution it made to our understanding of reference groups. The American Soldier study found that soldiers tend to identify more strongly with fellow soldiers than civilians. This identification was found to be a significant factor in shaping soldiers' attitudes in relation to morale and motivation.
 
-One important insight from this study is the contribution it made to our understanding of reference groups. The American Soldier study found that soldiers tend to identify more strongly with fellow soldiers than civilians. This identification was found to be a significant factor in shaping soldiers' attitudes in relation to morale and motivation.
-
-In 1957, the sociologist Robert Merton expanded on this idea of reference groups to further develop the concept of relative deprivation, which refers to feelings of discontent that arise when individuals perceive a discrepancy between their own status, and the status of others in their social comparison group. Merton argues that social mobility leads to an increase in relative deprivation, since individuals who achieve higher incomes and status become more aware of the gap between their status, and those who are more affluent in their reference group.
+In 1957, the sociologist Robert Merton expanded on this idea of reference groups to further develop the concept of relative deprivation [@relativeDeprivation], which refers to feelings of discontent that arise when individuals perceive a discrepancy between their own status, and the status of others in their social comparison group. Merton argues that social mobility leads to an increase in relative deprivation, since individuals who achieve higher incomes and status become more aware of the gap between their status, and those who are more affluent in their reference group.
 
 Our data on financial satisfaction based on income supports this hypothesis \[figure about financial satisfaction\]. When faceted by class instead, the question becomes more interesting. When asked to compare themselves to the general population, a significant portion of self-identified upper-classes see themselves as "below average".
 
 Is the upper class simply delusional? Could survey respondents have misinterpreted what "upper class" means? Or, are there more factors at play when people consider their own financial situations \-- for instance, the child of millionaires who themselves make \$40k a year might see themselves as culturally and socially upper class, yet below average in terms of financial comparison.
 
-In her 2019 memoir We Need To Talk About Money, Otegha Uwagba writes about coming of age as a Black, Oxford-educated millennial woman from a low-income family, and how her perception of her own financial well-being was distorted by the way her upper class colleagues were able to afford luxuries like property ownership while signalling, by complaining about mortgages and budgeting, that they were in the same cohort of struggling millennials. After learning that a friend had concealed that she, in fact, didn't have a mortgage, and that her parents had given her enough money to buy her apartment outright, Uwagba writes about the cultural shame that political liberal individuals can experience as  anti-capitalist sentiment have entered the mainstream conversations:  
+In her 2019 memoir We Need To Talk About Money [@talkAboutMoney], Otegha Uwagba writes about coming of age as a Black, Oxford-educated millennial woman from a low-income family, and how her perception of her own financial well-being was distorted by the way her upper class colleagues were able to afford luxuries like property ownership while signalling, by complaining about mortgages and budgeting, that they were in the same cohort of struggling millennials. After learning that a friend had concealed that she, in fact, didn't have a mortgage, and that her parents had given her enough money to buy her apartment outright, Uwagba writes about the cultural shame that political liberal individuals can experience as  anti-capitalist sentiment have entered the mainstream conversations:  
 
 "Shame as it relates to wealth is somewhat more unexpected because -- despite occasional pockets of resistance and the growing anti-capitalist sentiment that has entered mainstream cultural conversations -- on the whole, we tend to venerate the rich, assigning enormous social currency to traditional markers of wealth: nice cars, massive houses, designer clothes. But that's the thing about shame -- it's an emotion that arises from our most base human instincts: the fear of being judged negatively by others; our desire to 'fit in'; the discomfort of feeling exposed; and those emotional responses transcend income levels. For wealthy people who also happen to be politically liberal -- and so value the notion of social equity -- being rich, and the advantages that wealth presents can be a source of moral discomfort, particularly when said wealth is inherited."
 
 Concealing wealth out of shame, to Uwagba, is "actively unhelpful" for others in the same reference group, and exacerbates the frustration of realizing that achieving personal finance goals is even more out of reach than she initially thought. In \[\@fig-overtime\], we see that, beginning with Gen X, Gen Xers, Millennials, and Gen Z are experiencing more financial dissatisfaction over time compared to other generations (although, Gen Z's self-reporting does correlate with a pandemic). This complicates this idea of reference group comparisons \-- while intra-group comparisons are full of cognitive biases and emotions that distort people's understandings of their own and their colleagues financial well-being, younger generations can no longer use their own age and educational achievements as a reference group. Millennials aren't experiencing the same financial satisfaction that Baby Boomers did when they were the same age.
 
-Meanwhile, the lure of upward mobility is addictive, as even the upper class reports financial dissatisfaction. An article by The Cut titled "The Fleishman Effect" explores how upper-class, New York women are responding to the HBO show Fleishman Is In Trouble, which is about the stress that high-earning women feel when trying to achieve satisfaction in a city that houses one of the wealthiest reference groups in the world, where "the go-to bat mitzvah gift of the moment is a Cartier bracelet, for which moms are expected to pitch in for a group present".
+Meanwhile, the lure of upward mobility is addictive, as even the upper class reports financial dissatisfaction. An article by The Cut titled "The Fleishman Effect" [@fleishmanEffect] explores how upper-class, New York women are responding to the HBO show Fleishman Is In Trouble, which is about the stress that high-earning women feel when trying to achieve satisfaction in a city that houses one of the wealthiest reference groups in the world, where "the go-to bat mitzvah gift of the moment is a Cartier bracelet, for which moms are expected to pitch in for a group present".
 
 ## Limitations and Future Direction
 
 The study would be strengthened with data that could provide a fuller profile of respondent's reference groups, and other factors that influence their motivations and attitudes towards personal finance and upward mobility.
 
-    For instance, geography can have a major influence on personal finance and reference groups. A respondent making \$75,000 a year living in Hattiesburg, Mississippi might feel more financially satisfied than a respondent with the same income living in San Francisco, California.  However, this could sacrifice anonymity. This question would still have to be broad enough to provide information on their location (i.e. by city), rather than something that could de-anonymize respondents when triangulated with other data (i.e. postal code).
+For instance, geography can have a major influence on personal finance and reference groups. A respondent making \$75,000 a year living in Hattiesburg, Mississippi might feel more financially satisfied than a respondent with the same income living in San Francisco, California.  However, this could sacrifice anonymity. This question would still have to be broad enough to provide information on their location (i.e. by city), rather than something that could de-anonymize respondents when triangulated with other data (i.e. postal code).
 
-Another key factor in how people interpret their own wealth is the way that they narrativize their success in comparison to their upbringing. In our supplemental survey in Appendix X, we suggest the questions "Have you moved up a full socio-economic class compared to your upbringing? (Y/N/Don't Know", "Do you have at least one parent who moved up a full socio-economic class?" (Y/N/Don't Know), and "Is your current career in the same field as your parents?" (Y/N/Don't Know) to better understand respondent's family histories. Asking "Are your friends in the same socio-economic class, higher, or lower? (Higher/About the same/Lower)" would also provide more granular detail into how someone perceives their financial status in comparison to the people closest to them. The Social Capital Atlas (<https://www.socialcapital.org/?dimension=EconomicConnectednessIndividual&geoLevel=county&selectedId=06037&dim1=EconomicConnectednessIndividual&dim2=CohesivenessSupportRatio&dim3=CivicEngagementVolunteeringRates&bigModalSection=&bigModalChart=scatterplot&showOutliers=false&colorBy=>) conducted a survey pursuing a similar estimand using Facebook data to explore "economic connectedness" in friend groups, which refers to the percentage of friends a respondent has who earn higher or lower incomes than them.
+Another key factor in how people interpret their own wealth is the way that they narrativize their success in comparison to their upbringing. In our supplemental survey in Appendix X, we suggest the questions "Have you moved up a full socio-economic class compared to your upbringing? (Y/N/Don't Know", "Do you have at least one parent who moved up a full socio-economic class?" (Y/N/Don't Know), and "Is your current career in the same field as your parents?" (Y/N/Don't Know) to better understand respondent's family histories. Asking "Are your friends in the same socio-economic class, higher, or lower? (Higher/About the same/Lower)" would also provide more granular detail into how someone perceives their financial status in comparison to the people closest to them. The Social Capital Atlas [@socialCapital] conducted a survey pursuing a similar estimand using Facebook data to explore "economic connectedness" in friend groups, which refers to the percentage of friends a respondent has who earn higher or lower incomes than them.
 
-    (fig-2021-degree-financial) shows that respondents with post-secondary education experience better changes in financial situation, with 50% of respondents with graduate degrees reporting that their financial situation is \"getting better\". Subsetting these reference groups by their area of study, and whether or not they regret their major, could provide more information on how the different returns-on-investment on different degrees change over time, as shown by The Washington Post\'s reporting on the Federal Reserve Survey of Household Economics and Decisionmaking (<https://www.washingtonpost.com/business/2022/09/02/college-major-regrets/>). 
+(fig-2021-degree-financial) shows that respondents with post-secondary education experience better changes in financial situation, with 50% of respondents with graduate degrees reporting that their financial situation is "getting better". Subsetting these reference groups by their area of study, and whether or not they regret their major, could provide more information on how the different returns-on-investment on different degrees change over time, as shown by The Washington Post's reporting on the Federal Reserve Survey of Household Economics and Decisionmaking [@collegeMajors]. 
 
 We propose adding the questions "If you went to college or university, what was your major?" "Do you regret your major? (Y/N/Don't know)" to the survey. Adding this question to our study would provide more detailed insight on reference groups, since we could see how people who enrolled in each major compare themselves to others, and, with more information on family history, we could also gather insight on which fields individuals from different social classes pursue in higher education. We could also see how people across different income ranges and classes experience regret about their decisions.
-
-\
 
 Additional financial variables in survey for analysis
 
@@ -1120,12 +994,16 @@ Connect with US census data to check representativeness
 
 Connect with other macroeconomic indicators - e.g. inflation, stock markets
 
-Collect more data to supplement our findings -\> link to survey <https://docs.google.com/forms/d/e/1FAIpQLSdqe87Bet1PyaCezPxN_t7A1smQCpSap6EYjG2LrTN0K_CX9A/viewform>
-
 # Conclusion
 
 In conclusion, financial satisfaction and well-being are subjective and influenced by various factors. This paper used data from the US General Social Survey to examine how people perceive their financial situations in comparison to others, particularly in light of the increasing wealth gap between high and low earning individuals.
 
 The results support the hypothesis that the rich are getting richer, the poor are getting poorer, and that younger generations are financially worse off than preceding cohorts. The data also suggests that people's reference groups influence their understanding of their financial well-being and satisfaction. Overall, this paper highlights the complexity of financial satisfaction and well-being, and the importance of considering sociological dynamics and cognitive biases in understanding these subjective evaluations.
+
+# Appendix
+
+Here is a link to our supplemental survey:
+
+<https://docs.google.com/forms/d/e/1FAIpQLSdqe87Bet1PyaCezPxN_t7A1smQCpSap6EYjG2LrTN0K_CX9A/viewform>
 
 # Reference
