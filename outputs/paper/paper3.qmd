@@ -1,5 +1,5 @@
 ---
-title: "Subjective Evaluations of Financial Satisfaction and Well-being: A Study of the US General Social Survey"
+title: "Investigating The Fleishman Effect : Subjective Evaluations of Financial Satisfaction in the US General Social Survey"
 title-block-banner: true
 abstract: "This paper examines the subjective evaluations of financial satisfaction and well-being, and how they are influenced by various demographic factors. Using data from the US General Social Survey, we explore how people understand their financial situations in comparison to others, according to different demographic factors, against the backdrop of an increasing wealth gap between high and low earning individuals. The paper discusses the sociological dynamics and cognitive biases that affect these subjective evaluations, and highlights the importance of considering these factors in understanding financial satisfaction and well-being."
 thanks: "Code and data supporting this analysis is available at: https://github.com/christina-wei/INF3104-3-US-Survey.git"
