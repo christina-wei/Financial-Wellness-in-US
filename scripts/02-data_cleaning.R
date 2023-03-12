@@ -73,6 +73,7 @@ cleaned_respondent_info =
 cleaned_respondent_info =
   cleaned_respondent_info |>
   mutate("cohort_band" = case_when(
+    cohort == 9999 ~ NA,
     cohort <= 1924 ~ 'Greatest',
     cohort >= 1925 & cohort <= 1945 ~ 'Silent',
     cohort >= 1946 & cohort <= 1964 ~ 'Boomer',
