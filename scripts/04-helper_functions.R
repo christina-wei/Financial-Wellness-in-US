@@ -38,13 +38,15 @@ generate_heatmap = function(ggplot_data, xlabel = NULL, ylabel = NULL, position 
 }
 
 # Generate comparative bar graph
-generate_compare_bar_graph = function(ggplot_data, xlabel = NULL, ylabel = NULL, fill_label = NULL, angle = NULL, hjust = NULL, vjust = NULL) {
+generate_compare_bar_graph = function(ggplot_data, xlabel = NULL, ylabel = NULL, fill_label = NULL, angle = NULL, hjust = NULL, vjust = NULL, nrow = NULL) {
 
   ggplot_data +
   geom_bar(stat="identity", position="dodge") +
   scale_y_continuous(labels=scales::percent) +
   theme_minimal() +
+  theme(axis.text.x = element_text(angle = angle, vjust = vjust, hjust = hjust)) +  
   theme(legend.position="bottom") + 
+  guides(fill=guide_legend(nrow=nrow, byrow=TRUE)) +
   labs(
     x = xlabel,
     y = ylabel,

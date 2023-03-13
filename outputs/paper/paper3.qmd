@@ -232,13 +232,15 @@ In this paper, we use data from the US General Social Survey (GSS) from NORC [@g
 
 Overall, the data supports general hypotheses that over time, the rich are getting richer, the poor are getting poorer, and that Millennials and Gen Z are financial worse off than preceding generations. When faceting by social class, the data provides evidence that individuals understandings of their financial well-being and satisfaction are influenced by their reference groups. A significant number of respondents who self-reported as upper class still reported dissatisfaction, and described their financial situation as being "below average". In our discussion, we explore the different ways in which sociological dynamics and cognitive biases can affect how someone might understand their own financial situation, along with other factors specific to the survey's limitations that shape this statistic.
 
+In the remainder of the paper, we first discuss the data sources, limitations and cleaning procedures in the Data section. The following section, Results, present trends and correlations discovered in analysis, slicing across 2021 survey data as well as investigating results over the years. The Discussion section shares additional insights into our data findings such as the wealth gap and Fleishman Effect, as well as outlining future research directions. Finally, we wrap up with the Conclusion section summarizing the main discoveries from this paper.
+
 # Data
 
 Data used in this paper are retrieved from the US General Social Survey (GSS) from NORC at the University of Chicago [@gss]. We retrieved demographic data as well as survey questions related to financial wellness from 1972 to 2021.
 
 ## Source Data
 
-Specifically, we retrieved the following demographic data.
+Specifically, we retrieved the following demographic data as seen in @tbl-uss-demographic.
 
 | Variable  | New Name | Description                    | Example              |
 |-----------|----------|--------------------------------|----------------------|
@@ -249,15 +251,19 @@ Specifically, we retrieved the following demographic data.
 | degree    | degree   | Respondent's degree            | Bachelors            |
 | income16  | income   | family income recorded in 2016 | \$50,000 TO \$59,999 |
 
-For survey questions related to financial wellness, we retrieved the following data points:
+: Demographic data retrieved from USS {#tbl-uss-demographic}
+
+For survey questions related to financial wellness, we retrieved the following data points as seen in @tbl-uss-financial
 
 | Variable | New Name               | Description                                                                             | Example               |
-|----------------|----------------|------------------------|----------------|
+|------|---------------|----------------------|---------------|
 | satfin   | financial_satisfaction | Respondent's satisfaction with their current financial situation                        | Pretty Well Satisfied |
 | finalter | financial_change       | Changes in respondent's financial situation                                             | Stayed the same       |
 | finrela  | financial_compare      | Comparing respondent's family income with American families in general                  | Above Average         |
 | class    | social_class           | self identified social class the respondent belong in                                   | Middle Class          |
 | class1   | social_class1          | self identified social class the respondent belong in (more granular than social_class) | Upper Middle Class    |
+
+: Financial survey data retrieved from USS {#tbl-uss-financial}
 
 ## Data Limitations
 
@@ -294,13 +300,14 @@ Overall, there are 68,846 observations collected across 33 surveys administered 
 #| echo: false
 #| warning: false
 #| label: tbl-statistics
-#| tbl-cap: Summary statistics for number of observations in surveys
+#| tbl-cap: Summary statistics for the number of observations across the 33 surveys from 1972 to 2021
+
 combined_data |>
   group_by(year) |>
   count() |>
   ungroup() |>
   summarise(
-    mean = mean(n),
+    mean = round(mean(n), digits = 0),
     max = max(n),
     min = min(n),
     sd = sd(n)
@@ -338,22 +345,10 @@ survey_data_2021 |>
 #| echo: false
 #| warning: false
 #| label: fig-2021-demographics
-#| fig-cap: "Distribution of Respondents' Demgraphics"
+#| fig-cap: "Distribution of Respondents' Demographics"
 #| fig-subcap: ["Age","Marital Status", "Level of Education", "Family Income"]
 #| layout-ncol: 2
 #| layout-nrow: 2
-
-#Age
-# survey_data_2021 |>
-#   ggplot(mapping = aes(x = age)) +
-#   geom_histogram(bins = 20, color="black", fill="grey") + 
-#   theme_minimal() +
-#   labs(
-#     x = "Age",
-#     y = "Number of responses"
-#   )
-
-#source(here("scripts/04-helper_functions.R"))
 
 #Age
 generate_percentage_bar_graph(
@@ -390,7 +385,7 @@ generate_percentage_bar_graph(
 
 In 2021, there are 4032 responses recorded for the US General Social Survey. Out of these responses, 1730 (42.9%) of the respondents identified as male, 2198 (54.5%) identified as female, with 104 (2.6%) of them did not identify their **gender** in the survey (@tbl-2021-gender). Other than gender, we also looked at four different dimensions of respondents' demographics: age, marital status, degree of education and family income.
 
-The average **age** of respondents who responded in 2021 is 52 years old. Looking at the age distribution in @fig-2021-demographics-1, we see a good spread of values across the different categories, but with noticeably smaller number of respondents less than 29 years old, and those who are over 80 years old. It would be interesting to compare this to the demographic data across United States to see if this is a representative sample of the general population. There are also a large number of `NA` records for age responses, accounting for 8.3% of our data. Based on GSS codebook, 5.6% respondents chose "Not Applicable" when asked about their age, while 2.7% of the participants did not provide any answers.
+The average **age** of respondents who responded in 2021 is 52 years old. Looking at the age distribution in @fig-2021-demographics-1, we see a good spread of values across the different categories, but with noticeably smaller number of respondents less than 29 years old, and those who are over 80 years old. It would be interesting to compare this to the demographic data across United States to see if this is a representative sample of the general population. There are 8.2% of data records that are `NA` for age responses. Based on GSS codebook, 5.6% respondents chose "Not Applicable" when asked about their age, while 2.7% of the participants did not provide any answers.
 
 Most of the respondent provided an answer to their **marital status** (@fig-2021-demographics-2). About half (49.6%) of the respondents are married as of the time of completing the survey, followed by 2.41% who were never married. The rest of the respondents selected either divorced (16.2%), widowed (7.5%), or separated (2.4%).
 
@@ -446,7 +441,7 @@ generate_percentage_bar_graph(
 
 Based on @fig-2021-financial-1, it looks like our society is not doing too badly with their current financial situation. Only 23.9% reporting "not satisfied at all" on the question asking whether they are satisfied with their financial situation. Similarly, most respondents reported that they are staying the same or getting better in their financial situation, with only 20.1% feeling they are getting worse financially (@fig-2021-financial-2).
 
-To analyze how respondents compare themselves to others, we look at @fig-2021-financial-3 on how they ranked themselves against American families in general. This graphs shows that most individuals feel like they are on par with others (39.5%), with small number of respondents feeling above average (24.8%) and below average (24.3%). However, 7.1% of respondent felt that they are far below average compared to other families in general, and 3.8% felt they are far above average.
+To analyze how respondents compare themselves to others, we look at @fig-2021-financial-3 on how they ranked themselves against American families in general. This graph shows that most individuals feel like they are on par with others (39.5%), with small number of respondents feeling above average (24.8%) and below average (24.3%). However, 7.1% of respondent felt that they are far below average compared to other families in general, and 3.8% felt they are far above average.
 
 Looking at how respondents self identified their social classes (@fig-2021-financial-4), we noticed an interesting pattern that there are similar percentages for respondents who rated themselves as far below average (7.1%) and those who classified themselves as lower class (8.7%). Also, the percentages are similar for respondents who rated themselves as far above average (3.8%) and those who classified themselves as upper class (4.2%). Most respondents identified themselves ass middle class (49.6%) or working class (37.2%).
 
@@ -886,41 +881,39 @@ Looking at the correlation between social class and financial satisfaction, we s
 #| fig-subcap: ["Social Class (4-Bands)", "Social Class (6-Bands)"]
 #| layout-ncol: 2
 
-survey_data_2021 |>
-  filter(!is.na(social_class), !is.na(financial_satisfaction)) |>
-  group_by(social_class, financial_satisfaction) |>
-  count() |>
-  ungroup() |>
-  group_by(social_class) |>
-  mutate(pct = percent(n / sum(n), digit = 1)) |>
-  ggplot(aes(x = social_class, y = pct, fill = financial_satisfaction)) +
-  geom_bar(stat="identity", position="dodge") +
-  scale_y_continuous(labels=scales::percent) +
-  theme_minimal() +
-  theme(legend.position="bottom") + 
-  labs(
-    x = "Social Class (4-Bands)",
-    y = "Percentage of Responses",
-    fill = "Financial Satisfaction"
-  )
+generate_compare_bar_graph(
+  ggplot_data =
+    survey_data_2021 |>
+    filter(!is.na(social_class), !is.na(financial_satisfaction)) |>
+    group_by(social_class, financial_satisfaction) |>
+    count() |>
+    ungroup() |>
+    group_by(social_class) |>
+    mutate(pct = percent(n / sum(n), digit = 1)) |>
+    ggplot(aes(x = social_class, y = pct, fill = financial_satisfaction)),
+  angle = 45,
+  hjust = 1,
+  xlabel = "Social Class (4-Bands)",
+  ylabel = "Percentage of Responses",
+  fill_label = "Financial Satisfaction"
+)
 
-survey_data_2021 |>
-  filter(!is.na(social_class1), !is.na(financial_satisfaction)) |>
-  group_by(social_class1, financial_satisfaction) |>
-  count() |>
-  ungroup() |>
-  group_by(social_class1) |>
-  mutate(pct = percent(n / sum(n), digit = 1)) |>
-  ggplot(aes(x = social_class1, y = pct, fill = financial_satisfaction)) +
-  geom_bar(stat="identity", position="dodge") +
-  scale_y_continuous(labels=scales::percent) +
-  theme_minimal() +
-  theme(legend.position="bottom") + 
-  labs(
-    x = "Social Class (6-Bands)",
-    y = "Percentage of Responses",
-    fill = "Financial Satisfaction"
-  )
+generate_compare_bar_graph(
+  ggplot_data = 
+    survey_data_2021 |>
+    filter(!is.na(social_class1), !is.na(financial_satisfaction)) |>
+    group_by(social_class1, financial_satisfaction) |>
+    count() |>
+    ungroup() |>
+    group_by(social_class1) |>
+    mutate(pct = percent(n / sum(n), digit = 1)) |>
+    ggplot(aes(x = social_class1, y = pct, fill = financial_satisfaction)),
+  angle = 45,
+  hjust = 1,
+  xlabel = "Social Class (6-Bands)",
+  ylabel = "Percentage of Responses",
+  fill_label = "Financial Satisfaction"
+)
 ```
 
 ```{r}
@@ -929,28 +922,26 @@ survey_data_2021 |>
 #| warning: false
 #| label: fig-socialclass-compare
 #| fig-cap: "Financial comparison responses for each social class"
-#| fig-subcap: ["Social Class (4-Bands)", "Social Class (6-Bands)"]
 
+#fig-subcap: ["Social Class (4-Bands)", "Social Class (6-Bands)"]
 
-
-
-survey_data_2021 |>
-  filter(!is.na(social_class1), !is.na(financial_compare)) |>
-  group_by(social_class1, financial_compare) |>
-  count() |>
-  ungroup() |>
-  group_by(social_class1) |>
-  mutate(pct = percent(n / sum(n), digit = 1)) |>
-  ggplot(aes(x = social_class1, y = pct, fill = financial_compare)) +
-  geom_bar(stat="identity", position="dodge") +
-  scale_y_continuous(labels=scales::percent) +
-  theme_minimal() +
-  theme(legend.position="bottom") + 
-  labs(
-    x = "Social Class (6-Bands)",
-    y = "Percentage of Responses",
-    fill = "Financial Compare"
-  )
+generate_compare_bar_graph(
+  ggplot_data = 
+    survey_data_2021 |>
+    filter(!is.na(social_class1), !is.na(financial_compare)) |>
+    group_by(social_class1, financial_compare) |>
+    count() |>
+    ungroup() |>
+    group_by(social_class1) |>
+    mutate(pct = percent(n / sum(n), digit = 1)) |>
+    ggplot(aes(x = social_class1, y = pct, fill = financial_compare)),
+  angle = 45,
+  hjust = 1,
+  nrow = 2,
+  xlabel = "Social Class (6-Bands)",
+  ylabel = "Percentage of Responses",
+  fill_label = "Comparing to Others"
+)
 
 ```
 
@@ -985,7 +976,7 @@ generate_time_series_graph(
 
 Our results point to three trends: first, our visualizations illustrate a growing wealth gap over time. Second, the data suggests that financial well-being and satisfaction is influenced by demographic factors. And third, evidence to support the Fleishman effect \-- the idea that upper classes have a distorted sense of their financial well-being, since they compare themselves to the upper class, rather than comparing themselves to the general population.
 
-## Growing Wealth Gap Impacts Demographic Groups Differently 
+## Growing Wealth Gap Impacts Demographic Groups Differently
 
 Our analysis shows that the gap between high-earning and low-earning individuals in the US has been increasing since 1970, when the GSS was first recorded. Even though GDP is rising, we don't observe a significant improvement in financial satisfaction over time. In fact, twice as many respondents identify as "lower class" in 2021 than in 1970.
 
