@@ -921,7 +921,7 @@ generate_compare_bar_graph(
 #| echo: false
 #| warning: false
 #| label: fig-socialclass-compare
-#| fig-cap: "Financial comparison responses for each social class"
+#| fig-cap: "Financial comparison responses for each social class (6-bands)"
 
 #fig-subcap: ["Social Class (4-Bands)", "Social Class (6-Bands)"]
 
@@ -937,11 +937,11 @@ generate_compare_bar_graph(
     ggplot(aes(x = social_class1, y = pct, fill = financial_compare)),
   angle = 45,
   hjust = 1,
-  nrow = 2,
   xlabel = "Social Class (6-Bands)",
   ylabel = "Percentage of Responses",
   fill_label = "Comparing to Others"
-)
+) +
+theme(legend.position=NULL)   
 
 ```
 
@@ -1012,7 +1012,7 @@ Financial satisfaction is dependent on an individual's context, and much more su
 
 The way that individuals narrativize their success in comparison to their upbringing may influence the way that they interpret their financial standing. In our supplemental survey in Appendix X, we suggest the questions "Have you moved up a full socio-economic class compared to your upbringing? (Y/N/Don't Know", "Do you have at least one parent who moved up a full socio-economic class?" (Y/N/Don't Know), and "Is your current career in the same field as your parents?" (Y/N/Don't Know) to better understand respondent's family histories. Asking "Are your friends in the same socio-economic class, higher, or lower? (Higher/About the same/Lower)" would also provide more granular detail into how someone perceives their financial status in comparison to the people closest to them. The Social Capital Atlas [@socialCapital] conducted a survey pursuing a similar estimand using Facebook data to explore "economic connectedness" in friend groups, which refers to the percentage of friends a respondent has who earn higher or lower incomes than them.
 
-(fig-2021-degree-financial) shows that respondents with post-secondary education experience better changes in financial situation, with 50% of respondents with graduate degrees reporting that their financial situation is "getting better". Subsetting these reference groups by their area of study, and whether or not they regret their major, could provide more information on how the different returns-on-investment on different degrees change over time, as shown by The Washington Post's reporting on the Federal Reserve Survey of Household Economics and Decisionmaking [@collegeMajors]. 
+@fig-2021-degree-financial shows that respondents with post-secondary education experience better changes in financial situation, with 50% of respondents with graduate degrees reporting that their financial situation is "getting better". Obtaining more details on these reference groups by their area of study, and whether or not they regret their major, could provide more information on how the different returns-on-investment on different degrees change over time, as shown by The Washington Post's reporting on the Federal Reserve Survey of Household Economics and Decision Making [@collegeMajors].
 
 We propose adding the questions "If you went to college or university, what was your major?" "Do you regret your major? (Y/N/Don't know)" to the survey. Adding this question to our study would provide more detailed insight on reference groups, since we could see how people who enrolled in each major compare themselves to others, and, with more information on family history, we could also gather insight on which fields individuals from different social classes pursue in higher education. We could also see how people across different income ranges and classes experience regret about their decisions.
 
@@ -1020,13 +1020,9 @@ Geography can have a major influence on personal finance and reference groups. A
 
 Please see [Appendix] to view the full supplementary survey that we have put together.
 
-#### Cross-Referencing
+#### Incorporate Additional Data Sources
 
-Connecting our results with US census data to check for representativeness in respondents answers could strengthen interpretations, and help to understand any discrepancies in self-reported data. This would also help us understand how the new methodology implemented by the GSS in 2021 may have influenced self-reported results.
-
-Bringing in other macroeconomic indicators, such as inflation and capital market trends, can also provide an extra dimension to understanding how wealth has evolved and been impacted over time.
-
--   Additional financial variables in survey for analysis
+Additional data sources can be used to explore additional trends in attitudes towards financial wellness. First, we can connecting our results with US census data to check for representativeness in respondents answers, and to understand any discrepancies in self-reported data. This would also help us understand how the new methodology implemented by the GSS in 2021 may have influenced self-reported results. Also, bringing in other macroeconomic indicators, such as inflation and capital market trends, can provide an extra dimension to understanding how wealth has evolved and been impacted over time.
 
 # Conclusion
 
