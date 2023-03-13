@@ -240,7 +240,7 @@ Data used in this paper are retrieved from the US General Social Survey (GSS) fr
 
 ## Source Data
 
-Specifically, we retrieved the following demographic data as seen in @tbl-uss-demographic.
+Specifically, we retrieved the following demographic data described in @tbl-uss-demographic.
 
 | Variable  | New Name | Description                    | Example              |
 |-----------|----------|--------------------------------|----------------------|
@@ -253,7 +253,7 @@ Specifically, we retrieved the following demographic data as seen in @tbl-uss-de
 
 : Demographic data retrieved from USS {#tbl-uss-demographic}
 
-For survey questions related to financial wellness, we retrieved the following data points as seen in @tbl-uss-financial
+For survey questions related to financial wellness, we retrieved the following data points described in @tbl-uss-financial.
 
 | Variable | New Name               | Description                                                                             | Example               |
 |------|---------------|----------------------|---------------|
