@@ -19,18 +19,21 @@ library(tidyverse)
 
 ## Enumerations of data values & assumptions
 
-sim_financial_satisfaction = c("Not Satisfied", "Neutral", "Satisfied")
-sim_social_status = c("Lower Class", "Working Class", "Middle Class", "Upper Class")
-sim_gender = c("Male", "Female", "Other")
-sim_years = 1970:2022
-num_participants = 10
-total_size = num_participants * length(sim_years)
+sim_financial_satisfaction <- c("Not Satisfied", "Neutral", "Satisfied")
+sim_social_status <- c("Lower Class",
+                      "Working Class",
+                      "Middle Class",
+                      "Upper Class")
+sim_gender <- c("Male", "Female", "Other")
+sim_years <- 1970:2022
+num_participants <- 10
+total_size <- num_participants * length(sim_years)
 
 ## Simulation
 
 set.seed(311) #random seed
 
-simulated_data = 
+simulated_data <-
   tibble(
     year = rep(sim_years, each = num_participants),
     participant_id = rep(1:num_participants, times = length(sim_years)),

@@ -4,7 +4,7 @@
 # Data: 12 March 2023
 # Contact: christina.wei@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: 
+# Pre-requisites:
   # 01-download_data.R
   # 02-data_cleaning.R
 
@@ -13,12 +13,12 @@ library(tidyverse)
 
 #### Read in cleaned data ####
 
-cleaned_respondent_info = read_csv(
+cleaned_respondent_info <- read_csv(
   file = here("outputs/data/cleaned_respondent_info.csv"),
   show_col_types = FALSE
 )
 
-cleaned_finance_survey = read_csv(
+cleaned_finance_survey <- read_csv(
   file = here("outputs/data/cleaned_finance_survey.csv"),
   show_col_types = FALSE
 )
@@ -26,9 +26,10 @@ cleaned_finance_survey = read_csv(
 #### Data Validation ####
 
 # NA threshold - less than 10% of data
-threshold = 0.1
-num_NA_threshold = nrow(cleaned_respondent_info) * threshold 
-num_NA_threshold_2021 = nrow(filter(cleaned_respondent_info, year == 2021)) * threshold
+threshold <- 0.1
+num_na_threshold <- nrow(cleaned_respondent_info) * threshold
+num_na_threshold_2021 <-
+  nrow(filter(cleaned_respondent_info, year == 2021)) * threshold
 
 ## Respondent info ##
 
@@ -44,7 +45,7 @@ max(cleaned_respondent_info |>
   select(cohort) |>
   filter(cohort != 9999)) <= as.numeric(format(Sys.Date(), format = "%Y")) - 18
 min(cleaned_respondent_info$cohort, na.rm = TRUE) >= 1972 - 100
-sum(is.na(cleaned_respondent_info$cohort)) < num_NA_threshold
+sum(is.na(cleaned_respondent_info$cohort)) < num_na_threshold
 
 # cohort_band
 sum(is.na(cleaned_respondent_info$cohort_band)) ==
@@ -63,10 +64,10 @@ sum(!(unique(cleaned_respondent_info$cohort_band) %in%
 class(cleaned_respondent_info$age) == "numeric"
 max(cleaned_respondent_info$age, na.rm = TRUE) <= 120
 min(cleaned_respondent_info$age, na.rm = TRUE) >= 18
-sum(is.na(cleaned_respondent_info$age)) < num_NA_threshold
+sum(is.na(cleaned_respondent_info$age)) < num_na_threshold
 
 # age_band
-sum(is.na(cleaned_respondent_info$age)) == 
+sum(is.na(cleaned_respondent_info$age)) ==
   sum(is.na(cleaned_respondent_info$age_band))
 sum(!(unique(cleaned_respondent_info$age_band) %in%
         c("18-29",
@@ -86,7 +87,7 @@ sum(!(unique(cleaned_respondent_info$degree) %in%
     "Graduate",
     "Associate/Junior College",
     NA))) == 0
-sum(is.na(cleaned_respondent_info$degree)) < num_NA_threshold
+sum(is.na(cleaned_respondent_info$degree)) < num_na_threshold
 
 # marital
 class(cleaned_respondent_info$marital) == "character"
@@ -97,7 +98,7 @@ sum(!(unique(cleaned_respondent_info$marital) %in%
           "Widowed",
           "Separated",
           NA))) == 0
-sum(is.na(cleaned_respondent_info$marital)) < num_NA_threshold
+sum(is.na(cleaned_respondent_info$marital)) < num_na_threshold
 
 # social_class
 class(cleaned_respondent_info$social_class) == "character"
@@ -107,7 +108,7 @@ sum(!(unique(cleaned_respondent_info$social_class) %in%
           "Upper Class",
           "Middle Class",
           NA))) == 0
-sum(is.na(cleaned_respondent_info$social_class)) < num_NA_threshold
+sum(is.na(cleaned_respondent_info$social_class)) < num_na_threshold
 
 # social_class1
 class(cleaned_respondent_info$social_class1) == "character"
@@ -128,7 +129,7 @@ sum(!(unique(cleaned_respondent_info$gender) %in%
           NA))) == 0
 sum(is.na(cleaned_respondent_info |>
   filter(year == 2021) |>
-  select(gender))) < num_NA_threshold_2021
+  select(gender))) < num_na_threshold_2021
 
 # income
 class(cleaned_respondent_info$income) == "character"
@@ -163,7 +164,7 @@ sum(!(unique(cleaned_finance_survey$financial_satisfaction) %in%
           "More or Less Satisfied",
           "Pretty Well Satisfied",
           NA))) == 0
-sum(is.na(cleaned_finance_survey$financial_satisfaction)) < num_NA_threshold
+sum(is.na(cleaned_finance_survey$financial_satisfaction)) < num_na_threshold
 
 # financial_change
 class(cleaned_finance_survey$financial_change) == "character"
@@ -172,7 +173,7 @@ sum(!(unique(cleaned_finance_survey$financial_change) %in%
           "Stayed the Same",
           "Getting Worse",
           NA))) == 0
-sum(is.na(cleaned_finance_survey$financial_change)) < num_NA_threshold
+sum(is.na(cleaned_finance_survey$financial_change)) < num_na_threshold
 
 # financial_compare
 class(cleaned_finance_survey$financial_compare) == "character"
@@ -183,4 +184,4 @@ sum(!(unique(cleaned_finance_survey$financial_compare) %in%
           "Far Above Average",
           "Far Below Average",
           NA))) == 0
-sum(is.na(cleaned_finance_survey$financial_compare)) < num_NA_threshold
+sum(is.na(cleaned_finance_survey$financial_compare)) < num_na_threshold
