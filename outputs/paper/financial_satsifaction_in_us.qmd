@@ -1,7 +1,7 @@
 ---
 title: "Investigating The Fleishman Effect : Subjective Evaluations of Financial Satisfaction in the US General Social Survey"
 title-block-banner: true
-abstract: "This paper examines the subjective evaluations of financial satisfaction and well-being, and how they are influenced by various demographic factors. Using data from the US General Social Survey, we explore how people understand their financial situations in comparison to others, according to different demographic factors, against the backdrop of an increasing wealth gap between high and low earning individuals. The paper discusses the sociological dynamics and cognitive biases that affect these subjective evaluations, and highlights the importance of considering these factors in understanding financial satisfaction and well-being."
+abstract: "Using data from the US General Social Survey, we explore how people understand their financial situations in comparison to others, according to different demographic factors, against the backdrop of an increasing wealth gap between high and low earning individuals. The paper discusses the sociological dynamics and cognitive biases that affect these subjective evaluations, and highlights the importance of considering these factors in understanding financial satisfaction and well-being."
 thanks: "Code and data supporting this analysis is available at: https://github.com/christina-wei/Financial-Wellness-in-US.git"
 author: 
   - Christina Wei
@@ -256,7 +256,7 @@ Specifically, we retrieved the following demographic data described in @tbl-uss-
 For survey questions related to financial wellness, we retrieved the following data points described in @tbl-uss-financial.
 
 | Variable | New Name               | Description                                                                             | Example               |
-|------|---------------|----------------------|---------------|
+|----------------|----------------|------------------------|----------------|
 | satfin   | financial_satisfaction | Respondent's satisfaction with their current financial situation                        | Pretty Well Satisfied |
 | finalter | financial_change       | Changes in respondent's financial situation                                             | Stayed the same       |
 | finrela  | financial_compare      | Comparing respondent's family income with American families in general                  | Above Average         |
