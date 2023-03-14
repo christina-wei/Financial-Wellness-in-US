@@ -983,7 +983,7 @@ generate_time_series_graph(
 
 # Discussion
 
-Our results point to three trends: first, our visualizations illustrate a growing wealth gap over time. Even though GDP is rising, we don't observe a significant improvement in financial satisfaction over time. In fact, twice as many respondents identify as "lower class" in 2021 than in 1970. Second, the data suggests that financial well-being and satisfaction is influenced by demographic factors. And third, evidence to support the Fleishman Effect \-- a term that refers to self-identified upper class respondents who have a distorted sense of their financial well-being, since they compare themselves to other elites.
+Our results point to three trends: first, our visualizations illustrate a growing wealth gap over time. Even though GDP is rising, we don't observe a significant improvement in financial satisfaction over time. In fact, twice as many respondents identify as "lower class" in 2021 than in 1970. Second, the data suggests that financial well-being and satisfaction is influenced by demographic factors. And third, evidence to support the Fleishman Effect \-- a term that refers to self-identified upper class respondents who have a distorted sense of their financial well-being, since they compare themselves to other elites. We hypothesize that a variety of different social, cultural, and personal pressures can influence how individuals perform their wealth or conform to wider trends of dissatisfaction.
 
 ## Demographic Factors' Influence on Financial Satisfaction 
 
