@@ -267,15 +267,15 @@ For survey questions related to financial well-being, we retrieved the following
 
 ## Data Limitations
 
-Since 1972, the GSS has been tracking trends in public opinion through in-person interviews. Due to the COVID-19 pandemic, the GSS had to change their data collection from in-person to address-based sampling and a push-to-web methodology, meaning that most of the interview was conducted with an online self-administered questionnaire. When using this primarily mail-based communication, the 2021 GSS asks for "the person with the most recent birthday, rather than a random person in the household" to respond to the survey. This change in methodology resulted in several limitations, which are discussed in detail below.
+Since 1972, the GSS has been tracking trends in public opinion through in-person interviews. Due to the COVID-19 pandemic, the GSS had to change their data collection from in-person to address-based sampling and a push-to-web methodology, meaning that most of the interview was conducted with an online self-administered questionnaire. When using this primarily mail-based communication, the 2021 GSS asks for "the person with the most recent birthday, rather than a random person in the household" to respond to the survey [@gssMethods]. This change in methodology resulted in several limitations, which are discussed in detail below.
 
 ### Gap in 2020 data
 
-First, data from the year 2020 is not recorded, which is inconsistent with the yearly GSS track record. Because the GSS data collection spans 2020 and 2021, the reference year for the 2021 GSS for questions where, for instance, respondents are asked for their income "last year", is 2019. Second, in the 2021 GSS, people below the age of 30, people without high school degrees, and Black respondents completed less surveys, proportionally, than their 2018 counterparts.
+First, data from the year 2020 is not recorded, which is inconsistent with the yearly GSS track record. Because the GSS data collection spans 2020 and 2021, the reference year for the 2021 GSS for questions where, for instance, respondents are asked for their income "last year", is 2019. Second, in the 2021 GSS, people below the age of 30, people without high school degrees, and Black respondents completed less surveys, proportionally, than their 2018 counterparts [@gssMethods].
 
 ### "Don't know" responses
 
-Shifting from in-person interviewing to online data collection required the GSS to find a new approach to appropriately recording responses when respondents expressed uncertainty, indecision, or a refusal to answer. Interviewers in previous rounds of the GSS had specific training in how to record "Don't Know" responses, which occurred when respondents either refused to answer a question or did not know the answer to a question. The 2021 GSS had no interviewers in the web mode to appropriately record these responses. In order to mitigate this change in mode, no item on the 2021 GSS shows "No Answer", unless the module sponsor requested that it be included. The exception to this was factual questions about occupation, income, or family background, since respondents could genuinely not know the answer, rather than being indecisive on the answer. Instead of "No Answer" or "Don't know", users could skip the question. "Skipped on web" indicates that users read the questions but skipped it.
+Shifting from in-person interviewing to online data collection required the GSS to find a new approach to appropriately recording responses when respondents expressed uncertainty, indecision, or a refusal to answer. Interviewers in previous rounds of the GSS had specific training in how to record "Don't Know" responses, which occurred when respondents either refused to answer a question or did not know the answer to a question. The 2021 GSS had no interviewers in the web mode to appropriately record these responses [@gssMethods]. In order to mitigate this change in mode, no item on the 2021 GSS shows "No Answer", unless the module sponsor requested that it be included. The exception to this was factual questions about occupation, income, or family background, since respondents could genuinely not know the answer, rather than being indecisive on the answer. Instead of "No Answer" or "Don't know", users could skip the question. "Skipped on web" indicates that users read the questions but skipped it.
 
 ### Survey Experimentation
 
@@ -475,7 +475,7 @@ Now that we have a general understanding of the respondent demographics and thei
 
 ### Gender
 
-Compare across different genders (defined as sex at birth), we noticed in @fig-2021-gender-financial-1 that there are more female respondents who are not satisfied with their financial situations (26.3%) as compared to male respondents (20.5%). Also, there are more female respondent reporting that their financial situation is getting worse (22.7%) compared to male respondents (16.7%) (@fig-2021-gender-financial-2). When comparing their financial situations to others, a higher proportion of male respondents (30.2%) rated themselves as above average as compared to female respondents (21.3%) (@fig-2021-gender-financial-3). These results triangulated together indicate that women in our society may be more disadvantaged in their financial well-being as compared to men.
+Compare across different genders (defined as sex at birth), we noticed in @fig-2021-gender-financial-1 that there are more female respondents who are not satisfied with their financial situations (26.3%) as compared to male respondents (20.5%). Also, there are more female respondent reporting that their financial situation is getting worse (22.7%) compared to male respondents (16.7%) (@fig-2021-gender-financial-2). When comparing their financial situations to others, a greater proportion of male respondents (30.2%) rated themselves as above average as compared to female respondents (21.3%) (@fig-2021-gender-financial-3). These results triangulated together indicate that women in our society may be more disadvantaged in their financial well-being as compared to men.
 
 ```{r}
 #| message: false
@@ -633,7 +633,7 @@ generate_compare_bar_graph(
 
 ### Family Income
 
-Overall, we would expect attitudes towards financial well-being is highly correlated with respondents' financial income. This is supported in the our data, as @fig-2021-income-financial-1 shows that there is a high percentage of respondents with family income less than \$30K reporting not being satisfied with their current financial situation. On the other side, the majority of respondents making \$170K and above are pretty well satisfied with their current situation. There is also the general trend that as the family income increases, respondents perceived themselves as doing better financial as compared to others. Looking at the changes in financial situation, the data shows that those making less than \$30K are getting worse or staying the same, while the majority of respondents making more than \$110K are getting better in their financial situations (@fig-2021-income-financial-2).
+Overall, we would expect attitudes towards financial well-being is highly correlated with respondents' financial income. This is supported in the our data, as @fig-2021-income-financial-1 shows that there is a high percentage of respondents with family income less than \$30K reporting not being satisfied with their current financial situation. Unsurprisingly, the majority of respondents making \$170K and above are pretty well satisfied with their current situation. There is a general trend that as the family income increases, the percentages of satisfied responses also increases. Looking at the changes in financial situation, the data shows that those making less than \$30K are getting worse or staying the same, while the majority of respondents making more than \$110K are getting better in their financial situations (@fig-2021-income-financial-2).
 
 ```{r}
 #| message: false
@@ -732,7 +732,7 @@ generate_time_series_graph(
 
 ### Cohort
 
-Next we looked at how each generation cohort is doing over time. We defined the generations based on the commonly accepted guidelines [@generations]. The trends for each generation cohort are discussed below (@fig-overtime-cohort).
+Next, we looked at how each generation cohort is doing over time. We defined the generations based on the commonly accepted guidelines [@generations]. The trends for each generation cohort are discussed below (@fig-overtime-cohort).
 
 -   **The Greatest Generation (Greatest)**, defined as those born between 1910 and 1924, are between the ages 48 and 64 when the survey started to collect data in 1972. They are generally getting more satisfied with their financial situation over time, as shown by the increasing "pretty well satisfied" and decreasing "not satisfied at all" response percentages.
 
@@ -879,7 +879,7 @@ generate_heatmap(
 )
 ```
 
-Analyzing the correlation between social class and financial satisfaction, we saw the expected trend in @fig-socialclass-financial-1 that as individuals move up to a higher social class, they report higher financial satisfaction with their current situation. However, when we look at the detailed social class breakdown in @fig-socialclass-financial-2, we noticed a trend reversal for **upper class**, where close to 20% of the respondents reported not satisfied at all with their financial situation, which is much higher compared to upper middle class with only less than 2% dissatisfaction. In @fig-socialclass-compare, only 60% of upper-class respondents see themselves as far above average compared to the general population. We will hypothesize potential explanations for this observation in the the discussion section below.
+Analyzing the correlation between social class and financial satisfaction, we saw the expected trend in @fig-socialclass-financial-1 that as individuals move up to a higher social class, they report higher financial satisfaction with their current situation. However, when we look at the detailed social class breakdown in @fig-socialclass-financial-2, we noticed a trend reversal for **upper class**, where close to 20% of the respondents reported not satisfied at all with their financial situation, which is much higher compared to upper middle class with only less than 2% dissatisfaction. In @fig-socialclass-compare, only 60% of upper-class respondents see themselves as far above average compared to the general population. We will expand on potential explanations for this phenomenon in the the discussion section.
 
 ```{r}
 #| message: false
