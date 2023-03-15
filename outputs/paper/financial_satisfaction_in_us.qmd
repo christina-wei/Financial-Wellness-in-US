@@ -256,7 +256,7 @@ For demographic factors, we retrieved the following data as described in @tbl-us
 For survey questions related to financial well-being, we retrieved the following data as described in @tbl-uss-financial.
 
 | Variable | New Name               | Description                                                                             | Example               |
-|--------|---------------|---------------------|---------------|
+|----------------|----------------|-----------------------|----------------|
 | satfin   | financial_satisfaction | Respondent's satisfaction with their current financial situation                        | Pretty Well Satisfied |
 | finalter | financial_change       | Changes in respondent's financial situation                                             | Stayed the same       |
 | finrela  | financial_compare      | Comparing respondent's family income with American families in general                  | Above Average         |
